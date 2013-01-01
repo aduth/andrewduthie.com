@@ -1,0 +1,19 @@
+<% extend 'templates/layout.html' %>
+
+<% block 'header' : %>
+    <div class="container clearfix">
+        <header class="about-me">
+            <div class="clearfix">
+                <h1>Andrew Duthie</h1>
+                <% include 'templates/_partials/me-links.html' %>
+            </div>
+            <p>Developer and modern web enthusiast. Passionate about learning the newest and greatest in front-end web development and open source. This blog serves as a way for me to share my thoughts and findings on the development industry and lifestyle.</p>
+        </header>
+    </div>
+<% end %>
+
+<% block 'main' : %>
+    <% for post in site.post.sort((a, b) -> b.meta.date - a.meta.date): %>
+        <% include 'templates/_partials/post.html', post %>
+    <% end %>
+<% end %>

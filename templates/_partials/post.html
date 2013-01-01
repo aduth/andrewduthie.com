@@ -1,0 +1,15 @@
+<article class="blog-post clearfix">
+    <header class="title">
+        <h1><a href="/post/<%= @name %>.html"><%= @meta.title %></a></h1>
+        <p class="blog-meta">
+            <span class="meta-text">
+                <%= require('moment')(@meta.date).format('MMM D, YYYY') %>
+                <span class="separator"></span>
+                <a href="/post/<%= @name %>.html#disqus_thread">Discuss</a>
+            </span>
+        </p>
+    </header>
+    <div class="blog-body">
+        <%- @content %>
+    </div>
+</article>
