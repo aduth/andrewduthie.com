@@ -9,6 +9,8 @@
     </div>
 <% end %>
 
+<% block 'description' : %><%= @description %><% end %>
+
 <% block 'main' : %>
     <% include 'templates/_partials/post.html', @ %>
     <a name="disqus_thread"></a>
