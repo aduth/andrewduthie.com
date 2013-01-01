@@ -7,8 +7,9 @@
         "consolidate": ">= 0.5.0",
         "marked": ">= 0.2.0",
         "js-yaml": ">= 1.0.0",
-        "moment": ">= 1.7.0"
-    },    
+        "moment": ">= 1.7.0",
+        "ect": ">= 0.3.6"
+    },
     "devDependencies": {
         "grunt-contrib": ">= 0.2.0",
         "grunt-contrib-sass": "0.1.3",
