@@ -2,3 +2,4 @@ node_modules/
 .sass-cache/
 output/
 config-aws.json
+public/css/main.css
