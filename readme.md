@@ -5,6 +5,7 @@ This repository contains the source for my personal blog site. It includes my cu
 To install, you must have Node.js with npm. Then clone and install using npm:
 
     git clone git://github.com/aduth/andrewduthie.com.git
+    cd andrewduthie.com
     npm install
 
 To generate the site, first change the `output` directory in config.json, then run the `build.js` file using Node.js:
