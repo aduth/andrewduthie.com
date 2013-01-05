@@ -3,7 +3,9 @@
         <h1><a href="/post/<%= @name %>.html"><%= @meta.title %></a></h1>
         <p class="blog-meta">
             <span class="meta-text">
-                <%= require('moment')(@meta.date).format('MMM D, YYYY') %>
+                <time pubdate="pubdate" datetime="<%= @meta.date.toISOString() %>">
+                    <%= require('moment')(@meta.date).format('MMM D, YYYY') %>
+                </time>
                 <span class="separator"></span>
                 <a href="/post/<%= @name %>.html#disqus_thread">Discuss</a>
             </span>
