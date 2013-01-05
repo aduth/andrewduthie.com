@@ -293,3 +293,18 @@ code {
         border: none;
     }
 }
+
+.copyright {
+    background-color: lighten($header-background, 10%);
+    border-top: 3px solid $header-background;
+    margin-top: 1em;
+    padding: 0.6em;
+
+    small, a {
+        color: $base-background;
+    }
+
+    a {
+        border-bottom-color: $base-background;
+    }
+}
