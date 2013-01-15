@@ -2,6 +2,7 @@
 @import 'mixins';
 @import 'normalize';
 @import 'typography';
+@import 'highlight';
 
 * {
     @include prefixer(box-sizing, border-box);
@@ -24,13 +25,6 @@ a {
 
 blockquote {
     font-style: italic;
-}
-
-code {
-    background-color: #eee;
-    border: 1px solid #ccc;
-    border-radius: 0.4em;
-    padding: 0.1em 0.4em;
 }
 
 .intro {
@@ -158,48 +152,11 @@ code {
 }
 
 .blog-post {
+    position: relative;
     margin-top: 1em;
     padding-bottom: 2em;
     font-size: 1.2em;
     clear: both;
-
-    .title {
-        width: 90%;
-        margin-left: 5%;
-
-        @media screen and (max-width: $break-medium) {
-            width: 100%;
-            margin-left: 0;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 2.6em;
-            line-height: 1.1;
-            margin: 0.2em;
-
-            a {
-                border: 0;
-                color: $base-font-color;
-                @include prefixer(transition, 0.2s color);
-
-                &:hover {
-                    color: $link-color;
-                }
-            }
-
-            @media screen and (max-width: $break-medium) {
-                font-size: 2em;
-                margin: 0.26em;
-            }
-
-            @media screen and (max-width: $break-small) {
-                font-size: 1.8em;
-            }
-        }
-    }
-
-    position: relative;
 
     &:after {
         content: '';
@@ -217,6 +174,42 @@ code {
 
     &:last-child:after {
         display: none;
+    }
+}
+
+.blog-title {
+    width: 90%;
+    margin-left: 5%;
+
+    @media screen and (max-width: $break-medium) {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 2.6em;
+        line-height: 1.1;
+        margin: 0.2em;
+
+        a {
+            border: 0;
+            color: $base-font-color;
+            @include prefixer(transition, 0.2s color);
+
+            &:hover {
+                color: $link-color;
+            }
+        }
+
+        @media screen and (max-width: $break-medium) {
+            font-size: 2em;
+            margin: 0.26em;
+        }
+
+        @media screen and (max-width: $break-small) {
+            font-size: 1.8em;
+        }
     }
 }
 
