@@ -17,7 +17,7 @@
 <% end %>
 
 <% block 'main' : %>
-    <% for post in site.post.sort((a, b) -> a.meta.date - b.meta.date): %>
+    <% for post in site.post.sort((a, b) -> b.meta.date - a.meta.date): %>
         <% include 'templates/_partials/post.html', post %>
     <% end %>
 <% end %>

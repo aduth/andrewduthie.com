@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <%
     url = "http://andrewduthie.com"
-    posts = site.post.sort((a, b) -> a.meta.date - b.meta.date)
+    posts = site.post.sort((a, b) -> b.meta.date - a.meta.date)
 %>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>AndrewDuthie.com</title>
