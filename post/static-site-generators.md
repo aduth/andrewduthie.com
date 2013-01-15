@@ -1,8 +1,8 @@
 ---
 title: Static Site Generators
 template: post
-date: 2012-01-03 00:00:00 -5
-description: An overview of static site generators, including purpose, benefits, and popular options. 
+date: 2013-01-03 00:00:00 -5
+description: An overview of static site generators, including purpose, benefits, and popular options.
 ---
 
 As web developers, we most often work with dynamic web content. These days, it's rare to come in contact with plain old HTML files. That said, there are a growing number of tools which assist in the creation of static sites, aptly named _static site generators_. To cite a recent example, Kyle Rush [published an article](http://kylerush.net/blog/meet-the-obama-campaigns-250-million-fundraising-platform/) explaining how Obama's campaign team used Jekyll, arguably the most popular static site generator, to improve the performance of their $250 million fundraising platform. In this article, I will discuss the purpose of these tools, the benefits they provide, and several popular options to choose from.
