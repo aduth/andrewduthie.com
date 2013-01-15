@@ -17,7 +17,7 @@
     <rights>Copyright (c) 2012, Andrew Duthie</rights>
     <id>http://www.andrewduthie.com/</id>
     <% for post in posts: %>
-    <% url = "#{url}/post/#{post.name}.html" %>
+    <% url = "#{url}/post/#{post.name}/" %>
     <entry>
         <title><%= post.meta.title %></title>
         <link href="<%= url %>"/>
