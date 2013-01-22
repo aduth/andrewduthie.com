@@ -1,17 +1,19 @@
 ---
-title: RequireJS
+title: Adding Structure to Your JavaScript Projects With RequireJS
 template: post
 date: 2013-01-15 00:00:00 -5
 description: A look at RequireJS for JavaScript module loading and dependency management
 ---
 
-[RequireJS](http://requirejs.org/) is a JavaScript utility for module loading and dependency management. It enables you to keep independent modules (think: classes) in separate files, and manages the required dependencies between them. This makes for a more traditional development environment in the sense that you can import classes as you would in Java or Python, for example. This makes for much more maintainable JavaScript.
+[RequireJS](http://requirejs.org/) is a JavaScript utility for module loading and dependency management. It enables you to keep independent modules in separate files, and automatically loads the defined dependencies between them. This gives the notion of an "import" and, in theory, leads to more maintainable JavaScript.
 
-If you're accustomed to working in a front-end environment, you may be worried that if we keep our files separate, it will negatively impact our page load speed. After all, the more files we include on our page, the longer it will take to load. This is true, but with a RequireJS workflow, we'll typically use an optimization tool during the deployment process to concatenate and minify our code to a single, small file. You can read more about this in the "Further Reading" section below.
+Modules can be thought of simply as blocks of code executed under the context of the namespace in which it is defined. By default, this is the filename without the extension. In the example below, calling `define` in the _dinner.js_ script will create the dinner module. The return value of a module can be used by any other code which depends upon it.
+
+It is important to note that keeping the JavaScript files separated will negatively impact your page load speed. With a RequireJS workflow, you will want to use an optimization tool (r.js) during your production deployment process to concatenate and minify your code to a single, small file. You can read more about this in the "Further Reading" section below.
 
 ## An Example
 
-Let's take a look at a very basic example of how to use RequireJS.
+Let's take a look at a very simple example of RequireJS in a web application.
 
 Imagine we have the following project structure:
 
@@ -23,7 +25,7 @@ Imagine we have the following project structure:
  * potatoes.js
  * require.js
 
-We will want to start by adding a script tag to our main page to load the RequireJS library. We will also specify an entry point through the "data-main" attribute.
+We will want to start by adding a script tag to our main page to load the RequireJS library. We will also specify an entry point through the `data-main` attribute.
 
 ```xml
 <!doctype html>
@@ -39,8 +41,17 @@ We will want to start by adding a script tag to our main page to load the Requir
 </html>
 ```
 
-This entry point will load the "js/main.js" script automatically. From any of our RequireJS files, we can either _define_ a new module or simply load other modules through _require_. In either case, we can load dependencies through the function call, as seen below:
+This entry point will load the _js/main.js_ script automatically. From our RequireJS scripts, we can either `define` a new module or use `require` to load dependencies without defining a new module. In either case, loading dependencies is done using the function call, as seen below in _dinner.js_ and _main.js_:
 
+```javascript
+// meat.js (potatoes.js would be nearly identical)
+// Define a new module named "meat"
+define(function() {
+    return {
+        calories: 350
+    };
+});
+```
 ```javascript
 // dinner.js
 // Define a new module named "dinner"
@@ -61,16 +72,18 @@ function(dinner) {
 });
 ```
 
-To load other modules as dependencies, you pass an array as the first parameter with a series of modules to load. As you can see here, loading 'dinner' will call the dinner.js file, where we return an object containing the _totalCalories_ property. In the main script, I use _require_ because I want to use other modules, but do not intend to have main itself be used as a module elsewhere. When you want to define a module, you'll use the _define_ method instead. There are several ways these methods can be called, including the option to specify a custom module name. To learn more, read the [API documentation for define](http://requirejs.org/docs/api.html#define).
+To load other modules as dependencies, pass an array as the first parameter with a series of modules to load. In the main script, loading 'dinner' will call the _dinner.js_ file, which returns an object containing the `totalCalories` property. Since our meat and potato modules do not depend on anything else, we can omit the first parameter. In the main script, I use `require` because I want to depend on modules, but I do not want to have main itself be used as a dependency elsewhere. Use the `define` method instead when defining a module. By default, the module name takes the name file minus the extension, so you should only define a single module per file. 
+
+There are several ways to call the `define` and `require` methods, including the option to specify a custom module name. To learn more, read the [API documentation for define](http://requirejs.org/docs/api.html#define).
 
 ## Further Reading
 
 For a more thorough walkthrough of RequireJS, read through the [API documentation](http://requirejs.org/docs/api.html). For instructions on how to concatenate and minify your RequireJS projects, refer to the [optimization instructions](http://requirejs.org/docs/optimization.html). To simplify the build process, you may find that using a tool like [grunt.js](http://gruntjs.com/) can be very helpful.
 
-RequireJS is extensible, so there are a variety of plugins you can use to extend the capabilities of the module loader. For example, if you want to load CoffeeScript, you can use the [require-cs](https://github.com/jrburke/require-cs) plugin. If you're eagerly anticipating the [new modules](http://wiki.ecmascript.org/doku.php?id=harmony:modules) arriving in the next iteration of JavaScript (i.e. ECMAScript 6), you can preview the functionality using [require-hm](https://github.com/jrburke/require-hm). 
+RequireJS is extensible, so there are a variety of plugins you can use to extend the capabilities of the module loader. For example, if you want to load CoffeeScript, you can use the [require-cs](https://github.com/jrburke/require-cs) plugin. If you use a templating library like mustache.js, you can use the  [text.js](https://github.com/requirejs/text) plugin to load static text resources to avoid writing your templates as JavaScript strings or between `<script>` tags.
 
 To see how RequireJS is used in an existing project, check out my ["Toupée" project on GitHub](https://github.com/aduth/Toupee), which uses RequireJS with Backbone.js.
 
 ## Conclusion
 
-RequireJS takes the guess work out of dependency management, meaning you can worry less about the order your scripts are loaded and where your functions are defined. By separating your modules into separate files, you promote a separation of concerns and avoid the possibility that your application's main script grows too large to manage. This leads to maintainable JavaScript and, in turn, happy developers.
+RequireJS removes the guess work from dependency management, meaning you can worry less about the order your scripts are loaded and where you define your functions. By separating your modules into separate files, you create a separation of concerns and avoid the possibility that your application's main script grows too large to manage.
