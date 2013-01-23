@@ -1,8 +1,8 @@
 module.exports = function(grunt) {
 
     grunt.initConfig({
-        aws: '<json:config-aws.json>',
-        siteConfig: '<json:config.json>',
+        aws: grunt.file.readJSON('config-aws.json'),
+        siteConfig: grunt.file.readJSON('config.json'),
 
         sass: {
             dist: {
