@@ -30,20 +30,13 @@ module.exports = function(grunt) {
             upload: [
                 {
                     rel: '<%= siteConfig.output %>',
-                    src: '<%= siteConfig.output %>/**/*.*',
+                    src: ['<%= siteConfig.output %>/**/*.*', '!<%= siteConfig.output %>/js/*.js', '!<%= siteConfig.output %>/css/*.css', '!<%= siteConfig.output %>/img/*.*' ],
                     dest: '/',
                     gzip: true
                 },
                 {
                     rel: '<%= siteConfig.output %>',
-                    src: '<%= siteConfig.output %>/**/*.css',
-                    dest: '/',
-                    gzip: true,
-                    headers: { 'Cache-Control': 'public, max-age=' + (60 * 60 * 24 * 365) }
-                },
-                {
-                    rel: '<%= siteConfig.output %>',
-                    src: '<%= siteConfig.output %>/**/*.js',
+                    src: ['<%= siteConfig.output %>/js/*.js', '<%= siteConfig.output %>/css/*.css', '<%= siteConfig.output %>/img/*.*'],
                     dest: '/',
                     gzip: true,
                     headers: { 'Cache-Control': 'public, max-age=' + (60 * 60 * 24 * 365) }
