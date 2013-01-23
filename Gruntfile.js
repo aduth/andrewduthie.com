@@ -1,8 +1,6 @@
 module.exports = function(grunt) {
-    grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-s3');
 
-    var config = {
+    grunt.initConfig({
         aws: '<json:config-aws.json>',
         siteConfig: '<json:config.json>',
 
@@ -16,6 +14,7 @@ module.exports = function(grunt) {
                 }
             }
         },
+
         watch: {
             sass: {
                 files: ['public/css/sass/main.scss'],
@@ -51,11 +50,13 @@ module.exports = function(grunt) {
                 }
             ]
         }
-    };
+    });
 
-    grunt.initConfig(config);
+    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-watch')
+    grunt.loadNpmTasks('grunt-s3');
 
-    grunt.registerTask('default', 'sass');
-    grunt.registerTask('start', 'default watch');
-    grunt.registerTask('publish', 's3')
+    grunt.registerTask('default', ['sass']);
+    grunt.registerTask('start', ['default', 'watch']);
+    grunt.registerTask('publish', ['s3'])
 };
