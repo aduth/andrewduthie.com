@@ -7,7 +7,7 @@
     <title>AndrewDuthie.com</title>
     <subtitle>Latest blog entries</subtitle>
     <link href="<%= url %>"/>
-    <link rel="self" href="<%= url %>/atom.xml"/>
+    <link rel="self" href="<%= url %>/feed.xml"/>
     <updated><%= posts[0].meta.date.toISOString() %></updated>
     <author>
         <name>Andrew Duthie</name>
