@@ -14,7 +14,6 @@
   "devDependencies": {
     "grunt": "~0.4.0",
     "grunt-contrib-sass": "git://github.com/gruntjs/grunt-contrib-sass.git",
-    "grunt-contrib-watch": "~0.2.0",
-    "grunt-s3": "git://github.com/pifantastic/grunt-s3.git"
+    "grunt-contrib-watch": "~0.2.0"
   }
 }

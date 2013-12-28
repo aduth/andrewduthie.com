@@ -1,7 +1,5 @@
 module.exports = function(grunt) {
-
     grunt.initConfig({
-        aws: grunt.file.readJSON('config-aws.json'),
         siteConfig: grunt.file.readJSON('config.json'),
 
         sass: {
@@ -20,36 +18,12 @@ module.exports = function(grunt) {
                 files: ['public/css/sass/main.scss'],
                 tasks: ['sass']
             }
-        },
-
-        s3: {
-            key: '<%= aws.key %>',
-            secret: '<%= aws.secret %>',
-            bucket: '<%= aws.bucket %>',
-            access: 'public-read',
-            upload: [
-                {
-                    rel: '<%= siteConfig.output %>',
-                    src: ['<%= siteConfig.output %>/**/*.*', '!<%= siteConfig.output %>/js/*.js', '!<%= siteConfig.output %>/css/*.css', '!<%= siteConfig.output %>/img/*.*' ],
-                    dest: '/',
-                    gzip: true
-                },
-                {
-                    rel: '<%= siteConfig.output %>',
-                    src: ['<%= siteConfig.output %>/js/*.js', '<%= siteConfig.output %>/css/*.css', '<%= siteConfig.output %>/img/*.*'],
-                    dest: '/',
-                    gzip: true,
-                    headers: { 'Cache-Control': 'public, max-age=' + (60 * 60 * 24 * 365) }
-                }
-            ]
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch')
-    grunt.loadNpmTasks('grunt-s3');
 
     grunt.registerTask('default', ['sass']);
     grunt.registerTask('start', ['default', 'watch']);
-    grunt.registerTask('publish', ['s3'])
 };
