@@ -5,14 +5,13 @@
 <% block 'description' : %>The personal blog of Andrew Duthie, developer and modern web enthusiast. Andrew shares his thoughts and findings on the development industry and lifestyle.<% end %>
 
 <% block 'header' : %>
-    <div class="container clearfix">
-        <header class="about-me">
-            <div class="clearfix">
-                <h1>Andrew Duthie</h1>
-                <% include 'templates/_partials/me-links.html' %>
-            </div>
-            <p>Developer and modern web enthusiast. Passionate about learning the newest and greatest in front-end web development and open source. This blog serves as a way for me to share my thoughts and findings on the development industry and lifestyle.</p>
-        </header>
+    <div class="container about-me">
+        <span class="headshot">
+            <img src="/img/andrew.png" alt="Andrew Duthie" width="135" height="135">
+        </span>
+        <h1>Andrew Duthie</h1>
+        <% include 'templates/_partials/me-links.html' %>
+        <p>Developer and modern web enthusiast. Passionate about learning the newest and greatest in front-end web development and open source. This blog serves as a way for me to share my thoughts and findings on the development industry and lifestyle.</p>
     </div>
 <% end %>
 

@@ -31,15 +31,32 @@ blockquote {
     background-color: $header-background;
     border-bottom: 8px solid lighten($header-background, 10%);
     width: 100%;
+    overflow: auto;
+}
+
+.container.about-me {
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 .about-me {
-    margin: 2em;
-    padding-left: 100px;
-    background: url('../img/andrew.png') no-repeat left center;
+    padding-left: 135px;
+    position: relative;
+
+    .headshot {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 135px;
+        height: 135px;
+
+        img {
+            border-radius: 67.5px;
+            border: 8px solid #3A4E59;
+        }
+    }
 
     h1 {
-        float: left;
         color: $base-background;
         line-height: 1;
         font-size: 4em;
@@ -49,7 +66,6 @@ blockquote {
         @media screen and (max-width: $break-small) {
             font-size: 3em;
             margin: 0.25em 0;
-            float: none;
             text-align: center;
         }
     }
@@ -93,8 +109,6 @@ blockquote {
         }
 
         @media screen and (min-width: $break-small) and (max-width: $break-medium) {
-            float: none;
-            clear: both;
             margin-left: 0.625em;
             line-height: 1.4;
         }
@@ -109,8 +123,10 @@ blockquote {
 }
 
 .me-links {
+    position: absolute;
+    top: 0;
+    right: 0;
     line-height: 4em;
-    float: right;
 
     a {
         margin: 0 0.2em;
@@ -277,6 +293,8 @@ blockquote {
     padding: 0.4em;
 
     .me-links {
+        top: 0.4em;
+        right: 0.4em;
         line-height: 1;
     }
 }
@@ -285,12 +303,21 @@ blockquote {
     float: left;
 
     a, a:hover {
-        background: url('../img/andrew.png') no-repeat left center;
-        background-size: 1.6em 1.6em;
-        padding-left: 2em;
         color: mix($header-background, $base-background, 25%);
         border: none;
+        line-height: 1.6em;
     }
+}
+
+.headshot-mini {
+    display: inline-block;
+    width: 1.6em;
+    height: 1.6em;
+    background: url('../img/andrew.png') no-repeat left center;
+    background-size: 1.6em 1.6em;
+    border-radius: 0.8em;
+    border: 2px solid #3A4E59;
+    vertical-align: bottom;
 }
 
 .copyright {
