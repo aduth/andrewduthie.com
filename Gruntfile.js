@@ -1,11 +1,13 @@
 module.exports = function(grunt) {
+    var homePath = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+    
     grunt.initConfig({
         siteConfig: grunt.file.readJSON('config.json'),
         remote: {
             host: 'andrewduthie.com',
             username: 'deploy',
             sitePath: '/home/deploy/andrewduthie.com',
-            privateKey: grunt.file.read(process.env.HOME + '/.ssh/id_rsa')
+            privateKey: grunt.file.read(homePath + '/.ssh/id_rsa')
         },
 
         sass: {
