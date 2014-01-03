@@ -103,5 +103,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['sass']);
     grunt.registerTask('dev', ['default', 'watch']);
-    grunt.registerTask('deploy', ['compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
+    grunt.registerTask('deploy', ['shell:generate', 'compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
 };
