@@ -90,6 +90,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-ssh');
 
     grunt.registerTask('default', ['sass']);
-    grunt.registerTask('start', ['default', 'watch']);
+    grunt.registerTask('dev', ['default', 'watch']);
     grunt.registerTask('release', ['compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-release']);
 };
