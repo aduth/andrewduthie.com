@@ -31,6 +31,12 @@ img {
     max-width: 100%;
 }
 
+ul {
+    @media screen and (max-width: $break-small) {
+        padding-left: 18px;
+    }
+}
+
 .intro {
     background-color: $header-background;
     border-bottom: 8px solid lighten($header-background, 10%);
