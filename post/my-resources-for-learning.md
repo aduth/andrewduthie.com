@@ -14,9 +14,9 @@ Blogs allow industry experts and other enthusiasts to share their knowledge on a
 Here are some of the blogs I follow:
 
 - [Paul Graham](http://www.paulgraham.com/articles.html)
-- [Coding Horror](http://www.codinghorror.com/blog/) (Chris Coyier)
+- [Coding Horror](http://www.codinghorror.com/blog/) (Jeff Atwood)
 - [Sacha Greif](http://sachagreif.com/)
-- [CSS Tricks](http://css-tricks.com/) (Jeff Atwood)
+- [CSS Tricks](http://css-tricks.com/) (Chris Coyier)
 - [Ian Storm Taylor](http://ianstormtaylor.com/)
 - [Addy Osmani](http://addyosmani.com/blog/)
 
