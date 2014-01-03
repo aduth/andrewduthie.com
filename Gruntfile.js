@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
     var homePath = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
-    
+
     grunt.initConfig({
         siteConfig: grunt.file.readJSON('config.json'),
         remote: {
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
         },
 
         compress: {
-            release: {
+            deploy: {
                 options: {
                     archive: 'output.tar.gz'
                 },
@@ -55,7 +55,7 @@ module.exports = function(grunt) {
         },
 
         sftp: {
-            release: {
+            deploy: {
                 files: {
                     './': 'output.tar.gz'
                 },
@@ -90,7 +90,7 @@ module.exports = function(grunt) {
         },
 
         clean: {
-            'post-release': ['output.tar.gz']
+            'post-deploy': ['output.tar.gz']
         }
     });
 
@@ -103,5 +103,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['sass']);
     grunt.registerTask('dev', ['default', 'watch']);
-    grunt.registerTask('release', ['compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-release']);
+    grunt.registerTask('deploy', ['compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
 };
