@@ -21,10 +21,21 @@ module.exports = function(grunt) {
             }
         },
 
+        shell: {
+            generate: {
+                command: 'node build.js'
+            }
+        },
+
         watch: {
             sass: {
-                files: ['public/css/sass/main.scss'],
-                tasks: ['sass']
+                files: ['public/css/sass/*'],
+                tasks: ['sass', 'shell:generate']
+            },
+
+            blog: {
+                files: ['post/*'],
+                tasks: ['shell:generate']
             }
         },
 
@@ -87,6 +98,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-ssh');
 
     grunt.registerTask('default', ['sass']);
