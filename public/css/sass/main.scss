@@ -294,6 +294,7 @@ ul {
 
     @media screen and (max-width: $break-small) {
         font-size: 75%;
+        margin-top: 0;
     }
 }
 
@@ -333,6 +334,11 @@ ul {
     @media screen and (max-width: $break-small) {
         margin: 0.6em 1em;
     }
+}
+
+#disqus_thread {
+    width: 90%;
+    margin-left: 5%;
 }
 
 .post-header {

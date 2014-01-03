@@ -8,6 +8,11 @@ pre {
     overflow: auto;
     padding: 0.2em 0.6em;
     border-radius: 0.4em;
+
+    @media screen and (max-width: $break-small) {
+        margin-left: 0;
+        width: 100%;
+    }
 }
 
 pre .comment {
