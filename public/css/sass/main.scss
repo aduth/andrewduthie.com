@@ -27,6 +27,10 @@ blockquote {
     font-style: italic;
 }
 
+img {
+    max-width: 100%;
+}
+
 .intro {
     background-color: $header-background;
     border-bottom: 8px solid lighten($header-background, 10%);
