@@ -1,18 +1,18 @@
 pre {
-    width: 90%;
-    margin-left: 5%;
-    background-color: #f8f8f8;
-    border: 1px solid #ccc;
-    font-size: 0.9em;
-    line-height: 1.2em;
-    overflow: auto;
-    padding: 0.2em 0.6em;
-    border-radius: 0.4em;
+  width: 90%;
+  margin-left: 5%;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 0.9em;
+  line-height: 1.2em;
+  overflow: auto;
+  padding: 0.2em 0.6em;
+  border-radius: 0.4em;
 
-    @media screen and (max-width: $break-small) {
-        margin-left: 0;
-        width: 100%;
-    }
+  @media screen and (max-width: $break-small) {
+    margin-left: 0;
+    width: 100%;
+  }
 }
 
 pre .comment {

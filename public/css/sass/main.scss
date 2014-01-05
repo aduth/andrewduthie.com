@@ -5,408 +5,408 @@
 @import 'highlight';
 
 * {
-    @include prefixer(box-sizing, border-box);
+  @include prefixer(box-sizing, border-box);
 }
 
 body {
-    background-color: $base-background;
+  background-color: $base-background;
 }
 
 a {
-    text-decoration: none;
-    color: $link-color;
-    border-bottom: 1px dotted $link-color;
+  text-decoration: none;
+  color: $link-color;
+  border-bottom: 1px dotted $link-color;
 
-    &:hover {
-        color: lighten($link-color, 10%);
-        border-bottom: 1px dotted lighten($link-color, 10%);
-    }
+  &:hover {
+    color: lighten($link-color, 10%);
+    border-bottom: 1px dotted lighten($link-color, 10%);
+  }
 }
 
 blockquote {
-    font-style: italic;
+  font-style: italic;
 }
 
 img {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 ul {
-    @media screen and (max-width: $break-small) {
-        padding-left: 18px;
-    }
+  @media screen and (max-width: $break-small) {
+    padding-left: 18px;
+  }
 }
 
 .intro {
-    background-color: $header-background;
-    border-bottom: 8px solid lighten($header-background, 10%);
-    width: 100%;
-    overflow: auto;
+  background-color: $header-background;
+  border-bottom: 8px solid lighten($header-background, 10%);
+  width: 100%;
+  overflow: auto;
 }
 
 .container.about-me {
-    margin-top: 2em;
-    margin-bottom: 2em;
+  margin-top: 2em;
+  margin-bottom: 2em;
 
-    @media screen and (max-width: $break-medium) {
-        margin-left: 2em;
-        margin-right: 2em;
-    }
+  @media screen and (max-width: $break-medium) {
+    margin-left: 2em;
+    margin-right: 2em;
+  }
 }
 
 .about-me {
-    padding-left: 135px;
-    position: relative;
+  padding-left: 135px;
+  position: relative;
 
-    .headshot {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 135px;
-        height: 135px;
+  .headshot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 135px;
+    height: 135px;
 
-        img {
-            border-radius: 67.5px;
-            border: 8px solid #3A4E59;
+    img {
+      border-radius: 67.5px;
+      border: 8px solid #3A4E59;
 
-            @media screen and (max-width: $break-medium) {
-                width: 100px;
-                height: 100px;
-            }
-        }
-
-        @media screen and (max-width: $break-medium) {
-            width: 100px;
-            height: 100px;
-            position: static;
-            display: block;
-            float: left;
-            margin-right: 1em;
-        }
-
-        @media screen and (max-width: $break-small) {
-            float: none;
-            margin: 0 auto;
-        }
-    }
-
-    h1 {
-        color: $base-background;
-        line-height: 1;
-        font-size: 4em;
-        margin: 0;
-        margin-left: 0.25em;
-
-        @media screen and (max-width: $break-small) {
-            font-size: 3em;
-            margin: 0.25em 0;
-            text-align: center;
-        }
-    }
-
-    p {
-        margin: 0;
-        margin-left: 1em;
-        color: mix($header-background, $base-background, 25%);
-
-        @media screen and (max-width: $break-medium) {
-            padding-top: 1em;
-            margin-left: 0;
-        }
-
-        @media screen and (max-width: $break-small) {
-            font-size: 95%;
-        }
+      @media screen and (max-width: $break-medium) {
+        width: 100px;
+        height: 100px;
+      }
     }
 
     @media screen and (max-width: $break-medium) {
-        padding-left: 0;
+      width: 100px;
+      height: 100px;
+      position: static;
+      display: block;
+      float: left;
+      margin-right: 1em;
     }
 
     @media screen and (max-width: $break-small) {
-        margin: 1em;
+      float: none;
+      margin: 0 auto;
+    }
+  }
+
+  h1 {
+    color: $base-background;
+    line-height: 1;
+    font-size: 4em;
+    margin: 0;
+    margin-left: 0.25em;
+
+    @media screen and (max-width: $break-small) {
+      font-size: 3em;
+      margin: 0.25em 0;
+      text-align: center;
+    }
+  }
+
+  p {
+    margin: 0;
+    margin-left: 1em;
+    color: mix($header-background, $base-background, 25%);
+
+    @media screen and (max-width: $break-medium) {
+      padding-top: 1em;
+      margin-left: 0;
     }
 
-    .me-links {
-        a {
-            @media screen and (max-width: $break-medium) {
-                margin: 0 0.3em;
-            }
-
-            @media screen and (max-width: $break-small) {
-                margin: 0 0.4em;
-            }
-        }
-
-        @media screen and (max-width: $break-medium) {
-            position: static;
-
-            a:first-child {
-                margin-left: 0;
-            }
-        }
-
-        @media screen and (min-width: $break-small) and (max-width: $break-medium) {
-            margin-left: 0.625em;
-            line-height: 1.4;
-        }
-
-        @media screen and (max-width: $break-small) {
-            margin-left: 0;
-            line-height: 1.2;
-            text-align: center;
-            float: none;
-        }
+    @media screen and (max-width: $break-small) {
+      font-size: 95%;
     }
+  }
+
+  @media screen and (max-width: $break-medium) {
+    padding-left: 0;
+  }
+
+  @media screen and (max-width: $break-small) {
+    margin: 1em;
+  }
+
+  .me-links {
+    a {
+      @media screen and (max-width: $break-medium) {
+        margin: 0 0.3em;
+      }
+
+      @media screen and (max-width: $break-small) {
+        margin: 0 0.4em;
+      }
+    }
+
+    @media screen and (max-width: $break-medium) {
+      position: static;
+
+      a:first-child {
+        margin-left: 0;
+      }
+    }
+
+    @media screen and (min-width: $break-small) and (max-width: $break-medium) {
+      margin-left: 0.625em;
+      line-height: 1.4;
+    }
+
+    @media screen and (max-width: $break-small) {
+      margin-left: 0;
+      line-height: 1.2;
+      text-align: center;
+      float: none;
+    }
+  }
 }
 
 .me-links {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0;
 
-    a {
-        margin-left: 14px;
-        display: inline-block;
-        width: 26px;
-        height: 26px;
-        color: $base-background;
-        border: none;
-        opacity: 0.5;
-        @include prefixer(transition, 0.2s opacity);
+  a {
+    margin-left: 14px;
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    color: $base-background;
+    border: none;
+    opacity: 0.5;
+    @include prefixer(transition, 0.2s opacity);
 
-        &:hover {
-            opacity: 1;
-        }
-
-        &:before {
-            font-size: 26px;
-            line-height: 64px;
-            font-family: 'Icomoon';
-            speak: none;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        &.rss:before {
-            content: '';
-        }
-
-        &.github:before {
-            content: '';
-        }
-
-        &.twitter:before {
-            content: '';
-        }
-
-        &.linkedin:before {
-            content: '';
-        }
-    }
-}
-
-.clearfix {
-    zoom: 1;
-    &:before, &:after {
-        content: "";
-        display: table;
-    }
-    &:after {
-        clear: both;
-    }
-}
-
-.container {
-    max-width: $max-width;
-    margin: 0 auto;
-}
-
-.main-content {
-    margin-top: 4em;
-
-    @media screen and (max-width: $break-medium) {
-        margin-top: 2em;
-    }
-
-    @media screen and (max-width: $break-small) {
-        margin-top: 1em;
-    }
-}
-
-.blog-post {
-    position: relative;
-    margin-top: 1em;
-    padding-bottom: 2em;
-    font-size: 1.2em;
-    clear: both;
-
-    &:after {
-        content: '';
-        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAHCAYAAADebrddAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAEBJREFUKFNjYMAO4nCIYwjbAEWMgRhE4wUgRflQFSAaqwYloIQL1EROqGIQDdIMEgfJYwCiTEbWRbSbYZqwhgYAnxgF8dtWeHAAAAAASUVORK5CYII=) repeat-x;
-        display: block;
-        height: 7px;
-        width: 33px;
-        left: 50%;
-        margin-top: 1em;
-        margin-left: -17px;
-        position: absolute;
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    &:last-child:after {
-        display: none;
-    }
-}
-
-.blog-title {
-    width: 90%;
-    margin-left: 5%;
-
-    @media screen and (max-width: $break-medium) {
-        width: 100%;
-        margin-left: 0;
-    }
-
-    h1 {
-        text-align: center;
-        font-size: 2.6em;
-        line-height: 1.1;
-        margin: 0.2em;
-
-        a {
-            border: 0;
-            color: $base-font-color;
-            @include prefixer(transition, 0.2s color);
-
-            &:hover {
-                color: $link-color;
-            }
-        }
-
-        @media screen and (max-width: $break-medium) {
-            font-size: 2em;
-            margin: 0.26em;
-        }
-
-        @media screen and (max-width: $break-small) {
-            font-size: 1.8em;
-        }
-    }
-}
-
-.blog-body {
-    width: 70%;
-    margin-top: 2.4em;
-    margin-left: 15%;
-
-    img {
-        display: block;
-        margin: 1em auto;
-        box-shadow: 0 0 0.75em rgba(0, 0, 0, 0.4);
-    }
-
-    @media screen and (max-width: $break-medium) {
-        font-size: 90%;
-        width: 90%;
-        margin-left: 5%;
-    }
-
-    @media screen and (max-width: $break-small) {
-        font-size: 75%;
-        margin-top: 0;
-    }
-}
-
-.blog-meta {
-    color: lighten($base-font-color, 20%);
-    text-align: center;
-    line-height: 1.4;
-    font-size: 0.75em;
-    text-transform: uppercase;
-
-    .meta-text {
-        position: relative;
-        top: -1px;
-        padding: 0 0.4em;
-        background-color: $base-background;
-        z-index: 2;
-    }
-
-    .separator {
-        border-right: 1px solid desaturate(darken($base-background, 20%), 15%);
-        margin: 0 0.6em;
+    &:hover {
+      opacity: 1;
     }
 
     &:before {
-        content: '';
-        z-index: 1;
-        display: block;
-        position: relative;
-        top: 0.7em;
-        border-top: 2px dotted desaturate(darken($base-background, 20%), 15%);
+      font-size: 26px;
+      line-height: 64px;
+      font-family: 'Icomoon';
+      speak: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    &.rss:before {
+      content: '';
+    }
+
+    &.github:before {
+      content: '';
+    }
+
+    &.twitter:before {
+      content: '';
+    }
+
+    &.linkedin:before {
+      content: '';
+    }
+  }
+}
+
+.clearfix {
+  zoom: 1;
+  &:before, &:after {
+    content: "";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.container {
+  max-width: $max-width;
+  margin: 0 auto;
+}
+
+.main-content {
+  margin-top: 4em;
+
+  @media screen and (max-width: $break-medium) {
+    margin-top: 2em;
+  }
+
+  @media screen and (max-width: $break-small) {
+    margin-top: 1em;
+  }
+}
+
+.blog-post {
+  position: relative;
+  margin-top: 1em;
+  padding-bottom: 2em;
+  font-size: 1.2em;
+  clear: both;
+
+  &:after {
+    content: '';
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAHCAYAAADebrddAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAEBJREFUKFNjYMAO4nCIYwjbAEWMgRhE4wUgRflQFSAaqwYloIQL1EROqGIQDdIMEgfJYwCiTEbWRbSbYZqwhgYAnxgF8dtWeHAAAAAASUVORK5CYII=) repeat-x;
+    display: block;
+    height: 7px;
+    width: 33px;
+    left: 50%;
+    margin-top: 1em;
+    margin-left: -17px;
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  &:last-child:after {
+    display: none;
+  }
+}
+
+.blog-title {
+  width: 90%;
+  margin-left: 5%;
+
+  @media screen and (max-width: $break-medium) {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2.6em;
+    line-height: 1.1;
+    margin: 0.2em;
+
+    a {
+      border: 0;
+      color: $base-font-color;
+      @include prefixer(transition, 0.2s color);
+
+      &:hover {
+        color: $link-color;
+      }
     }
 
     @media screen and (max-width: $break-medium) {
-        margin: 0.8em 1em;
+      font-size: 2em;
+      margin: 0.26em;
     }
 
     @media screen and (max-width: $break-small) {
-        margin: 0.6em 1em;
+      font-size: 1.8em;
     }
+  }
+}
+
+.blog-body {
+  width: 70%;
+  margin-top: 2.4em;
+  margin-left: 15%;
+
+  img {
+    display: block;
+    margin: 1em auto;
+    box-shadow: 0 0 0.75em rgba(0, 0, 0, 0.4);
+  }
+
+  @media screen and (max-width: $break-medium) {
+    font-size: 90%;
+    width: 90%;
+    margin-left: 5%;
+  }
+
+  @media screen and (max-width: $break-small) {
+    font-size: 75%;
+    margin-top: 0;
+  }
+}
+
+.blog-meta {
+  color: lighten($base-font-color, 20%);
+  text-align: center;
+  line-height: 1.4;
+  font-size: 0.75em;
+  text-transform: uppercase;
+
+  .meta-text {
+    position: relative;
+    top: -1px;
+    padding: 0 0.4em;
+    background-color: $base-background;
+    z-index: 2;
+  }
+
+  .separator {
+    border-right: 1px solid desaturate(darken($base-background, 20%), 15%);
+    margin: 0 0.6em;
+  }
+
+  &:before {
+    content: '';
+    z-index: 1;
+    display: block;
+    position: relative;
+    top: 0.7em;
+    border-top: 2px dotted desaturate(darken($base-background, 20%), 15%);
+  }
+
+  @media screen and (max-width: $break-medium) {
+    margin: 0.8em 1em;
+  }
+
+  @media screen and (max-width: $break-small) {
+    margin: 0.6em 1em;
+  }
 }
 
 #disqus_thread {
-    width: 90%;
-    margin-left: 5%;
+  width: 90%;
+  margin-left: 5%;
 }
 
 .post-header {
-    padding: 0.4em;
+  padding: 0.4em;
 
-    .me-links {
-        position: static;
-        float: right;
+  .me-links {
+    position: static;
+    float: right;
 
-        a:before {
-            line-height: 1;
-        }
+    a:before {
+      line-height: 1;
     }
+  }
 }
 
 .return-home {
-    float: left;
+  float: left;
 
-    a, a:hover {
-        color: mix($header-background, $base-background, 25%);
-        border: none;
-        line-height: 1.6em;
-    }
+  a, a:hover {
+    color: mix($header-background, $base-background, 25%);
+    border: none;
+    line-height: 1.6em;
+  }
 }
 
 .headshot-mini {
-    display: inline-block;
-    width: 1.6em;
-    height: 1.6em;
-    background: url('../img/andrew.png') no-repeat left center;
-    background-size: 1.6em 1.6em;
-    border-radius: 0.8em;
-    border: 2px solid #3A4E59;
-    vertical-align: bottom;
+  display: inline-block;
+  width: 1.6em;
+  height: 1.6em;
+  background: url('../img/andrew.png') no-repeat left center;
+  background-size: 1.6em 1.6em;
+  border-radius: 0.8em;
+  border: 2px solid #3A4E59;
+  vertical-align: bottom;
 }
 
 .copyright {
-    background-color: lighten($header-background, 10%);
-    border-top: 3px solid $header-background;
-    margin-top: 1em;
-    padding: 0.6em;
+  background-color: lighten($header-background, 10%);
+  border-top: 3px solid $header-background;
+  margin-top: 1em;
+  padding: 0.6em;
 
-    small, a {
-        color: $base-background;
-    }
+  small, a {
+    color: $base-background;
+  }
 
-    a {
-        border-bottom-color: $base-background;
-    }
+  a {
+    border-bottom-color: $base-background;
+  }
 }
