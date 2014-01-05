@@ -1,5 +1,0 @@
-@mixin prefixer($property, $value, $prefixes: ("-webkit-", "-moz-", "")) {
-  @each $prefix in $prefixes {
-    #{$prefix}#{$property}: #{$value};
-  }
-}
