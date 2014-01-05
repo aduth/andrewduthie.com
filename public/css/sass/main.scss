@@ -164,23 +164,44 @@ ul {
     position: absolute;
     top: 0;
     right: 0;
-    line-height: 4em;
+    font-size: 0;
 
     a {
-        margin: 0 0.2em;
-
+        margin-left: 14px;
+        display: inline-block;
+        width: 26px;
+        height: 26px;
         color: $base-background;
         border: none;
         opacity: 0.5;
         @include prefixer(transition, 0.2s opacity);
 
-        font-size: 1.6em;
-        font-family: 'Icomoon';
-        speak: none;
-        -webkit-font-smoothing: antialiased;
-
         &:hover {
             opacity: 1;
+        }
+
+        &:before {
+            font-size: 26px;
+            line-height: 64px;
+            font-family: 'Icomoon';
+            speak: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        &.rss:before {
+            content: '';
+        }
+
+        &.github:before {
+            content: '';
+        }
+
+        &.twitter:before {
+            content: '';
+        }
+
+        &.linkedin:before {
+            content: '';
         }
     }
 }
@@ -345,9 +366,12 @@ ul {
     padding: 0.4em;
 
     .me-links {
-        top: 0.4em;
-        right: 0.4em;
-        line-height: 1;
+        position: static;
+        float: right;
+
+        a:before {
+            line-height: 1;
+        }
     }
 }
 
