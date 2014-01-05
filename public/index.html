@@ -1,5 +1,14 @@
 <% extend 'templates/layout.html' %>
 
+<% block 'open-graph' : %>
+<meta property="og:title" content="Home">
+<meta property="og:type" content="profile">
+<meta property="og:url" content="http://www.andrewduthie.com/">
+<meta property="profile:first_name" content="Andrew">
+<meta property="profile:last_name" content="Duthie">
+<meta property="profile:gender" content="male">
+<% end %>
+
 <% block 'title' : %>Home<% end %>
 
 <% block 'description' : %>The personal blog of Andrew Duthie, developer and modern web enthusiast. Andrew shares his thoughts and findings on the development industry and lifestyle.<% end %>
