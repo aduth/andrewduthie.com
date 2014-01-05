@@ -1,9 +1,9 @@
-<article class="blog-post clearfix">
+<article class="blog-post clearfix" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="blog-title">
-        <h1><a href="/post/<%= @name %>/"><%= @meta.title %></a></h1>
+        <h1 itemprop="name"><a href="/post/<%= @name %>/"><%= @meta.title %></a></h1>
         <p class="blog-meta">
             <span class="meta-text">
-                <time pubdate="pubdate" datetime="<%= @meta.date.toISOString() %>">
+                <time pubdate="pubdate" datetime="<%= @meta.date.toISOString() %>" itemprop="datePublished">
                     <%= require('moment')(@meta.date).format('MMM D, YYYY') %>
                 </time>
                 <span class="separator"></span>
@@ -11,7 +11,7 @@
             </span>
         </p>
     </header>
-    <div class="blog-body">
+    <div class="blog-body" itemprop="articleBody">
         <%- @content %>
     </div>
 </article>
