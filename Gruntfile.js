@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 
     watch: {
       less: {
-        files: ['public/css/less/*'],
+        files: ['public/css/less/**/*.less'],
         tasks: ['less', 'shell:generate']
       },
 
