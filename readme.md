@@ -14,8 +14,7 @@ To generate the site, first change the `output` directory in config.json, then r
 
 The gruntfile provides the following tasks:
 
-- __start__ : Generate CSS from SCSS files and watch for changes
-- __publish__ : Publish to Amazon S3 using configuration values found in config-aws.json
+- __dev__ : Generate CSS from SCSS files and watch for changes
 
 To use the grunt tasks, first install grunt, then run one of the above tasks:
 
