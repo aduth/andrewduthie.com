@@ -11,12 +11,11 @@
 @import 'modules/_elements.less';
 @import' modules/_helpers.less';
 
+// Layouts
+@import 'layouts/_page.less';
+
 // Partials
 @import 'partials/_header.less';
-
-.main-content {
-  margin-top: 4em;
-}
 
 .blog-post {
   position: relative;
@@ -147,22 +146,10 @@
   vertical-align: bottom;
 }
 
-.copyright {
-  background-color: lighten(@header-background, 10%);
-  border-top: 3px solid @header-background;
-  margin-top: 1em;
-  padding: 0.6em;
-
-  small, a {
-    color: @base-background;
-  }
-
-  a {
-    border-bottom-color: @base-background;
-  }
-}
-
 @media screen and (max-width: @break-medium) {
+  // Layouts
+  @import 'layouts/_page@850.less';
+
   // Partials
   @import 'partials/_header@850.less';
 
@@ -180,6 +167,9 @@
 
   // Visual
   @import 'modules/_elements@600.less';
+
+  // Layouts
+  @import 'layouts/_page@600.less';
 
   // Partials
   @import 'partials/_header@600.less';
