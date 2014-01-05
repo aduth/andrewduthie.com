@@ -10,13 +10,13 @@ module.exports = function(grunt) {
       privateKey: grunt.file.read(homePath + '/.ssh/id_rsa')
     },
 
-    sass: {
+    less: {
       dist: {
         files: {
-          'public/css/main.css': ['public/css/sass/main.scss']
+          'public/css/main.css': ['public/css/less/main.less']
         },
         options: {
-          style: 'compressed'
+          compress: true
         }
       }
     },
@@ -28,9 +28,9 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      sass: {
-        files: ['public/css/sass/*'],
-        tasks: ['sass', 'shell:generate']
+      less: {
+        files: ['public/css/less/*'],
+        tasks: ['less', 'shell:generate']
       },
 
       blog: {
@@ -94,14 +94,14 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-ssh');
 
-  grunt.registerTask('default', ['sass']);
+  grunt.registerTask('default', ['less']);
   grunt.registerTask('dev', ['default', 'watch']);
   grunt.registerTask('deploy', ['shell:generate', 'compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
 };
