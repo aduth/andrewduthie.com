@@ -1,0 +1,89 @@
+.intro {
+  background-color: @header-background;
+  border-bottom: 8px solid lighten(@header-background, 10%);
+  width: 100%;
+  overflow: auto;
+}
+
+.container.about-me {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.about-me {
+  padding-left: 135px;
+  position: relative;
+
+  .headshot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 135px;
+    height: 135px;
+
+    img {
+      border-radius: 67.5px;
+      border: 8px solid #3A4E59;
+    }
+  }
+
+  h1 {
+    color: @base-background;
+    line-height: 1;
+    font-size: 4em;
+    margin: 0;
+    margin-left: 0.25em;
+  }
+
+  p {
+    margin: 0;
+    margin-left: 1em;
+    color: mix(@header-background, @base-background, 25%);
+  }
+}
+
+.me-links {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0;
+
+  a {
+    margin-left: 14px;
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    color: @base-background;
+    border: none;
+    opacity: 0.5;
+    .transition(0.2s opacity);
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:before {
+      font-size: 26px;
+      line-height: 64px;
+      font-family: 'Icomoon';
+      speak: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    &.rss:before {
+      content: '';
+    }
+
+    &.github:before {
+      content: '';
+    }
+
+    &.twitter:before {
+      content: '';
+    }
+
+    &.linkedin:before {
+      content: '';
+    }
+  }
+}
