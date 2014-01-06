@@ -11,49 +11,51 @@
   <title>{{ title }} | AndrewDuthie.com</title>
 </head>
 <body>
-  <header class="intro">
-    <div class="post-header clearfix">
-      <div class="return-home">
-        <a href="/"><i class="headshot-mini"></i> Home</a>
-      </div>
-      {{> me-links }}
+
+<header class="intro">
+  <div class="post-header clearfix">
+    <div class="return-home">
+      <a href="/"><i class="headshot-mini"></i> Home</a>
     </div>
-  </header>
-
-  <div class="container main-content">
-    <article class="blog-post clearfix" itemscope itemtype="http://schema.org/BlogPosting">
-      <header class="blog-title">
-        <h1 itemprop="name"><a href="/post/{{ slug }}/">{{ title }}</a></h1>
-        <p class="blog-meta">
-          <span class="meta-text">
-            <time pubdate="pubdate" datetime="{{ formatDate date "%FT%T%z" }}" itemprop="datePublished">
-              {{ formatDate date "%b %e, %Y" }}
-            </time>
-            <span class="separator"></span>
-            <a href="/post/{{ slug }}/#disqus_thread">Discuss</a>
-          </span>
-        </p>
-      </header>
-      <div class="blog-body" itemprop="articleBody">
-        {{# markdown }}
-        {{> body }}
-        {{/ markdown }}
-      </div>
-    </article>
-
-    <a name="disqus_thread"></a>
-    <div id="disqus_thread"></div>
-    <script type="text/javascript">
-    (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://andrewduthie.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-    </script>
+    {{> me-links }}
   </div>
+</header>
 
-  {{> footer }}
+<div class="container main-content">
+  <article class="blog-post clearfix" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="blog-title">
+      <h1 itemprop="name"><a href="/post/{{ slug }}/">{{ title }}</a></h1>
+      <p class="blog-meta">
+        <span class="meta-text">
+          <time pubdate="pubdate" datetime="{{ formatDate date "%FT%T%z" }}" itemprop="datePublished">
+            {{ formatDate date "%b %e, %Y" }}
+          </time>
+          <span class="separator"></span>
+          <a href="/post/{{ slug }}/#disqus_thread">Discuss</a>
+        </span>
+      </p>
+    </header>
+    <div class="blog-body" itemprop="articleBody">
+      {{# markdown }}
+      {{> body }}
+      {{/ markdown }}
+    </div>
+  </article>
 
-  {{> javascripts }}
+  <a name="disqus_thread"></a>
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://andrewduthie.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+</div>
+
+{{> footer }}
+
+{{> javascripts }}
+
 </body>
 </html>
