@@ -2,13 +2,22 @@ module.exports = function(grunt) {
   var homePath = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
 
   grunt.initConfig({
+    //---------------------------
+    // Configuration
+    //---------------------------
+
     siteConfig: grunt.file.readJSON('config.json'),
+
     remote: {
       host: 'andrewduthie.com',
       username: 'deploy',
       sitePath: '/home/deploy/andrewduthie.com',
       privateKey: grunt.file.read(homePath + '/.ssh/id_rsa')
     },
+
+    //---------------------------
+    // Tasks
+    //---------------------------
 
     less: {
       dist: {
@@ -94,12 +103,20 @@ module.exports = function(grunt) {
     }
   });
 
+  //---------------------------
+  // Load module tasks
+  //---------------------------
+
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-ssh');
+
+  //---------------------------
+  // Register tasks
+  //---------------------------
 
   grunt.registerTask('default', ['less']);
   grunt.registerTask('dev', ['default', 'watch']);
