@@ -27,7 +27,7 @@ setInterval(function() {
 
 If you run this in current versions of Chrome, Safari, Internet Explorer, or Node.js, you'll notice that the interval execution grows increasingly out of sync with the original `setInterval` function call.
 
-![setInterval increasingly grows out of sync](/img/post/setinterval/setInterval.png)
+![setInterval increasingly grows out of sync](/assets/img/post/setinterval/setInterval.png)
 
 In my testing, I've found that only Firefox attempts to keep the interval execution in sync.
 
@@ -79,6 +79,6 @@ setCorrectingInterval(function() {
 
 As can be seen in the image below, the number of milliseconds elapsed does not continuously increase, but instead aims to occur as closely as possible to the intended once-per-second schedule.
 
-![setCorrectingInterval adjusts to stay in sync](/img/post/setinterval/setCorrectingInterval.png)
+![setCorrectingInterval adjusts to stay in sync](/assets/img/post/setinterval/setCorrectingInterval.png)
 
 _If you find this useful, I've created a more full-featured version, which includes a matching `clearCorrectingInterval` and adds the option to pass arguments ([refer to setInterval's method signature for more information](https://developer.mozilla.org/en-US/docs/Web/API/window.setInterval)). You can read more about it, including download instructions, [on the GitHub repository](https://github.com/aduth/correctingInterval)._
