@@ -48,9 +48,13 @@ module.exports = function(grunt) {
       },
       posts: {
         options: {
+          plugins: ['assemble-contrib-permalinks', 'other/plugins/*'],
           ext: '.html',
           engine: 'handlebars',
-          layout: 'post.hbs'
+          layout: 'post.hbs',
+          permalinks: {
+            structure: ':basename/index.html'
+          }
         },
         files: {
           'output/post/': ['content/post/*.md']
