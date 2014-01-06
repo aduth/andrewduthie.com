@@ -1,29 +1,9 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
-    <meta name="viewport" content="width=device-width">
+    {{> head }}
 
-    <!-- SEO -->
-    <meta name="description" content="<% content 'description' %>">
-
-    <!-- Open Graph -->
-    <meta property="og:site_name" content="AndrewDuthie.com">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:image" content="http://www.andrewduthie.com/img/andrew.png">
-    <% content 'open-graph' %>
-
-    <!--[if IE]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <script src="http://use.edgefonts.net/lusitana;open-sans:n3.js"></script>
-    <link rel="stylesheet" href="<%= helpers.fileHash('/css/main.css', { root: './public/' }) %>">
-    <link rel="alternate" href="/feed.xml" type="application/atom+xml" title="AndrewDuthie.com Blog (Atom)">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-    <title><% content 'title' %> | AndrewDuthie.com</title>
+    <title>{{ default title Home }} | AndrewDuthie.com</title>
 </head>
 <body>
 
