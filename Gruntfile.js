@@ -23,34 +23,34 @@ module.exports = function(grunt) {
       options: {
         flatten: true,
         assets: 'output/assets/',
-        partials: 'templates/partials/*.swig',
+        partials: 'templates/partials/*.hbs',
         layoutdir: 'templates/layouts',
-        layout: 'master.swig'
+        layout: 'master.hbs'
       },
       home: {
         options: {
           ext: '.html',
-          engine: 'swig'
+          engine: 'handlebars'
         },
         files: {
-          'output/': ['templates/pages/index.swig']
+          'output/': ['templates/pages/index.hbs']
         }
       },
       feed: {
         options: {
           ext: '.xml',
-          engine: 'swig',
+          engine: 'handlebars',
           layout: 'atom.xml'
         },
         files: {
-          'output': ['templates/pages/feed.swig']
+          'output': ['templates/pages/feed.hbs']
         }
       },
       posts: {
         options: {
           ext: '.html',
-          engine: 'swig',
-          layout: 'post.swig'
+          engine: 'handlebars',
+          layout: 'post.hbs'
         },
         files: {
           'output/post/': ['content/post/*.md']
