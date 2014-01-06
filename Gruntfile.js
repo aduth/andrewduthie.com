@@ -175,7 +175,7 @@ module.exports = function(grunt) {
   // Register tasks
   //---------------------------
 
-  grunt.registerTask('generate', ['clean:pre-generate', 'less', 'copy:assets', 'assemble'])
+  grunt.registerTask('generate', ['clean:pre-generate', 'less', 'copy:assets', 'assemble']);
   grunt.registerTask('default', ['generate']);
   grunt.registerTask('dev', ['default', 'watch']);
   grunt.registerTask('deploy', ['shell:generate', 'compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
