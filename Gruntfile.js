@@ -59,6 +59,15 @@ module.exports = function(grunt) {
       }
     },
 
+    copy: {
+      assets: {
+        expand: true,
+        cwd: 'public/assets/',
+        src: '**',
+        dest: 'output/assets/'
+      }
+    },
+
     less: {
       dist: {
         files: {
@@ -139,6 +148,7 @@ module.exports = function(grunt) {
     },
 
     clean: {
+      'pre-generate': ['output/*'],
       'post-deploy': ['output.tar.gz']
     }
   });
@@ -151,6 +161,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-ssh');
   grunt.loadNpmTasks('assemble');
@@ -159,7 +170,8 @@ module.exports = function(grunt) {
   // Register tasks
   //---------------------------
 
-  grunt.registerTask('default', ['assemble']);
+  grunt.registerTask('generate', ['clean:pre-generate', 'copy:assets', 'assemble'])
+  grunt.registerTask('default', ['generate']);
   grunt.registerTask('dev', ['default', 'watch']);
   grunt.registerTask('deploy', ['shell:generate', 'compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
 };
