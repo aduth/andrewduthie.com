@@ -19,6 +19,45 @@ module.exports = function(grunt) {
     // Tasks
     //---------------------------
 
+    assemble: {
+      options: {
+        flatten: true,
+        assets: 'output/assets/',
+        partials: 'templates/partials/*.hbs',
+        layoutdir: 'templates/layouts',
+        layout: 'master.hbs'
+      },
+      home: {
+        options: {
+          ext: '.html',
+          engine: 'handlebars'
+        },
+        files: {
+          'output/': ['templates/pages/index.hbs']
+        }
+      },
+      feed: {
+        options: {
+          ext: '.xml',
+          engine: 'handlebars',
+          layout: 'atom.xml'
+        },
+        files: {
+          'output': ['templates/pages/feed.hbs']
+        }
+      },
+      posts: {
+        options: {
+          ext: '.html',
+          engine: 'handlebars',
+          layout: 'post.hbs'
+        },
+        files: {
+          'output/post/': ['content/post/*.md']
+        }
+      }
+    },
+
     less: {
       dist: {
         files: {
@@ -113,12 +152,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-ssh');
+  grunt.loadNpmTasks('assemble');
 
   //---------------------------
   // Register tasks
   //---------------------------
 
-  grunt.registerTask('default', ['less']);
+  grunt.registerTask('default', ['assemble']);
   grunt.registerTask('dev', ['default', 'watch']);
   grunt.registerTask('deploy', ['shell:generate', 'compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
 };
