@@ -40,7 +40,7 @@ module.exports = function(grunt) {
         options: {
           ext: '.xml',
           engine: 'handlebars',
-          layout: 'atom.xml'
+          layout: 'atom.hbs'
         },
         files: {
           'output': ['templates/pages/feed.hbs']
