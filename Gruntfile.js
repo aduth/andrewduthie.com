@@ -30,7 +30,12 @@ module.exports = function(grunt) {
       home: {
         options: {
           helpers: ['helper-compose'],
-          ext: '.html'
+          ext: '.html',
+          compose: {
+            compare: function(a, b) {
+              return b.context.date - a.context.date;
+            }
+          }
         },
         files: {
           'output/': ['templates/pages/index.hbs']
