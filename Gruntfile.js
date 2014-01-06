@@ -29,8 +29,7 @@ module.exports = function(grunt) {
       },
       home: {
         options: {
-          ext: '.html',
-          engine: 'handlebars'
+          ext: '.html'
         },
         files: {
           'output/': ['templates/pages/index.hbs']
@@ -39,7 +38,6 @@ module.exports = function(grunt) {
       feed: {
         options: {
           ext: '.xml',
-          engine: 'handlebars',
           layout: 'atom.hbs'
         },
         files: {
@@ -50,7 +48,6 @@ module.exports = function(grunt) {
         options: {
           plugins: ['assemble-contrib-permalinks', 'other/plugins/*'],
           ext: '.html',
-          engine: 'handlebars',
           layout: 'post.hbs',
           permalinks: {
             structure: ':basename/index.html'
