@@ -1,6 +1,5 @@
 ---
 title: Adding Structure to Your JavaScript Projects With RequireJS
-template: post
 date: 2013-01-15 00:00:00 -5
 description: A look at RequireJS for JavaScript module loading and dependency management
 slug: requirejs

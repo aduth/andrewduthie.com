@@ -1,6 +1,5 @@
 ---
 title: Creating a self-correcting alternative to JavaScript's setInterval
-template: post
 date: 2013-12-31 00:00:00 -5
 description: JavaScript's setInterval and setTimeout functions suffer from latency caused by JavaScript's single-threaded nature, so let's create a self-correcting alternative.
 slug: a-self-correcting-setinterval-alternative

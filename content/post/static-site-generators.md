@@ -1,6 +1,5 @@
 ---
 title: Static Site Generators
-template: post
 date: 2013-01-03 00:00:00 -5
 description: An overview of static site generators, including purpose, benefits, and popular options.
 slug: static-site-generators
