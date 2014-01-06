@@ -71,7 +71,7 @@ module.exports = function(grunt) {
     less: {
       dist: {
         files: {
-          'public/css/main.css': ['public/css/less/main.less']
+          'public/assets/css/main.css': ['public/assets/css/less/main.less']
         },
         options: {
           compress: true
@@ -89,6 +89,11 @@ module.exports = function(grunt) {
       less: {
         files: ['public/css/less/**/*.less'],
         tasks: ['less', 'shell:generate']
+      },
+
+      site: {
+        files: ['public/css/less/**/*.less', 'templates/**/*.hbs'],
+        tasks: ['generate']
       },
 
       blog: {
@@ -170,7 +175,7 @@ module.exports = function(grunt) {
   // Register tasks
   //---------------------------
 
-  grunt.registerTask('generate', ['clean:pre-generate', 'copy:assets', 'assemble'])
+  grunt.registerTask('generate', ['clean:pre-generate', 'less', 'copy:assets', 'assemble'])
   grunt.registerTask('default', ['generate']);
   grunt.registerTask('dev', ['default', 'watch']);
   grunt.registerTask('deploy', ['shell:generate', 'compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
