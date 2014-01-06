@@ -1,23 +1,34 @@
 <!doctype html>
 <html>
 <head>
-    {{> head }}
+  {{> head }}
+  <meta property="og:title" content="Andrew Duthie">
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content="http://www.andrewduthie.com/">
+  <meta property="profile:first_name" content="Andrew">
+  <meta property="profile:last_name" content="Duthie">
+  <meta property="profile:gender" content="male">
 
-    <title>{{ default title Home }} | AndrewDuthie.com</title>
+  <title>{{ default title "Home" }} | AndrewDuthie.com</title>
 </head>
 <body>
 
 <header class="intro">
-    <% content 'header' %>
+  <div class="container about-me" itemscope itemtype="http://schema.org/Person">
+    <span class="headshot">
+      <img src="/assets/img/andrew.png" alt="Andrew Duthie" width="135" height="135" itemprop="image">
+    </span>
+    <h1 itemprop="name">Andrew Duthie</h1>
+    {{> me-links }}
+    <p itemprop="description"><span itemprop="jobTitle">Developer and modern web enthusiast</span>. Passionate about learning the newest and greatest in front-end web development and open source. This blog serves as a way for me to share my thoughts and findings on the development industry and lifestyle.</p>
+  </div>
 </header>
 
 <div class="container main-content">
-    <% content 'main' %>
+  {{> body }}
 </div>
 
-<footer class="copyright">
-    <small>Copyright &copy; 2012-<%= new Date().getFullYear() %> Andrew Duthie. Unless otherwise noted, content is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.</small>
-</footer>
+{{> footer }}
 
 <script>
 // Google Analytics

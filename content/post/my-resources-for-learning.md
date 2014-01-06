@@ -3,6 +3,7 @@ title: My Resources for Learning
 template: post
 date: 2012-12-28 00:00:00 -5
 description: To be a resourceful developer, it's important to keep up with new trends and current best practices to be applied in our own projects. In this article, I share my current sources of useful information.
+slug: my-resources-for-learning
 ---
 
 To be a resourceful developer, it's important to keep up with new trends and current best practices to be applied in our own projects. Below, I share my current resources I use to find new projects, ideas, and discussions.

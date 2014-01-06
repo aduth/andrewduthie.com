@@ -29,6 +29,7 @@ module.exports = function(grunt) {
       },
       home: {
         options: {
+          helpers: ['helper-compose'],
           ext: '.html'
         },
         files: {

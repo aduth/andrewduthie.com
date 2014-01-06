@@ -3,6 +3,7 @@ title: Adding Structure to Your JavaScript Projects With RequireJS
 template: post
 date: 2013-01-15 00:00:00 -5
 description: A look at RequireJS for JavaScript module loading and dependency management
+slug: requirejs
 ---
 
 [RequireJS](http://requirejs.org/) is a JavaScript utility for module loading and dependency management. It enables you to keep independent modules in separate files, and automatically loads the defined dependencies between them. This gives the notion of an "import" and, in theory, leads to more maintainable JavaScript.
@@ -72,7 +73,7 @@ function(dinner) {
 });
 ```
 
-To load other modules as dependencies, pass an array as the first parameter with a series of modules to load. In the main script, loading 'dinner' will call the _dinner.js_ file, which returns an object containing the `totalCalories` property. Since our meat and potato modules do not depend on anything else, we can omit the first parameter. In the main script, I use `require` because I want to depend on modules, but I do not want to have main itself be used as a dependency elsewhere. Use the `define` method instead when defining a module. By default, the module name takes the name file minus the extension, so you should only define a single module per file. 
+To load other modules as dependencies, pass an array as the first parameter with a series of modules to load. In the main script, loading 'dinner' will call the _dinner.js_ file, which returns an object containing the `totalCalories` property. Since our meat and potato modules do not depend on anything else, we can omit the first parameter. In the main script, I use `require` because I want to depend on modules, but I do not want to have main itself be used as a dependency elsewhere. Use the `define` method instead when defining a module. By default, the module name takes the name file minus the extension, so you should only define a single module per file.
 
 There are several ways to call the `define` and `require` methods, including the option to specify a custom module name. To learn more, read the [API documentation for define](http://requirejs.org/docs/api.html#define).
 
