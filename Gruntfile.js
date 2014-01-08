@@ -85,26 +85,15 @@ module.exports = function(grunt) {
       }
     },
 
-    shell: {
-      generate: {
-        command: 'node build.js'
-      }
-    },
-
     watch: {
       less: {
         files: ['public/css/less/**/*.less'],
-        tasks: ['less', 'shell:generate']
+        tasks: ['less']
       },
 
       site: {
         files: ['public/css/less/**/*.less', 'templates/**/*.hbs'],
         tasks: ['generate']
-      },
-
-      blog: {
-        files: ['post/*'],
-        tasks: ['shell:generate']
       }
     },
 
@@ -173,7 +162,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-ssh');
   grunt.loadNpmTasks('assemble');
 
@@ -184,5 +172,5 @@ module.exports = function(grunt) {
   grunt.registerTask('generate', ['clean:pre-generate', 'less', 'copy:assets', 'assemble']);
   grunt.registerTask('default', ['generate']);
   grunt.registerTask('dev', ['default', 'watch']);
-  grunt.registerTask('deploy', ['shell:generate', 'compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
+  grunt.registerTask('deploy', ['generate', 'compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
 };

@@ -1,17 +1,3 @@
 {
-  "contents": {
-    "paths": [ "./post" ],
-    "extensions": [ ".md", ".markdown" ]
-  },
-  "templates": {
-    "path": "./templates",
-    "extension": "html"
-  },
-  "assets": {
-    "path": "./public",
-    "parseExtensions": [ ".html", ".xml" ],
-    "parseExclude": []
-  },
-  "engine": "ect",
-  "output": "/Users/Andrew/Dropbox/Projects/andrewduthie.com/output"
+  "output": "./output"
 }
