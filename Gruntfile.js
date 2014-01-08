@@ -56,7 +56,7 @@ module.exports = function(grunt) {
           ext: '.html',
           layout: 'post.hbs',
           permalinks: {
-            structure: ':basename/index.html'
+            structure: ':slug/index.html'
           }
         },
         files: {
