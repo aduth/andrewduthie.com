@@ -81,9 +81,9 @@ module.exports = function(grunt) {
     copy: {
       assets: {
         expand: true,
-        cwd: 'public/assets/',
+        cwd: 'public/',
         src: '**',
-        dest: 'output/assets/'
+        dest: 'output/'
       }
     },
 
