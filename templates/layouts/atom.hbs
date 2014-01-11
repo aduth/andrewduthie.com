@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<%
-  url = "http://andrewduthie.com"
-  posts = site.post.sort((a, b) -> b.meta.date - a.meta.date)
-%>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>AndrewDuthie.com</title>
   <subtitle>Latest blog entries</subtitle>
-  <link href="<%= url %>"/>
-  <link rel="self" href="<%= url %>/feed.xml"/>
-  <updated><%= posts[0].meta.date.toISOString() %></updated>
+  <link href="http://www.andrewduthie.com/"/>
+  <link rel="self" href="http://www.andrewduthie.com/feed.xml"/>
+  <updated>{{ now "%FT%T%z" }}</updated>
   <author>
     <name>Andrew Duthie</name>
     <uri>http://andrewduthie.com</uri>
@@ -16,16 +12,5 @@
   </author>
   <rights>Copyright (c) 2012, Andrew Duthie</rights>
   <id>http://www.andrewduthie.com/</id>
-  <% for post in posts: %>
-  <% url = "#{url}/post/#{post.name}/" %>
-  <entry>
-    <title><%= post.meta.title %></title>
-    <link href="<%= url %>"/>
-    <id><%= url %></id>
-    <updated><%= post.meta.date.toISOString() %></updated>
-    <content type="html">
-      <%= post.content %>
-    </content>
-  </entry>
-  <% end %>
+  {{> body }}
 </feed>

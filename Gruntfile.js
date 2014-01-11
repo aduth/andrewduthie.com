@@ -25,12 +25,13 @@ module.exports = function(grunt) {
         assets: 'output/assets/',
         partials: 'templates/partials/*.hbs',
         layoutdir: 'templates/layouts',
-        layout: 'master.hbs'
+        layout: 'master.hbs',
+        helpers: ['./helpers/**/*.js']
       },
       home: {
         options: {
-          helpers: ['helper-compose'],
           ext: '.html',
+          helpers: ['helper-compose', './helpers/**/*.js'],
           compose: {
             compare: function(a, b) {
               return b.context.date - a.context.date;
@@ -44,7 +45,16 @@ module.exports = function(grunt) {
       feed: {
         options: {
           ext: '.xml',
-          layout: 'atom.hbs'
+          layout: 'atom.hbs',
+          helpers: ['helper-compose', './helpers/**/*.js'],
+          compose: {
+            compare: function(a, b) {
+              return b.context.date - a.context.date;
+            }
+          },
+          marked: {
+            sanitize: true
+          }
         },
         files: {
           'output': ['templates/pages/feed.hbs']
