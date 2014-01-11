@@ -1,7 +1,7 @@
 <entry>
   <title>{{ title }}</title>
-  <link href="http://www.andrewduthie.com/post/{{ slug }}/"/>
-  <id>http://www.andrewduthie.com/post/{{ slug }}/</id>
+  <link href="{{ site.url }}/post/{{ slug }}/"/>
+  <id>http://andrewduthie.com/post/{{ slug }}/</id>
   <updated>{{ formatDate date "%FT%T%z" }}</updated>
   <content type="html">
     {{# sanitize }}

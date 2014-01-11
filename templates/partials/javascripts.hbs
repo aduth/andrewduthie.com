@@ -1,6 +1,6 @@
 <script>
 // Google Analytics
-var _gaq = [['_setAccount', 'UA-37326155-1'], ['_trackPageview']];
+var _gaq = [['_setAccount', '{{ site.ga.account }}'], ['_trackPageview']];
 (function(d, t) {
     var g = d.createElement(t),
         s = d.getElementsByTagName(t)[0];
@@ -12,7 +12,7 @@ var _gaq = [['_setAccount', 'UA-37326155-1'], ['_trackPageview']];
 (function () {
     var s = document.createElement('script'); s.async = true;
     s.type = 'text/javascript';
-    s.src = 'http://andrewduthie.disqus.com/count.js';
+    s.src = '{{ site.disqus.url }}/count.js';
     (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
 }());
 </script>

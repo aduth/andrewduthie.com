@@ -28,7 +28,8 @@ module.exports = function(grunt) {
         partials: 'templates/partials/*.hbs',
         layoutdir: 'templates/layouts',
         layout: 'master.hbs',
-        helpers: ['./helpers/**/*.js']
+        helpers: ['./helpers/**/*.js'],
+        data: 'data/*.json'
       },
       home: {
         options: {
