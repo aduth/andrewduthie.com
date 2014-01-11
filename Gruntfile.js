@@ -6,10 +6,6 @@ module.exports = function(grunt) {
     // Configuration
     //---------------------------
 
-    site: {
-      output: './output'
-    },
-
     remote: {
       host: 'andrewduthie.com',
       username: 'deploy',
@@ -53,7 +49,7 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          'output': ['templates/pages/feed.hbs']
+          'output/': ['templates/pages/feed.hbs']
         }
       },
       posts: {
@@ -111,7 +107,7 @@ module.exports = function(grunt) {
         mode: 'tgz',
         files: [{
           expand: true,
-          cwd: '<%= site.output %>/',
+          cwd: process.cwd() + '/output',
           src: ['**'],
           dest: './'
         }]
@@ -128,7 +124,7 @@ module.exports = function(grunt) {
           host: '<%= remote.host %>',
           username: '<%= remote.username %>',
           privateKey: '<%= remote.privateKey %>',
-          srcBasePath: '<%= site.output %>/'
+          srcBasePath: 'output/'
         }
       }
     },
