@@ -1,21 +1,3 @@
 {{# compose 'content/post/*.md' }}
-  <article class="blog-post clearfix" itemscope itemtype="http://schema.org/BlogPosting">
-    <header class="blog-title">
-      <h1 itemprop="name"><a href="/post/{{ slug }}/">{{ title }}</a></h1>
-      <p class="blog-meta">
-        <span class="meta-text">
-          <time pubdate="pubdate" datetime="{{ formatDate date "%FT%T%z" }}" itemprop="datePublished">
-            {{ formatDate date "%b %e, %Y" }}
-          </time>
-          <span class="separator"></span>
-          <a href="/post/{{ slug }}/#disqus_thread">Discuss</a>
-        </span>
-      </p>
-    </header>
-    <div class="blog-body" itemprop="articleBody">
-      {{# markdown }}
-      {{{ this.content }}}
-      {{/ markdown }}
-    </div>
-  </article>
+  {{> post }}
 {{/ compose }}
