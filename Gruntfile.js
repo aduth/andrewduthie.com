@@ -43,10 +43,7 @@ module.exports = function(grunt) {
       feed: {
         options: {
           ext: '.xml',
-          layout: 'atom.hbs',
-          marked: {
-            sanitize: true
-          }
+          layout: 'atom.hbs'
         },
         files: {
           'output/': ['templates/pages/feed.hbs']
