@@ -6,7 +6,9 @@ module.exports = function(grunt) {
     // Configuration
     //---------------------------
 
-    siteConfig: grunt.file.readJSON('config.json'),
+    site: {
+      output: './output'
+    },
 
     remote: {
       host: 'andrewduthie.com',
@@ -115,7 +117,7 @@ module.exports = function(grunt) {
         mode: 'tgz',
         files: [{
           expand: true,
-          cwd: '<%= siteConfig.output %>/',
+          cwd: '<%= site.output %>/',
           src: ['**'],
           dest: './'
         }]
@@ -132,7 +134,7 @@ module.exports = function(grunt) {
           host: '<%= remote.host %>',
           username: '<%= remote.username %>',
           privateKey: '<%= remote.privateKey %>',
-          srcBasePath: '<%= siteConfig.output %>/'
+          srcBasePath: '<%= site.output %>/'
         }
       }
     },
