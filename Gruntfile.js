@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         layoutdir: 'templates/layouts',
         layout: 'master.hbs',
         data: 'data/*.json',
-        helpers: ['helper-compose', './helpers/**/*.js'],
+        helpers: ['helper-compose', 'handlebars-helper-filehash', './helpers/**/*.js'],
         compose: {
           compare: function(a, b) {
             return b.context.date - a.context.date;
