@@ -87,12 +87,17 @@ module.exports = function(grunt) {
     watch: {
       less: {
         files: ['public/css/less/**/*.less'],
-        tasks: ['less']
+        tasks: ['less', 'copy:assets']
       },
 
       site: {
-        files: ['public/css/less/**/*.less', 'templates/**/*.hbs'],
-        tasks: ['generate']
+        files: ['templates/**/*.hbs'],
+        tasks: ['assemble']
+      },
+
+      blog: {
+        files: ['content/post/*.md'],
+        tasks: ['assemble:posts']
       }
     },
 
