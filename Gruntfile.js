@@ -64,6 +64,16 @@ module.exports = function(grunt) {
       }
     },
 
+    connect: {
+      server: {
+        options: {
+          port: 0,
+          base: 'output',
+          open: true
+        }
+      }
+    },
+
     copy: {
       assets: {
         expand: true,
@@ -161,6 +171,7 @@ module.exports = function(grunt) {
   // Load module tasks
   //---------------------------
 
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-compress');
@@ -175,6 +186,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('generate', ['clean:pre-generate', 'less', 'copy:assets', 'assemble']);
   grunt.registerTask('default', ['generate']);
-  grunt.registerTask('dev', ['default', 'watch']);
+  grunt.registerTask('dev', ['default', 'connect', 'watch']);
   grunt.registerTask('deploy', ['generate', 'compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
 };
