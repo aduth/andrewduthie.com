@@ -2,7 +2,7 @@
   <title>{{ title }}</title>
   <link href="{{ site.url }}/post/{{ slug }}/"/>
   <id>http://andrewduthie.com/post/{{ slug }}/</id>
-  <updated>{{ formatDate date "%FT%T%z" }}</updated>
+  <updated>{{ moment date format=null }}</updated>
   <content type="html">
     {{# sanitize }}
     {{# markdown }}
