@@ -111,59 +111,8 @@ module.exports = function(grunt) {
       }
     },
 
-    compress: {
-      deploy: {
-        options: {
-          archive: 'output.tar.gz'
-        },
-        mode: 'tgz',
-        files: [{
-          expand: true,
-          cwd: process.cwd() + '/output',
-          src: ['**'],
-          dest: './'
-        }]
-      }
-    },
-
-    sftp: {
-      deploy: {
-        files: {
-          './': 'output.tar.gz'
-        },
-        options: {
-          path: '<%= remote.sitePath %>/',
-          host: '<%= remote.host %>',
-          username: '<%= remote.username %>',
-          privateKey: '<%= remote.privateKey %>',
-          srcBasePath: 'output/'
-        }
-      }
-    },
-
-    sshexec: {
-      decompress: {
-        command: 'tar -xzf <%= remote.sitePath %>/output.tar.gz -C <%= remote.sitePath %>/public_html/',
-        options: {
-          host: '<%= remote.host %>',
-          username: '<%= remote.username %>',
-          privateKey: '<%= remote.privateKey %>'
-        }
-      },
-
-      removePackage: {
-        command: 'rm <%= remote.sitePath %>/output.tar.gz',
-        options: {
-          host: '<%= remote.host %>',
-          username: '<%= remote.username %>',
-          privateKey: '<%= remote.privateKey %>'
-        }
-      }
-    },
-
     clean: {
-      'pre-generate': ['output/*'],
-      'post-deploy': ['output.tar.gz']
+      'pre-generate': ['output/*']
     },
 
     'gh-pages': {
@@ -181,10 +130,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-ssh');
   grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('assemble');
 
@@ -195,5 +142,5 @@ module.exports = function(grunt) {
   grunt.registerTask('generate', ['clean:pre-generate', 'less', 'copy:assets', 'assemble']);
   grunt.registerTask('default', ['generate']);
   grunt.registerTask('dev', ['default', 'connect', 'watch']);
-  grunt.registerTask('deploy', ['generate', 'compress', 'sftp', 'sshexec:decompress', 'sshexec:removePackage', 'clean:post-deploy']);
+  grunt.registerTask('deploy', ['generate', 'gh-pages']);
 };
