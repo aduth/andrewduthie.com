@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+<meta name="viewport" content="width=device-width">
+
+<!-- SEO -->
+<meta name="description" content="JavaScript&#x27;s setInterval and setTimeout functions suffer from latency caused by JavaScript&#x27;s single-threaded nature, so let&#x27;s create a self-correcting alternative.">
+
+<!-- Open Graph -->
+<meta property="og:site_name" content="AndrewDuthie.com">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://www.andrewduthie.com/assets/img/andrew.png">
+
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script src="http://use.edgefonts.net/lusitana;open-sans:n3.js"></script>
+<link rel="stylesheet" href="/assets/css/main.css?bcfcc8f9a6129a2a0120e469a58c170b">
+<link rel="alternate" href="/feed.xml" type="application/atom+xml" title="AndrewDuthie.com Blog (Atom)">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <meta property="og:title" content="Creating a self-correcting alternative to JavaScript&#x27;s setInterval">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="http://www.andrewduthie.com/post//">
+  <meta property="article:published_time" content="2013-12-31T00:00:00-0005">
+  <meta property="article:author" content="http://www.andrewduthie.com/">
+
+  <link rel="prefetch" href="http://www.andrewduthie.com">
+
+  <title>Creating a self-correcting alternative to JavaScript&#x27;s setInterval | AndrewDuthie.com</title>
+</head>
+<body>
+
+<header class="intro">
+  <div class="post-header clearfix">
+    <div class="return-home">
+      <a href="/"><i class="headshot-mini"></i> Home</a>
+    </div>
+    <aside class="me-links">
+  <a class="rss" href="/feed.xml">RSS</a>
+  <a class="github" href="https://github.com/aduth" target="_blank">GitHub</a>
+  <a class="twitter" href="https://twitter.com/andrew_duthie" target="_blank">Twitter</a>
+  <a class="linkedin" href="http://linkedin.com/in/aduth" target="_blank">LinkedIn</a>
+</aside>
+  </div>
+</header>
+
+<div class="container main-content">
+  <article class="blog-post clearfix" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="blog-title">
+    <h1 itemprop="name"><a href="/post/a-self-correcting-setinterval-alternative/">Creating a self-correcting alternative to JavaScript&#x27;s setInterval</a></h1>
+    <p class="blog-meta">
+      <span class="meta-text">
+        <time pubdate="pubdate" datetime="2013-12-31T00:00:00-0005" itemprop="datePublished">
+          Dec 31, 2013
+        </time>
+        <span class="separator"></span>
+        <a href="/post/a-self-correcting-setinterval-alternative/#disqus_thread">Discuss</a>
+      </span>
+    </p>
+  </header>
+  <div class="blog-body" itemprop="articleBody">
+    <p>Recently, I&#39;ve been toying with JavaScript&#39;s <code>setInterval</code> method which, if you&#39;re unfamiliar, allows you to execute code repeatedly at a specified time interval. For example, one might create an interval which executes every second by using the following code snippet:</p>
+<pre><code class="language-javascript">setInterval(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    console.log(<span class="string">'I execute every second!'</span>);
+}, <span class="number">1000</span>);</code></pre>
+<p>Both <code>setInterval</code> and its close cousin <code>setTimeout</code> suffer from latency caused by JavaScript&#39;s single-threaded nature. While you may intend for an interval to execute every 1000 milliseconds, in reality it could take slightly longer for the function to be triggered. This is typically only a few milliseconds and therefore might appear to be a negligible problem. You might also expect that subsequent intervals would make an effort to get the code execution back on a predictable schedule. In other words, if there was 1007 milliseconds between registering the interval and the first code execution (a delay of 7 milliseconds), you could expect the next execution to occur as close to 2000 milliseconds as possible (i.e. 993 milliseconds later).</p>
+<p>Depending on your browser, however, this may not be the case. We can demonstrate this by tracking the number of milliseconds which have passed since <code>setInterval</code> was registered:</p>
+<pre><code class="language-javascript"><span class="keyword">var</span> startTime = Date.now();
+setInterval(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  console.log((Date.now() - startTime) + <span class="string">'ms elapsed'</span>);
+}, <span class="number">1000</span>);</code></pre>
+<p>If you run this in current versions of Chrome, Safari, Internet Explorer, or Node.js, you&#39;ll notice that the interval execution grows increasingly out of sync with the original <code>setInterval</code> function call.</p>
+<p><img src="/assets/img/post/setinterval/setInterval.png" alt="setInterval increasingly grows out of sync"></p>
+<p>In my testing, I&#39;ve found that only Firefox attempts to keep the interval execution in sync.</p>
+<p>Regardless of whether this is the intended behavior of <code>setInterval</code>, I needed a means by which I could execute code as closely as possible to a predictable interval. Below is my solution to this problem:</p>
+<pre><code class="language-javascript">window.setCorrectingInterval = (<span class="function"><span class="keyword">function</span><span class="params">(func, delay)</span> {</span>
+  <span class="keyword">var</span> instance = { };
+
+  <span class="function"><span class="keyword">function</span> <span class="title">tick</span><span class="params">(func, delay)</span> {</span>
+    <span class="keyword">if</span> (!instance.started) {
+      instance.func = func;
+      instance.delay = delay;
+      instance.startTime = <span class="keyword">new</span> Date().valueOf();
+      instance.target = delay;
+      instance.started = <span class="literal">true</span>;
+
+      setTimeout(tick, delay);
+    } <span class="keyword">else</span> {
+      <span class="keyword">var</span> elapsed = <span class="keyword">new</span> Date().valueOf() - instance.startTime,
+        adjust = instance.target - elapsed;
+
+      instance.func();
+      instance.target += instance.delay;
+
+      setTimeout(tick, instance.delay + adjust);
+    }
+  };
+
+  <span class="keyword">return</span> tick(func, delay);
+});</code></pre>
+<p>Including the code sample above will add a new <code>setCorrectingInterval</code> function to the <code>window</code> global that can be called using the same parameters you would normally pass to <code>setInterval</code>. Here&#39;s a detailed breakdown of what&#39;s going on in the new function:</p>
+<ul>
+<li>To track properties related to this particular interval instance, we wrap the inner <code>tick</code> function inside a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures">closure</a> construct.</li>
+<li>When the function is first called (i.e. when <code>instance.started</code> is <code>false</code>), a number of properties are stored to our <code>instance</code> object.</li>
+<li>In place of <code>setInterval</code>, we repeatedly call <code>setTimeout</code>, passing the <code>tick</code> function and an adjusted delay.</li>
+<li>The adjusted delay is calculated by tracking both the start time of the original function call and an incremented target execution time.</li>
+</ul>
+<p>To achieve the desired behavior, we can update the broken example to use <code>setCorrectingInterval</code> in place of <code>setInterval</code>.</p>
+<pre><code class="language-javascript"><span class="keyword">var</span> startTime = Date.now();
+setCorrectingInterval(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  console.log((Date.now() - startTime) + <span class="string">'ms elapsed'</span>);
+}, <span class="number">1000</span>);</code></pre>
+<p>As can be seen in the image below, the number of milliseconds elapsed does not continuously increase, but instead aims to occur as closely as possible to the intended once-per-second schedule.</p>
+<p><img src="/assets/img/post/setinterval/setCorrectingInterval.png" alt="setCorrectingInterval adjusts to stay in sync"></p>
+<p><em>If you find this useful, I&#39;ve created a more full-featured version, which includes a matching <code>clearCorrectingInterval</code> and adds the option to pass arguments (<a href="https://developer.mozilla.org/en-US/docs/Web/API/window.setInterval">refer to setInterval&#39;s method signature for more information</a>). You can read more about it, including download instructions, <a href="https://github.com/aduth/correctingInterval">on the GitHub repository</a>.</em></p>
+
+  </div>
+</article>
+  <a name="disqus_thread"></a>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://andrewduthie.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+</div>
+
+<footer class="copyright">
+  <small>Copyright &copy; 2012-2014 Andrew Duthie. Unless otherwise noted, content is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.</small>
+</footer>
+
+<script>
+// Google Analytics
+var _gaq = [['_setAccount', 'UA-37326155-1'], ['_trackPageview']];
+(function(d, t) {
+    var g = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+    g.src = '//www.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g, s);
+}(document, 'script'));
+
+// Disqus
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = 'http://andrewduthie.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+</body>
+</html>

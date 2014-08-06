@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>AndrewDuthie.com</title>
+  <subtitle>Latest blog entries</subtitle>
+  <link href="http://www.andrewduthie.com/"/>
+  <link rel="self" href="http://www.andrewduthie.com/feed.xml"/>
+  <updated>2014-08-05T21:57:45-04:00</updated>
+  <author>
+    <name>Andrew Duthie</name>
+    <uri>http://www.andrewduthie.com</uri>
+    <email>andrew@andrewduthie.com</email>
+  </author>
+  <rights>Copyright (c) 2012-2014, Andrew Duthie</rights>
+  <id>http://www.andrewduthie.com/</id>
+  
+  <entry>
+  <title>Running Grunt tasks without grunt-cli</title>
+  <link href="http://www.andrewduthie.com/post/running-grunt-tasks-without-grunt-cli/"/>
+  <id>http://andrewduthie.com/post/running-grunt-tasks-without-grunt-cli/</id>
+  <updated>2014-01-14T00:00:00-05:00</updated>
+  <content type="html">
+    
+    Grunt is a JavaScript task runner that helps automate common development tasks such as minifying and testing code. Traditionally, using Grunt is a two-step process. First you install Grunt&#39;s command-line interface (GLI) globally using npm (npm install -g grunt-cli). Next, in any project where Grunt is to be used, you must locally install Grunt and any Grunt plugins you wish to include. The command-line interface is installed separately so as to allow multiple versions of Grunt to be installed on the same machine, and acts as a simple wrapper for executing tasks through the local Grunt module.
+Once you&#39;ve installed Grunt both locally and globally, and after configuring your Gruntfile, running a task is as simple as passing a task name to Grunt&#39;s command-line interface. For example, if my Gruntfile defines a test task, I could run it by entering grunt test into my command-line. It may sometimes be necessary or handy to be able to trigger a task without the Grunt CLI, in which case you can use the following code snippet, replacing test with the task(s) of your choosing:
+node -e "require('grunt').tasks(['test']);"
+There are a few common scenarios in which using the above syntax would be preferable to running tasks through Grunt directly. Specifically, this may be a requirement in cases where another developer or system does not have Grunt installed globally.
+As an illustration, consider the scripts feature of npm. Often overlooked, the scripts section of a package.json allows a developer to define command-line scripts to be run via predefined keywords. For example, you could trigger a Grunt test task with the following configuration, to be called using npm test.
+{
+ "name": "my-package",
+ "version": "1.0.0",
+ "scripts": {
+  "test": "node -e \"require('grunt').tasks(['test']);\""
+ }
+}
+The advantage of using the command above in place of grunt test is that your test script can now be executed regardless of whether the global Grunt module is installed.
+Removing global dependencies may also help in the case of continuous integration services. Personally, I use Travis CI to run unit tests against my GitHub project commits. Up until recently, I&#39;ve used the before_script section of my .travis.yml configurations to install the global Grunt module. By running my tasks directly, I can safely omit this configuration section. Other services may not even grant you the option to configure global dependencies, so this may be your only option.
+And it&#39;s not just Grunt, either. Where possible, make an effort to eliminate the need for global dependencies in your npm scripts. Not every developer is going to be familiar with the tools that you choose to use, and removing such dependencies helps to avoid frustration caused by error messages. It may someday be possible to define global dependencies in a project&#39;s package.json, but that&#39;s not likely to be coming anytime soon.
+
+    
+  </content>
+</entry>
+
+
+
+  <entry>
+  <title>Creating a self-correcting alternative to JavaScript&#x27;s setInterval</title>
+  <link href="http://www.andrewduthie.com/post/a-self-correcting-setinterval-alternative/"/>
+  <id>http://andrewduthie.com/post/a-self-correcting-setinterval-alternative/</id>
+  <updated>2013-12-31T00:00:00-05:00</updated>
+  <content type="html">
+    
+    Recently, I&#39;ve been toying with JavaScript&#39;s setInterval method which, if you&#39;re unfamiliar, allows you to execute code repeatedly at a specified time interval. For example, one might create an interval which executes every second by using the following code snippet:
+setInterval(function() {
+    console.log('I execute every second!');
+}, 1000);
+Both setInterval and its close cousin setTimeout suffer from latency caused by JavaScript&#39;s single-threaded nature. While you may intend for an interval to execute every 1000 milliseconds, in reality it could take slightly longer for the function to be triggered. This is typically only a few milliseconds and therefore might appear to be a negligible problem. You might also expect that subsequent intervals would make an effort to get the code execution back on a predictable schedule. In other words, if there was 1007 milliseconds between registering the interval and the first code execution (a delay of 7 milliseconds), you could expect the next execution to occur as close to 2000 milliseconds as possible (i.e. 993 milliseconds later).
+Depending on your browser, however, this may not be the case. We can demonstrate this by tracking the number of milliseconds which have passed since setInterval was registered:
+var startTime = Date.now();
+setInterval(function() {
+  console.log((Date.now() - startTime) + 'ms elapsed');
+}, 1000);
+If you run this in current versions of Chrome, Safari, Internet Explorer, or Node.js, you&#39;ll notice that the interval execution grows increasingly out of sync with the original setInterval function call.
+
+In my testing, I&#39;ve found that only Firefox attempts to keep the interval execution in sync.
+Regardless of whether this is the intended behavior of setInterval, I needed a means by which I could execute code as closely as possible to a predictable interval. Below is my solution to this problem:
+window.setCorrectingInterval = (function(func, delay) {
+  var instance = { };
+
+  function tick(func, delay) {
+    if (!instance.started) {
+      instance.func = func;
+      instance.delay = delay;
+      instance.startTime = new Date().valueOf();
+      instance.target = delay;
+      instance.started = true;
+
+      setTimeout(tick, delay);
+    } else {
+      var elapsed = new Date().valueOf() - instance.startTime,
+        adjust = instance.target - elapsed;
+
+      instance.func();
+      instance.target += instance.delay;
+
+      setTimeout(tick, instance.delay + adjust);
+    }
+  };
+
+  return tick(func, delay);
+});
+Including the code sample above will add a new setCorrectingInterval function to the window global that can be called using the same parameters you would normally pass to setInterval. Here&#39;s a detailed breakdown of what&#39;s going on in the new function:
+
+To track properties related to this particular interval instance, we wrap the inner tick function inside a closure construct.
+When the function is first called (i.e. when instance.started is false), a number of properties are stored to our instance object.
+In place of setInterval, we repeatedly call setTimeout, passing the tick function and an adjusted delay.
+The adjusted delay is calculated by tracking both the start time of the original function call and an incremented target execution time.
+
+To achieve the desired behavior, we can update the broken example to use setCorrectingInterval in place of setInterval.
+var startTime = Date.now();
+setCorrectingInterval(function() {
+  console.log((Date.now() - startTime) + 'ms elapsed');
+}, 1000);
+As can be seen in the image below, the number of milliseconds elapsed does not continuously increase, but instead aims to occur as closely as possible to the intended once-per-second schedule.
+
+If you find this useful, I&#39;ve created a more full-featured version, which includes a matching clearCorrectingInterval and adds the option to pass arguments (refer to setInterval&#39;s method signature for more information). You can read more about it, including download instructions, on the GitHub repository.
+
+    
+  </content>
+</entry>
+
+
+
+  <entry>
+  <title>Adding Structure to Your JavaScript Projects With RequireJS</title>
+  <link href="http://www.andrewduthie.com/post/requirejs/"/>
+  <id>http://andrewduthie.com/post/requirejs/</id>
+  <updated>2013-01-15T00:00:00-05:00</updated>
+  <content type="html">
+    
+    RequireJS is a JavaScript utility for module loading and dependency management. It enables you to keep independent modules in separate files, and automatically loads the defined dependencies between them. This gives the notion of an &quot;import&quot; and, in theory, leads to more maintainable JavaScript.
+Modules can be thought of simply as blocks of code executed under the context of the namespace in which it is defined. By default, this is the filename without the extension. In the example below, calling define in the dinner.js script will create the dinner module. The return value of a module can be used by any other code which depends upon it.
+It is important to note that keeping the JavaScript files separated will negatively impact your page load speed. With a RequireJS workflow, you will want to use an optimization tool (r.js) during your production deployment process to concatenate and minify your code to a single, small file. You can read more about this in the &quot;Further Reading&quot; section below.
+An Example
+Let&#39;s take a look at a very simple example of RequireJS in a web application.
+Imagine we have the following project structure:
+
+index.html
+js/
+main.js
+dinner.js
+meat.js
+potatoes.js
+require.js
+
+
+
+We will want to start by adding a script tag to our main page to load the RequireJS library. We will also specify an entry point through the data-main attribute.
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My Dinner Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    Total meal calories: &lt;span id="lblCalories"&gt;&lt;/span&gt;
+
+    &lt;script data-main="js/main" src="js/require.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+This entry point will load the js/main.js script automatically. From our RequireJS scripts, we can either define a new module or use require to load dependencies without defining a new module. In either case, loading dependencies is done using the function call, as seen below in dinner.js and main.js:
+// meat.js (potatoes.js would be nearly identical)
+// Define a new module named "meat"
+define(function() {
+    return {
+        calories: 350
+    };
+});
+// dinner.js
+// Define a new module named "dinner"
+define([ 'meat', 'potatoes' ],
+function(meat, potatoes) {
+    // Do something using meat and potatoes
+    return {
+        totalCalories: meat.calories + potatoes.calories
+    };
+});
+// main.js
+// Load the dinner module
+require([ 'dinner' ],
+function(dinner) {
+    document.getElementById('lblCalories').innerHTML = dinner.totalCalories;
+});
+To load other modules as dependencies, pass an array as the first parameter with a series of modules to load. In the main script, loading &#39;dinner&#39; will call the dinner.js file, which returns an object containing the totalCalories property. Since our meat and potato modules do not depend on anything else, we can omit the first parameter. In the main script, I use require because I want to depend on modules, but I do not want to have main itself be used as a dependency elsewhere. Use the define method instead when defining a module. By default, the module name takes the name file minus the extension, so you should only define a single module per file.
+There are several ways to call the define and require methods, including the option to specify a custom module name. To learn more, read the API documentation for define.
+Further Reading
+For a more thorough walkthrough of RequireJS, read through the API documentation. For instructions on how to concatenate and minify your RequireJS projects, refer to the optimization instructions. To simplify the build process, you may find that using a tool like grunt.js can be very helpful.
+RequireJS is extensible, so there are a variety of plugins you can use to extend the capabilities of the module loader. For example, if you want to load CoffeeScript, you can use the require-cs plugin. If you use a templating library like mustache.js, you can use the  text.js plugin to load static text resources to avoid writing your templates as JavaScript strings or between &lt;script&gt; tags.
+To see how RequireJS is used in an existing project, check out my &quot;Toupée&quot; project on GitHub, which uses RequireJS with Backbone.js.
+Conclusion
+RequireJS removes the guess work from dependency management, meaning you can worry less about the order your scripts are loaded and where you define your functions. By separating your modules into separate files, you create a separation of concerns and avoid the possibility that your application&#39;s main script grows too large to manage.
+
+    
+  </content>
+</entry>
+
+
+
+  <entry>
+  <title>Static Site Generators</title>
+  <link href="http://www.andrewduthie.com/post/static-site-generators/"/>
+  <id>http://andrewduthie.com/post/static-site-generators/</id>
+  <updated>2013-01-03T00:00:00-05:00</updated>
+  <content type="html">
+    
+    As web developers, we most often work with dynamic web content. These days, it&#39;s rare to come in contact with plain old HTML files. That said, there are a growing number of tools which assist in the creation of static sites, aptly named static site generators. To cite a recent example, Kyle Rush published an article explaining how Obama&#39;s campaign team used Jekyll, arguably the most popular static site generator, to improve the performance of their $250 million fundraising platform. In this article, I will discuss the purpose of these tools, the benefits they provide, and several popular options to choose from.
+An overview
+For a simple site or blog, it is not uncommon to create a basic web application consisting of two primary components: (1) a page layout (i.e. header and footer), and (2) a small collection of database tables to manage content. There really isn&#39;t a whole lot going on here, and the whole application server + database + hosting solution can become a real pain for such a simple project. If the goal is to simply wrap written content within the context of a master layout, this is hardly the simplest solution.
+Static site generators are able to satisfy the same needs without the unnecessary complexity. As part of the build process, layouts are combined with content to generate simple HTML files. Layouts are likely to have some variation of a templating syntax, and content files can be written in Markdown or other familiar writing formats. As a result, you avoid the headache of the overhead which can accompany dynamic sites.
+Primary benefits
+
+Fast: Because the generated files are simple HTML files, they can be served directly rather than being processed by an application server.
+Affordable: There are several options to host your static sites for free. For example, you could store the files in a simple Dropbox folder, and use a service like site44 to serve them from a custom domain. You can also serve a static site directly from a GitHub repository using  these instructions. For a more sturdy hosting solution, Amazon offers their Simple Storage Service (S3) at a very affordable price for most sites.
+Simple: Most static site generators require a layout, some content, and a basic understanding of the syntax used to link them together. Jekyll uses Ruby, but you won&#39;t need to know much about Ruby in order to use it for your own sites.
+Secure: Because your site is simple HTML, there&#39;s significantly fewer security risks. As a result, you can concentrate on what really matters: the content itself.
+
+Popular Static Site Generators
+Depending on your development environment, you may want to choose from one of the popular options below:
+
+Ruby
+Jekyll: http://jekyllrb.com/
+Middleman: http://middlemanapp.com/
+
+
+Python
+Hyde: http://ringce.com/hyde
+Pelican: http://docs.getpelican.com/en/3.1.1/
+
+
+Node.js
+DocPad: http://docpad.org/docs/intro
+Wintersmith: http://jnordberg.github.com/wintersmith/
+
+
+
+Conclusion
+This blog itself is maintained using a custom static site generator. It&#39;s fairly basic, but the source code is available at the GitHub repository in case you&#39;re curious about the project structure of a simple static site. Since this is a custom generator, it may be more relevant to refer to the source of some of the many sites which use Jekyll.
+
+    
+  </content>
+</entry>
+
+
+
+  <entry>
+  <title>My Resources for Learning</title>
+  <link href="http://www.andrewduthie.com/post/my-resources-for-learning/"/>
+  <id>http://andrewduthie.com/post/my-resources-for-learning/</id>
+  <updated>2012-12-28T00:00:00-05:00</updated>
+  <content type="html">
+    
+    To be a resourceful developer, it&#39;s important to keep up with new trends and current best practices to be applied in our own projects. Below, I share my current resources I use to find new projects, ideas, and discussions.
+Blogs
+Blogs allow industry experts and other enthusiasts to share their knowledge on a topic that interests them. Many times, this is an exploration of a topic that tends to cause trouble for many developers. Other times, authors simply want to share some of their own guidelines and practices.
+Here are some of the blogs I follow:
+
+Paul Graham
+Coding Horror (Jeff Atwood)
+Sacha Greif
+CSS Tricks (Chris Coyier)
+Ian Storm Taylor
+Addy Osmani
+
+Online magazines offer articles from a variety of authors:
+
+A List Apart
+Smashing Magazine
+
+A RSS reader may come in handy for keeping track of new posts. I personally use the Feeder extension for Chrome.
+Twitter
+Blogs are usually most useful for in-depth discussions of focussed subjects. On the other hand, tweets are forced to be more concise, hence tend to be impulsive. A tweet can include an interesting tool or article the author has found intriguing.
+Blog authors and industry experts are a good starting point for people to follow. From there, Twitter will periodically recommend others with similar expertise that you may be interested in reading.
+In order to keep up with tweets, I use the Twitter Notifier extension for Chrome, which provides desktop notifications for new tweets.
+Social News (Hacker News, others)
+The idea of social news is to implement a democratic-style voting system to article submissions. Not only are the articles themselves useful for learning, but I find that the comments invite a variety of perspectives in the form of reactions, criticism, and further reading.
+It&#39;s important to find a social news site which appeals to your interests. Hacker News was originally targeted towards startup entrepreneurs, but has invited discussion of tech news and development practices more generally. If you want a more targeted discussion group, Reddit&#39;s many sub-reddits may be more relevant. Some of the more popular sub-reddits include /r/webdev/ for web development, /r/javascript/ for javascript, or /r/programming/ for programming in general.
+Presentations &amp; Screencasts
+Throughout the year, there are numerous technology conferences which developers can attend to refine their skills. While it&#39;s not always possible to attend these conferences, we&#39;re fortunate that many speakers and conference organizers upload their presentations for the general public to consume. Each of these presentations provides an expert&#39;s concise summary of a broad topic, so is helpful in attaining a minimal understanding.
+Addy Osmani recently shared a curated list of talks for front-end engineering at Smashing Magazine (link). Smashing Magazine itself recently held its own conference, of which many videos are now available online. For a more general resource, Speaker Deck and SlideShare are platforms which allows speakers to share their presentations online.
+Conclusion
+These are my own sources which I find useful. If you are aware of other useful resources and want to share, feel free to get in touch with me directly or leave a comment.
+
+    
+  </content>
+</entry>
+
+
+</feed>

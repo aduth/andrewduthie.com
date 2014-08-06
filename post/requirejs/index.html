@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+<meta name="viewport" content="width=device-width">
+
+<!-- SEO -->
+<meta name="description" content="A look at RequireJS for JavaScript module loading and dependency management">
+
+<!-- Open Graph -->
+<meta property="og:site_name" content="AndrewDuthie.com">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://www.andrewduthie.com/assets/img/andrew.png">
+
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script src="http://use.edgefonts.net/lusitana;open-sans:n3.js"></script>
+<link rel="stylesheet" href="/assets/css/main.css?bcfcc8f9a6129a2a0120e469a58c170b">
+<link rel="alternate" href="/feed.xml" type="application/atom+xml" title="AndrewDuthie.com Blog (Atom)">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <meta property="og:title" content="Adding Structure to Your JavaScript Projects With RequireJS">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="http://www.andrewduthie.com/post//">
+  <meta property="article:published_time" content="2013-01-15T00:00:00-0005">
+  <meta property="article:author" content="http://www.andrewduthie.com/">
+
+  <link rel="prefetch" href="http://www.andrewduthie.com">
+
+  <title>Adding Structure to Your JavaScript Projects With RequireJS | AndrewDuthie.com</title>
+</head>
+<body>
+
+<header class="intro">
+  <div class="post-header clearfix">
+    <div class="return-home">
+      <a href="/"><i class="headshot-mini"></i> Home</a>
+    </div>
+    <aside class="me-links">
+  <a class="rss" href="/feed.xml">RSS</a>
+  <a class="github" href="https://github.com/aduth" target="_blank">GitHub</a>
+  <a class="twitter" href="https://twitter.com/andrew_duthie" target="_blank">Twitter</a>
+  <a class="linkedin" href="http://linkedin.com/in/aduth" target="_blank">LinkedIn</a>
+</aside>
+  </div>
+</header>
+
+<div class="container main-content">
+  <article class="blog-post clearfix" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="blog-title">
+    <h1 itemprop="name"><a href="/post/requirejs/">Adding Structure to Your JavaScript Projects With RequireJS</a></h1>
+    <p class="blog-meta">
+      <span class="meta-text">
+        <time pubdate="pubdate" datetime="2013-01-15T00:00:00-0005" itemprop="datePublished">
+          Jan 15, 2013
+        </time>
+        <span class="separator"></span>
+        <a href="/post/requirejs/#disqus_thread">Discuss</a>
+      </span>
+    </p>
+  </header>
+  <div class="blog-body" itemprop="articleBody">
+    <p><a href="http://requirejs.org/">RequireJS</a> is a JavaScript utility for module loading and dependency management. It enables you to keep independent modules in separate files, and automatically loads the defined dependencies between them. This gives the notion of an &quot;import&quot; and, in theory, leads to more maintainable JavaScript.</p>
+<p>Modules can be thought of simply as blocks of code executed under the context of the namespace in which it is defined. By default, this is the filename without the extension. In the example below, calling <code>define</code> in the <em>dinner.js</em> script will create the dinner module. The return value of a module can be used by any other code which depends upon it.</p>
+<p>It is important to note that keeping the JavaScript files separated will negatively impact your page load speed. With a RequireJS workflow, you will want to use an optimization tool (r.js) during your production deployment process to concatenate and minify your code to a single, small file. You can read more about this in the &quot;Further Reading&quot; section below.</p>
+<h2 id="an-example">An Example</h2>
+<p>Let&#39;s take a look at a very simple example of RequireJS in a web application.</p>
+<p>Imagine we have the following project structure:</p>
+<ul>
+<li>index.html</li>
+<li>js/<ul>
+<li>main.js</li>
+<li>dinner.js</li>
+<li>meat.js</li>
+<li>potatoes.js</li>
+<li>require.js</li>
+</ul>
+</li>
+</ul>
+<p>We will want to start by adding a script tag to our main page to load the RequireJS library. We will also specify an entry point through the <code>data-main</code> attribute.</p>
+<pre><code class="language-xml"><span class="doctype">&lt;!doctype html&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+<span class="tag">&lt;<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">title</span>&gt;</span>My Dinner Example<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+<span class="tag">&lt;<span class="title">body</span>&gt;</span>
+    Total meal calories: <span class="tag">&lt;<span class="title">span</span> <span class="attribute">id</span>=<span class="value">"lblCalories"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span>
+
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">data-main</span>=<span class="value">"js/main"</span> <span class="attribute">src</span>=<span class="value">"js/require.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span></code></pre>
+<p>This entry point will load the <em>js/main.js</em> script automatically. From our RequireJS scripts, we can either <code>define</code> a new module or use <code>require</code> to load dependencies without defining a new module. In either case, loading dependencies is done using the function call, as seen below in <em>dinner.js</em> and <em>main.js</em>:</p>
+<pre><code class="language-javascript"><span class="comment">// meat.js (potatoes.js would be nearly identical)</span>
+<span class="comment">// Define a new module named "meat"</span>
+define(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    <span class="keyword">return</span> {
+        calories: <span class="number">350</span>
+    };
+});</code></pre>
+<pre><code class="language-javascript"><span class="comment">// dinner.js</span>
+<span class="comment">// Define a new module named "dinner"</span>
+define([ <span class="string">'meat'</span>, <span class="string">'potatoes'</span> ],
+<span class="function"><span class="keyword">function</span><span class="params">(meat, potatoes)</span> {</span>
+    <span class="comment">// Do something using meat and potatoes</span>
+    <span class="keyword">return</span> {
+        totalCalories: meat.calories + potatoes.calories
+    };
+});</code></pre>
+<pre><code class="language-javascript"><span class="comment">// main.js</span>
+<span class="comment">// Load the dinner module</span>
+require([ <span class="string">'dinner'</span> ],
+<span class="function"><span class="keyword">function</span><span class="params">(dinner)</span> {</span>
+    document.getElementById(<span class="string">'lblCalories'</span>).innerHTML = dinner.totalCalories;
+});</code></pre>
+<p>To load other modules as dependencies, pass an array as the first parameter with a series of modules to load. In the main script, loading &#39;dinner&#39; will call the <em>dinner.js</em> file, which returns an object containing the <code>totalCalories</code> property. Since our meat and potato modules do not depend on anything else, we can omit the first parameter. In the main script, I use <code>require</code> because I want to depend on modules, but I do not want to have main itself be used as a dependency elsewhere. Use the <code>define</code> method instead when defining a module. By default, the module name takes the name file minus the extension, so you should only define a single module per file.</p>
+<p>There are several ways to call the <code>define</code> and <code>require</code> methods, including the option to specify a custom module name. To learn more, read the <a href="http://requirejs.org/docs/api.html#define">API documentation for define</a>.</p>
+<h2 id="further-reading">Further Reading</h2>
+<p>For a more thorough walkthrough of RequireJS, read through the <a href="http://requirejs.org/docs/api.html">API documentation</a>. For instructions on how to concatenate and minify your RequireJS projects, refer to the <a href="http://requirejs.org/docs/optimization.html">optimization instructions</a>. To simplify the build process, you may find that using a tool like <a href="http://gruntjs.com/">grunt.js</a> can be very helpful.</p>
+<p>RequireJS is extensible, so there are a variety of plugins you can use to extend the capabilities of the module loader. For example, if you want to load CoffeeScript, you can use the <a href="https://github.com/jrburke/require-cs">require-cs</a> plugin. If you use a templating library like mustache.js, you can use the  <a href="https://github.com/requirejs/text">text.js</a> plugin to load static text resources to avoid writing your templates as JavaScript strings or between <code>&lt;script&gt;</code> tags.</p>
+<p>To see how RequireJS is used in an existing project, check out my <a href="https://github.com/aduth/Toupee">&quot;Toupée&quot; project on GitHub</a>, which uses RequireJS with Backbone.js.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>RequireJS removes the guess work from dependency management, meaning you can worry less about the order your scripts are loaded and where you define your functions. By separating your modules into separate files, you create a separation of concerns and avoid the possibility that your application&#39;s main script grows too large to manage.</p>
+
+  </div>
+</article>
+  <a name="disqus_thread"></a>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://andrewduthie.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+</div>
+
+<footer class="copyright">
+  <small>Copyright &copy; 2012-2014 Andrew Duthie. Unless otherwise noted, content is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.</small>
+</footer>
+
+<script>
+// Google Analytics
+var _gaq = [['_setAccount', 'UA-37326155-1'], ['_trackPageview']];
+(function(d, t) {
+    var g = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+    g.src = '//www.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g, s);
+}(document, 'script'));
+
+// Disqus
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = 'http://andrewduthie.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+</body>
+</html>

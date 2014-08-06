@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+<meta name="viewport" content="width=device-width">
+
+<!-- SEO -->
+<meta name="description" content="Grunt is a fantastic task runner for JavaScript, but it&#x27;s commonly required to install the grunt-cli global module to run tasks.">
+
+<!-- Open Graph -->
+<meta property="og:site_name" content="AndrewDuthie.com">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://www.andrewduthie.com/assets/img/andrew.png">
+
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script src="http://use.edgefonts.net/lusitana;open-sans:n3.js"></script>
+<link rel="stylesheet" href="/assets/css/main.css?bcfcc8f9a6129a2a0120e469a58c170b">
+<link rel="alternate" href="/feed.xml" type="application/atom+xml" title="AndrewDuthie.com Blog (Atom)">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <meta property="og:title" content="Running Grunt tasks without grunt-cli">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="http://www.andrewduthie.com/post//">
+  <meta property="article:published_time" content="2014-01-14T00:00:00-0005">
+  <meta property="article:author" content="http://www.andrewduthie.com/">
+
+  <link rel="prefetch" href="http://www.andrewduthie.com">
+
+  <title>Running Grunt tasks without grunt-cli | AndrewDuthie.com</title>
+</head>
+<body>
+
+<header class="intro">
+  <div class="post-header clearfix">
+    <div class="return-home">
+      <a href="/"><i class="headshot-mini"></i> Home</a>
+    </div>
+    <aside class="me-links">
+  <a class="rss" href="/feed.xml">RSS</a>
+  <a class="github" href="https://github.com/aduth" target="_blank">GitHub</a>
+  <a class="twitter" href="https://twitter.com/andrew_duthie" target="_blank">Twitter</a>
+  <a class="linkedin" href="http://linkedin.com/in/aduth" target="_blank">LinkedIn</a>
+</aside>
+  </div>
+</header>
+
+<div class="container main-content">
+  <article class="blog-post clearfix" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="blog-title">
+    <h1 itemprop="name"><a href="/post/running-grunt-tasks-without-grunt-cli/">Running Grunt tasks without grunt-cli</a></h1>
+    <p class="blog-meta">
+      <span class="meta-text">
+        <time pubdate="pubdate" datetime="2014-01-14T00:00:00-0005" itemprop="datePublished">
+          Jan 14, 2014
+        </time>
+        <span class="separator"></span>
+        <a href="/post/running-grunt-tasks-without-grunt-cli/#disqus_thread">Discuss</a>
+      </span>
+    </p>
+  </header>
+  <div class="blog-body" itemprop="articleBody">
+    <p><a href="http://gruntjs.com/">Grunt</a> is a JavaScript task runner that helps automate common development tasks such as minifying and testing code. Traditionally, using Grunt is a two-step process. First you install Grunt&#39;s command-line interface (GLI) globally using npm (<code>npm install -g grunt-cli</code>). Next, in any project where Grunt is to be used, you must locally install Grunt and any Grunt plugins you wish to include. The command-line interface is installed separately so as to allow multiple versions of Grunt to be installed on the same machine, and acts as a simple wrapper for executing tasks through the local Grunt module.</p>
+<p>Once you&#39;ve installed Grunt both locally and globally, and after <a href="http://gruntjs.com/configuring-tasks">configuring your Gruntfile</a>, running a task is as simple as passing a task name to Grunt&#39;s command-line interface. For example, if my Gruntfile defines a <code>test</code> task, I could run it by entering <code>grunt test</code> into my command-line. It may sometimes be necessary or handy to be able to trigger a task without the Grunt CLI, in which case you can use the following code snippet, replacing <code>test</code> with the task(s) of your choosing:</p>
+<pre><code class="language-bash">node <span class="operator">-e</span> <span class="string">"require('grunt').tasks(['test']);"</span></code></pre>
+<p>There are a few common scenarios in which using the above syntax would be preferable to running tasks through Grunt directly. Specifically, this may be a requirement in cases where another developer or system does not have Grunt installed globally.</p>
+<p>As an illustration, consider the <a href="https://npmjs.org/doc/misc/npm-scripts.html"><code>scripts</code> feature</a> of npm. Often overlooked, the <code>scripts</code> section of a <code>package.json</code> allows a developer to define command-line scripts to be run via predefined keywords. For example, you could trigger a Grunt <code>test</code> task with the following configuration, to be called using <code>npm test</code>.</p>
+<pre><code class="language-json">{
+ "<span class="attribute">name</span>": <span class="value"><span class="string">"my-package"</span></span>,
+ "<span class="attribute">version</span>": <span class="value"><span class="string">"1.0.0"</span></span>,
+ "<span class="attribute">scripts</span>": <span class="value">{
+  "<span class="attribute">test</span>": <span class="value"><span class="string">"node -e \"require('grunt').tasks(['test']);\""</span>
+ </span>}
+</span>}</code></pre>
+<p>The advantage of using the command above in place of <code>grunt test</code> is that your <code>test</code> script can now be executed regardless of whether the global Grunt module is installed.</p>
+<p>Removing global dependencies may also help in the case of continuous integration services. Personally, I use <a href="https://travis-ci.org/">Travis CI</a> to run unit tests against my GitHub project commits. Up until recently, I&#39;ve used the <a href="http://about.travis-ci.org/docs/user/build-configuration/#before_script%2C-after_script"><code>before_script</code> section</a> of my <code>.travis.yml</code> configurations to install the global Grunt module. By running my tasks directly, I can safely omit this configuration section. Other services may not even grant you the option to configure global dependencies, so this may be your only option.</p>
+<p>And it&#39;s not just Grunt, either. Where possible, make an effort to eliminate the need for global dependencies in your npm scripts. Not every developer is going to be familiar with the tools that you choose to use, and removing such dependencies helps to avoid frustration caused by error messages. It may someday be possible to define global dependencies in a project&#39;s <code>package.json</code>, but <a href="https://github.com/npm/npm/issues/2949#issuecomment-11408461">that&#39;s not likely to be coming anytime soon</a>.</p>
+
+  </div>
+</article>
+  <a name="disqus_thread"></a>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://andrewduthie.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+</div>
+
+<footer class="copyright">
+  <small>Copyright &copy; 2012-2014 Andrew Duthie. Unless otherwise noted, content is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.</small>
+</footer>
+
+<script>
+// Google Analytics
+var _gaq = [['_setAccount', 'UA-37326155-1'], ['_trackPageview']];
+(function(d, t) {
+    var g = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+    g.src = '//www.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g, s);
+}(document, 'script'));
+
+// Disqus
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = 'http://andrewduthie.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+</body>
+</html>

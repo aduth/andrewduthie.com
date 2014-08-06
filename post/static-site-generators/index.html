@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+<meta name="viewport" content="width=device-width">
+
+<!-- SEO -->
+<meta name="description" content="An overview of static site generators, including purpose, benefits, and popular options.">
+
+<!-- Open Graph -->
+<meta property="og:site_name" content="AndrewDuthie.com">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://www.andrewduthie.com/assets/img/andrew.png">
+
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script src="http://use.edgefonts.net/lusitana;open-sans:n3.js"></script>
+<link rel="stylesheet" href="/assets/css/main.css?bcfcc8f9a6129a2a0120e469a58c170b">
+<link rel="alternate" href="/feed.xml" type="application/atom+xml" title="AndrewDuthie.com Blog (Atom)">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <meta property="og:title" content="Static Site Generators">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="http://www.andrewduthie.com/post//">
+  <meta property="article:published_time" content="2013-01-03T00:00:00-0005">
+  <meta property="article:author" content="http://www.andrewduthie.com/">
+
+  <link rel="prefetch" href="http://www.andrewduthie.com">
+
+  <title>Static Site Generators | AndrewDuthie.com</title>
+</head>
+<body>
+
+<header class="intro">
+  <div class="post-header clearfix">
+    <div class="return-home">
+      <a href="/"><i class="headshot-mini"></i> Home</a>
+    </div>
+    <aside class="me-links">
+  <a class="rss" href="/feed.xml">RSS</a>
+  <a class="github" href="https://github.com/aduth" target="_blank">GitHub</a>
+  <a class="twitter" href="https://twitter.com/andrew_duthie" target="_blank">Twitter</a>
+  <a class="linkedin" href="http://linkedin.com/in/aduth" target="_blank">LinkedIn</a>
+</aside>
+  </div>
+</header>
+
+<div class="container main-content">
+  <article class="blog-post clearfix" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="blog-title">
+    <h1 itemprop="name"><a href="/post/static-site-generators/">Static Site Generators</a></h1>
+    <p class="blog-meta">
+      <span class="meta-text">
+        <time pubdate="pubdate" datetime="2013-01-03T00:00:00-0005" itemprop="datePublished">
+          Jan  3, 2013
+        </time>
+        <span class="separator"></span>
+        <a href="/post/static-site-generators/#disqus_thread">Discuss</a>
+      </span>
+    </p>
+  </header>
+  <div class="blog-body" itemprop="articleBody">
+    <p>As web developers, we most often work with dynamic web content. These days, it&#39;s rare to come in contact with plain old HTML files. That said, there are a growing number of tools which assist in the creation of static sites, aptly named <em>static site generators</em>. To cite a recent example, Kyle Rush <a href="http://kylerush.net/blog/meet-the-obama-campaigns-250-million-fundraising-platform/">published an article</a> explaining how Obama&#39;s campaign team used Jekyll, arguably the most popular static site generator, to improve the performance of their $250 million fundraising platform. In this article, I will discuss the purpose of these tools, the benefits they provide, and several popular options to choose from.</p>
+<h2 id="an-overview">An overview</h2>
+<p>For a simple site or blog, it is not uncommon to create a basic web application consisting of two primary components: (1) a page layout (i.e. header and footer), and (2) a small collection of database tables to manage content. There really isn&#39;t a whole lot going on here, and the whole application server + database + hosting solution can become a real pain for such a simple project. If the goal is to simply wrap written content within the context of a master layout, this is hardly the simplest solution.</p>
+<p>Static site generators are able to satisfy the same needs without the unnecessary complexity. As part of the build process, layouts are combined with content to generate simple HTML files. Layouts are likely to have some variation of a templating syntax, and content files can be written in Markdown or other familiar writing formats. As a result, you avoid the headache of the overhead which can accompany dynamic sites.</p>
+<h2 id="primary-benefits">Primary benefits</h2>
+<ul>
+<li><strong>Fast</strong>: Because the generated files are simple HTML files, they can be served directly rather than being processed by an application server.</li>
+<li><strong>Affordable</strong>: There are several options to host your static sites <em>for free</em>. For example, you could store the files in a simple Dropbox folder, and use a service like <a href="http://www.site44.com/">site44</a> to serve them from a custom domain. You can also serve a static site directly from a GitHub repository using  <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">these instructions</a>. For a more sturdy hosting solution, Amazon offers their <a href="http://aws.amazon.com/s3/">Simple Storage Service (S3)</a> at a very affordable price for most sites.</li>
+<li><strong>Simple</strong>: Most static site generators require a layout, some content, and a basic understanding of the syntax used to link them together. Jekyll uses Ruby, but you won&#39;t need to know much about Ruby in order to use it for your own sites.</li>
+<li><strong>Secure</strong>: Because your site is simple HTML, there&#39;s significantly fewer security risks. As a result, you can concentrate on what really matters: the content itself.</li>
+</ul>
+<h2 id="popular-static-site-generators">Popular Static Site Generators</h2>
+<p>Depending on your development environment, you may want to choose from one of the popular options below:</p>
+<ul>
+<li>Ruby<ul>
+<li>Jekyll: <a href="http://jekyllrb.com/">http://jekyllrb.com/</a></li>
+<li>Middleman: <a href="http://middlemanapp.com/">http://middlemanapp.com/</a></li>
+</ul>
+</li>
+<li>Python<ul>
+<li>Hyde: <a href="http://ringce.com/hyde">http://ringce.com/hyde</a></li>
+<li>Pelican: <a href="http://docs.getpelican.com/en/3.1.1/">http://docs.getpelican.com/en/3.1.1/</a></li>
+</ul>
+</li>
+<li>Node.js<ul>
+<li>DocPad: <a href="http://docpad.org/docs/intro">http://docpad.org/docs/intro</a></li>
+<li>Wintersmith: <a href="http://jnordberg.github.com/wintersmith/">http://jnordberg.github.com/wintersmith/</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>This blog itself is maintained using a custom static site generator. It&#39;s fairly basic, but the source code is available at the <a href="https://github.com/aduth/andrewduthie.com">GitHub repository</a> in case you&#39;re curious about the project structure of a simple static site. Since this is a custom generator, it may be more relevant to refer to the source of some of the <a href="https://github.com/mojombo/jekyll/wiki/Sites">many sites which use Jekyll</a>.</p>
+
+  </div>
+</article>
+  <a name="disqus_thread"></a>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://andrewduthie.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+</div>
+
+<footer class="copyright">
+  <small>Copyright &copy; 2012-2014 Andrew Duthie. Unless otherwise noted, content is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.</small>
+</footer>
+
+<script>
+// Google Analytics
+var _gaq = [['_setAccount', 'UA-37326155-1'], ['_trackPageview']];
+(function(d, t) {
+    var g = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+    g.src = '//www.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g, s);
+}(document, 'script'));
+
+// Disqus
+(function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = 'http://andrewduthie.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+</body>
+</html>
