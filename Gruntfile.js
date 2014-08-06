@@ -164,6 +164,13 @@ module.exports = function(grunt) {
     clean: {
       'pre-generate': ['output/*'],
       'post-deploy': ['output.tar.gz']
+    },
+
+    'gh-pages': {
+      options: {
+        base: 'output'
+      },
+      src: ['**']
     }
   });
 
@@ -178,6 +185,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-ssh');
+  grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('assemble');
 
   //---------------------------

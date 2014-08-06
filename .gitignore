@@ -1,3 +1,4 @@
 node_modules/
 output/
+.grunt/
 public/css/main.css
