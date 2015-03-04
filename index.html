@@ -52,6 +52,46 @@
   
   <article class="blog-post clearfix" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="blog-title">
+    <h1 itemprop="name"><a href="/post/node-js-testing-doesnt-need-to-be-difficult/">Node.js Testing Doesn’t Need to be Difficult</a></h1>
+    <p class="blog-meta">
+      <span class="meta-text">
+        <time pubdate="pubdate" datetime="2015-03-04T00:00:00-0005" itemprop="datePublished">
+          Mar  4, 2015
+        </time>
+        <span class="separator"></span>
+        <a href="/post/node-js-testing-doesnt-need-to-be-difficult/#disqus_thread">Discuss</a>
+      </span>
+    </p>
+  </header>
+  <div class="blog-body" itemprop="articleBody">
+    <p>Whenever testing code in the context of Node.js comes up in conversation, it’s very likely to be accompanied by an exploration of testing-related tooling and strategies. If you’ve ever participated in such a discussion, it’s not uncommon to hear one or more of the following terms thrown around: test runners, assertion libraries, mocking, stubbing, spying, and continuous integration. While these can certainly be valuable tools to consider as you build out a full test suite, the thought of familiarizing oneself with each can be intimidating to a developer new to the Node.js ecosystem or testing in general.</p>
+<p>But you don’t need any of these tools to write a basic test. The idea behind a test is to make an assumption about your code that you’d expect to be true. In cases where these expectations are in fact untrue, the script should abort with a failing exit code. Typically the script is terminated by an uncaught error.</p>
+<p>Let’s imagine we have a simple <code>sum</code> function which accepts two arguments where the return value is the sum of the two arguments.</p>
+<pre><code class="language-js"><span class="function"><span class="keyword">function</span> <span class="title">sum</span><span class="params">( x, y )</span> {</span>
+    <span class="keyword">return</span> x + y;
+}</code></pre>
+<p>Our most basic test might simply consider a summing of two arbitrary numbers for which we’d expect the assumed value to be returned.</p>
+<pre><code class="language-js"><span class="keyword">var</span> calculated = sum( <span class="number">1</span>, <span class="number">2</span> );
+
+<span class="keyword">if</span> ( calculated !== <span class="number">3</span> ) {
+    <span class="keyword">throw</span> <span class="keyword">new</span> Error( ‘<span class="number">3</span> was expected, but we saw ‘ + calculated );
+}</code></pre>
+<p>If we were to run this script, we’d see that it quietly finishes because the summed value is equal to our expected assumption. If we were to tamper with our original <code>sum</code> function by, say, changing the <code>+</code> operator to <code>-</code>, we’d see that it terminates with an uncaught error using the message we specified.</p>
+<p>That’s really all there is to basic testing. We could optionally choose to add this as a script in our project&#39;s <code>package.json</code> so that it could be predictably run through the <code>npm test</code> command.</p>
+<p>As you continue to build more tests, you&#39;ll want to consider the topics listed in the first paragraph, as they&#39;ll help to extend and simplify common usage patterns. A brief description of each is included below:</p>
+<ul>
+<li><strong>Assertion libraries</strong> define a syntax for declaring your assumptions. Node includes a <a href="http://nodejs.org/api/assert.html">core module (<code>assert</code>)</a> which provides a limited assertion syntax.</li>
+<li><strong>Test runners</strong> provide a means to combine your tests into a logical grouping, and often provide a reporting interface to more easily interpret the results of your tests.</li>
+<li><strong>Mocking, stubbing, and spying</strong> are related topics which allow you to create simulated functions which can then be observed, granting you insight into how your code is executed without the need to actually execute it.</li>
+<li><strong>Continuous integration</strong> is a service which will automatically run tasks (including tests) when the code is changed.</li>
+</ul>
+
+  </div>
+</article>
+
+
+  <article class="blog-post clearfix" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="blog-title">
     <h1 itemprop="name"><a href="/post/running-grunt-tasks-without-grunt-cli/">Running Grunt tasks without grunt-cli</a></h1>
     <p class="blog-meta">
       <span class="meta-text">
@@ -338,7 +378,7 @@ require([ <span class="string">'dinner'</span> ],
 </div>
 
 <footer class="copyright">
-  <small>Copyright &copy; 2012-2014 Andrew Duthie. Unless otherwise noted, content is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.</small>
+  <small>Copyright &copy; 2012-2015 Andrew Duthie. Unless otherwise noted, content is licensed under a <a href="http://creativecommons.org/licenses/by/3.0/deed.en_US">Creative Commons Attribution 3.0 Unported License</a>.</small>
 </footer>
 
 <script>
