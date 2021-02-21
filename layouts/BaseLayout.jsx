@@ -1,5 +1,10 @@
 import { description as DEFAULT_DESCRIPTION } from '../package.json';
 
+const GTAG_SCRIPT = `window.dataLayer = [];
+function gtag() { dataLayer.push(arguments); }
+gtag('js', new Date());
+gtag('config', 'UA-37326155-1');`;
+
 /**
  * @typedef BaseLayoutProps
  *
@@ -17,6 +22,11 @@ function BaseLayout({ children, title, description = DEFAULT_DESCRIPTION }) {
 	return (
 		<html lang="en">
 			<meta charSet="UTF-8" />
+			<script
+				src="https://googletagmanager.com/gtag/js?id=UA-37326155-1"
+				async
+			/>
+			<script dangerouslySetInnerHTML={{ __html: GTAG_SCRIPT }} />
 			<meta name="viewport" content="width=device-width, initial-scale=1" />
 			<meta name="description" content={description} />
 			<title>{formattedTitle}</title>
