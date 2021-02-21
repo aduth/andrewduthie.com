@@ -1,0 +1,15 @@
+{
+	"name": "@aduth/build-files",
+	"version": "1.0.0",
+	"type": "module",
+	"main": "index.js",
+	"bin": "./bin/build-files.js",
+	"dependencies": {
+		"@nodelib/fs.walk": "^1.2.6",
+		"commander": "^7.0.0",
+		"write": "^2.0.0"
+	},
+	"devDependencies": {
+		"@types/write": "^2.0.0"
+	}
+}

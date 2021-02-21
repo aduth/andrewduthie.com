@@ -1,0 +1,97 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 18px;
+}
+
+body {
+	background-color: #fefcfb;
+	font-family: 'Inter', sans-serif;
+	font-weight: 300;
+	line-height: 1.8;
+	margin: 0 auto;
+	width: 52rem;
+	max-width: 100%;
+	padding: 5vw 2rem 10vw;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong,
+b {
+	font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	line-height: 1.5;
+}
+
+hr {
+	height: 2px;
+	background-color: #000;
+	border: none;
+	width: 60%;
+	margin: 2rem 0;
+}
+
+a {
+	text-decoration-color: #000;
+	text-decoration-thickness: 2px;
+	text-underline-offset: 2px;
+	color: #000;
+	font-weight: 400;
+}
+
+a:focus {
+	outline: 2px solid #000;
+	outline-offset: 2px;
+}
+
+a:hover {
+	text-decoration-style: double;
+}
+
+pre {
+	padding: 0.5rem;
+	background-color: rgba(0, 0, 0, 0.05);
+	border: 1px solid #ccc;
+	border-radius: 0.2rem;
+	overflow: auto;
+}
+
+code {
+	padding: 0 0.2rem;
+	background-color: rgba(0, 0, 0, 0.05);
+	border: 1px solid #ccc;
+	border-radius: 0.2rem;
+}
+
+pre code {
+	padding: 0;
+	background-color: transparent;
+	border: none;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+blockquote {
+	margin: 0;
+	padding: 0.25rem 2rem;
+	border-left: 2px solid #000;
+}

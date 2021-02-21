@@ -1,0 +1,30 @@
+.blog-layout__heading {
+	margin: 0.75rem 0;
+}
+
+.blog-layout__publish-date {
+	margin-bottom: 4rem;
+	text-transform: uppercase;
+	font-weight: 400;
+	font-size: 0.8rem;
+	color: #555;
+}
+
+.blog-layout__content pre {
+	margin: 2rem;
+}
+
+.blog-layout__content img,
+.blog-layout__content iframe {
+	display: block;
+	margin: 2rem auto;
+}
+
+.blog-layout__content figure {
+	text-align: center;
+	font-size: 0.8rem;
+}
+
+.blog-layout__content figure img {
+	margin-bottom: 0.5rem;
+}

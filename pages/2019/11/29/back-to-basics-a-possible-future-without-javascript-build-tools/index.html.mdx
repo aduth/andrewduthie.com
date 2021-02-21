@@ -1,0 +1,86 @@
+import Layout from '../../../../../layouts/BlogLayout.jsx';
+export const title =
+	'Back to Basics: A Possible Future Without JavaScript Build Tools';
+export const datePublished = new Date('2020-11-29 00:00:00');
+export const tags = ['tooling'];
+export default Layout;
+
+As someone who spends the majority of their time working in a modern front-end JavaScript tech stack, it may be surprising to hear that I'm often disillusioned by the rate of churn in our development workflows. But for me, it's not the near-daily introduction of new libraries. In fact, I find this perpetual inventiveness to be inspiring. No; instead, it's that we push ourselves further and further away from anything resembling a shared baseline of knowledge. For each new paradigm we layer into our stack, we too easily overlook its broader human impact as a barrier to entry, a prerequisite of knowledge unique to our project.
+
+I've worked in this space long enough to recall something of an explosion of tooling and modernized development workflows some five-to-seven years ago; a messy, beautiful, exciting advent of new [JavaScript syntaxes](https://en.wikipedia.org/wiki/ECMAScript#6th_Edition_-_ECMAScript_2015), shared [package libraries](https://www.npmjs.com/), and [bundlers](http://browserify.org/) to bring this all together. At the time, we looked at these bundlers and transpilers as necessary evils, given that the platforms we build for lagged behind the bleeding edge. But as the years have progressed, isn't it time we step back and reevaluate the status quo?
+
+Recently, I undertook a [new project](https://github.com/aduth/StreamLens) which was to be distributed as a browser extension for Chrome and Firefox. Knowing that my target audience was limited to those using modern evergreen browsers, I was curious to use this as an opportunity to explore how the native platform has advanced, to peel back the layers of abstraction we have seen need to embrace. Could I still achieve my goals?
+
+## What's wrong with build tools?
+
+Aside from considering the thought experiment for its own sake, it's a fair question to consider why any of this matters. While I'm sure anyone who has spent any amount of time working in front-end development can attest to their own experiences in how these tools impact our workflows, at a high level I see the following influences:
+
+- **Workflow.** Remember when you could open a file, make some changes, and save it? Today, it's standard practice that a project include some build step or background process just to see those changes take effect. And that's if you're familiar with how to use your system's terminal and remember to start the process, or that use the correct combination of IDEs to manage these processes on your behalf.
+- **Debugging.** Naturally, any abstraction will incur some new challenge in how to debug your code. They act as literal layers represented in your debugger's call stack. Build tools aren't much different, given that the source code you write is transformed into something entirely different by the time it's run in the browser. [Source maps](https://developer.mozilla.org/en-US/docs/Tools/Debugger/How_to/Use_a_source_map) were invented to solve this problem, but even if you manage to find your way through the [best compromise of configuration options](https://webpack.js.org/configuration/devtool/#devtool), they can still misbehave and lead to a less-than-desirable debugging experience.
+- **Up-front and sustained cost.** Have you ever spent hours or days simply trying to coerce Webpack or Babel into transforming your code the way you want it to? We've even reached the point where we create tools to manage our tools, such as [create-react-app](https://github.com/facebook/create-react-app) or [Parcel](https://parceljs.org/). Wouldn't it be better if we could avoid all of this?
+
+## Modules: A brief history
+
+Back when JavaScript web apps began to take off, the available options for organizing one's code were limited. For the most part, developers were constrained to operating in a single JavaScript file. While there were some patterns which emerged to try to reign in this chaos, more often than not these files would inevitably devolve into multiple thousands of lines of "soup"-y "spaghetti code". To be able to break down our code into independent logical groupings, and to define dependencies between them, new tools like [RequireJS](https://requirejs.org/) emerged to help organize the code of our browser application.
+
+In parallel, [Node.js](https://nodejs.org/en/) was continuing to grow in popularity. Node had adopted the [CommonJS module system](https://nodejs.org/en/knowledge/getting-started/what-is-require/) as a simple means to define dependencies between files in a project, and to reuse shared libraries published to [npm](https://npmjs.com). Tools like [Browserify](http://browserify.org/) existed to bridge this gap of Node.js and the browser.
+
+But in the meantime, the language itself has evolved to describe a common pattern for [declaring and consuming modules](https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/). You may already be accustomed to writing in this syntax:
+
+```js
+import React from 'react';
+```
+
+One of the responsibilities of these bundling tools we've used over the past years has been to convert the above syntax into the single JavaScript file(s) we expected to be required to write.
+
+And yet, the times have changed. All modern browsers [have supported](https://caniuse.com/#feat=es6-module) this syntax of modules for almost two years. And just days ago with its [v13.2.0 release](https://nodejs.org/en/blog/release/v13.2.0/), Node.js unflagged modules as experimental, marking the first stable release where you can choose to author your Node.js JavaScript using the standard ES Module semantics.
+
+So [as](https://protonmail.com/blog/internet-explorer-support/) [more](https://support.zendesk.com/hc/en-us/articles/360002084367-Removal-of-support-for-Internet-Explorer-11) [organizations](https://quickbooks.intuit.com/learn-support/en-us/update-products/discontinuing-support-for-internet-explorer-and-old-safari/00/237322) begin to drop support for Internet Explorer 11, you should consider whether native modules are a real option for organizing your browser code.
+
+## Managing dependencies with Pika, a _different sort_ of tool
+
+Of course, even if you choose to adopt the modules syntax into your own code, this still leaves open the question of how you might pull in shared code, most notably common modules published to npm.
+
+There's nothing to stop you from importing directly from a URL, such as that of a CDN where the module is hosted. In fact, I think this is great for prototyping, and I'm thrilled to see that [some projects](https://preactjs.com/guide/v10/getting-started#no-build-tools-route) are starting to recommend this option in their quickstart guides. _(Aside: While not a secret by any means, I think part of the success in projects like [Vue.js](https://vuejs.org/) can be attributed to optimizing for this sort of demonstration of the benefits of their approach in as few up-front steps as possible)_
+
+If you'd rather avoid relying on a third-party network, you could also choose to download these files local to your project. But, depending on how many dependencies you choose to use, this may become difficult to manage over time. In fact, this tedium was one of the original reasons for a project like [Bower](https://bower.io/) to have been created, since even at the time, it was a pain point to maintain dependencies on jQuery, Modernizer, etc., few as they were.
+
+And, unfortunately, while we can use NPM in our front-end projects to download dependencies locally, the files as they exist in `node_modules` are often not formatted in a way which can be used directly in a browser project.
+
+For this reason, I was happy to find a tool like [Pika Web](https://github.com/pikapkg/web). Unlike most build tools, Pika Web is to be run at _install-time_, meaning that you'd typically only run it once for each dependency you add, then never think about it again. Under the hood, the [Pika CDN](https://www.pika.dev/cdn/) will pre-apply the necessary transforms to ensure the code can be run in the browser.
+
+With a tool like Pika, you can download the dependencies you want to use into your local environment with an assurance they will run in the browser.
+
+## Is there a future without any of these tools?
+
+I'm sure there is a palpable irony in promoting a tool like Pika in a post so otherwise entrenched in discouraging tooling. As more projects begin to distribute ES modules directly, the problems that a tool like Pika addresses become fewer and fewer. That said, there are still some uncertainties and open questions about how we define requirements on the platforms in which our code is to be run, and how our dependencies define their own dependencies.
+
+Consider a project like [Preact](https://preactjs.com/), which is designed to work pretty well out-of-the-box using ES modules. Even in this project, if you start to [inspect the module code](https://unpkg.com/browse/preact@10.0.5/hooks/dist/hooks.module.js), you can see how a statement like `import from 'preact';` becomes impossible to resolve in a browser, because the named "preact" dependency has no intrinsic meaning outside of npm. And unfortunately, we currently have no control over how this is resolved as a consumer of this code.
+
+Thankfully, this is an area of active development with the [import maps specification](https://github.com/WICG/import-maps). From the ["basic idea" section](https://github.com/WICG/import-maps#the-basic-idea) of that page, you should be able to get a grasp for how we might be able to better resolve these named projects in the future, by having control over how these named imports resolve to remote or local files.
+
+```html
+<script type="importmap">
+	{
+		"imports": {
+			"lodash": "/node\_modules/lodash-es/lodash.js"
+		}
+	}
+</script>
+
+<script type="module">
+	import {uniq} from 'lodash'; const nums = uniq( \[ 2, 1, 2 \] );
+</script>
+```
+
+With this, you can imagine how there might be a future where the dependencies we install using npm are referenced directly in our browser code.
+
+## What's the consensus?
+
+In my browser extension project, I was happy to find how few obstacles there were in using modules directly. The code I wrote was very close to resembling something I might write in an environment rife with build tools, including third-party dependencies like [React](https://reactjs.org/), a [JSX](https://reactjs.org/docs/introducing-jsx.html)\-like syntax, and [TypeScript](https://www.typescriptlang.org/)\-like type checking ([see example](https://github.com/aduth/StreamLens/blob/16569ce56f977db3d94f74eed11d518ae858a7da/options/components/section.js)). It was a joy to simply open my editor and start coding, knowing that I was only a page refresh away from seeing my latest changes, and that the code I was debugging in my Chrome Debugger was the exact code I had been writing.
+
+Are there downsides? For my purposes, I'd say there were few to none. There are trade-offs in a [not-quite-JSX syntax](https://www.npmjs.com/package/htm), or choosing to use JavaScript-only type checking. But I found that these trade-offs would often challenge me to consider whether I needed these things. In retrospect, I probably would have been fine to avoid JSX altogether, considering that the ["raw" form](https://preactjs.com/guide/v10/api-reference#h--createelement) is not all too difficult to work with. TypeScript is great, but I can also get along [nearly just as well with JavaScript alone](https://andrewduthie.com/2019/11/27/typescript-tooling-for-your-javascript-projects/).
+
+I also recognize that I was privileged to be able to target latest versions of Firefox and Chrome, and that this experience doesn't translate to all web projects. But I think the state of browsers in 2019 is much better than it was in 2014, in that we can rely more on "evergreen" browser auto-updates to be able to take advantage of new language features. And while the JavaScript standard continues to add new features year-over-year, these revisions haven't been nearly as dramatic as that first transition from ES5 to ES2015.
+
+So, for your next project, I would encourage you to consider the ways you can subtract from your layers of tooling as much as to be eager to bring in the newest and greatest. I sense that you might be surprised to find how capable the native environments can be.

@@ -1,0 +1,38 @@
+import Layout from '../../../../../layouts/BlogLayout.jsx';
+export const title = 'Regimen: A workout progression planning web app';
+export const datePublished = new Date('2016-03-25 00:00:00');
+export const tags = ['projects', 'fitness'];
+export default Layout;
+
+![regimen](https://andrewmduthie.files.wordpress.com/2016/03/regimen.png)
+
+[Regimen](https://regimenapp.com) is a side-project I've been building off-and-on for the past few months. It's a web app that I'd originally created for myself out of frustration for the lack of options in helping me plan my workouts. Specifically, most weightlifting routines offer some form of downloadable Excel spreadsheet, but these are cumbersome to work with when at the gym. I found myself either fumbling with the Google Sheets app on my phone, or printing a paper copy of the spreadsheet - neither was a great solution.
+
+<figure>
+	<img
+		src="https://andrewmduthie.files.wordpress.com/2016/03/sheets.png"
+		width="223"
+		alt=""
+	/>
+	<figcaption>The usability nightmare that is Sheets.</figcaption>
+</figure>
+
+The basic idea behind Regimen is to bring some UX love to these spreadsheets. Just the same as with the spreadsheet, you can customize your "plan", but instead of entering values into cells on a spreadsheet, you populate a web form tailored to the routine of your choice. Once you've created a plan, your workout progression is automatically generated. For each workout, the exercises and sets are clearly itemized, and it's easy to navigate between workouts and resume from where you'd left off last time.
+
+[Here's an example from my own plan.](https://regimenapp.com/plan/4JyJs8apl/workout/3)
+
+While I'd found there are similar apps to mine, the upshot of Regimen is that (a) it's a web app, so you don't need to download (or even register) for anything, and (b) most apps target one specific routine, whereas Regimen is meant to be more generic. My [preferred weightlifting routine](http://stronglifts.com/madcow/5x5_Program/Linear_5x5.htm) is a bit obscure, hence my initial difficulty in finding solutions.
+
+## Technology
+
+Of course, Regimen is also open-source: [https://github.com/aduth/regimen](https://github.com/aduth/regimen)
+
+As with most side-projects, I used this as an excuse to experiment with some new tools I'd been interested in using. Regimen is built as an offline-first single page application. Being offline-capable was important, as I get terrible cell service inside my gym. I also treated Regimen as a playground of sorts for ideas I'd like to consider applying in my day-to-day work.
+
+[PouchDB](https://pouchdb.com/) is largely to thank for making offline capability straight-forward to achieve. While it *is* connected to a remote CouchDB server for storage (via [Cloudant](https://cloudant.com/)), you can continue to use the application offline and it will automatically sync changes once internet connectivity is restored. This empowerment felt very magical (in a good way).
+
+Building an offline-first web app meant to be used in the same way as a native mobile app proved to be quite challenging. Saving a website to the home screen in iOS sounds promising, but I found it to be pretty lacking (always resetting to the bookmarked link, showing only a white screen in app switch mode, cachebusting not taking effect until the next time the app is loaded). Similarly, configuring a web app to be offline capable requires implementing two approaches ([\[1\]](http://caniuse.com/#feat=serviceworkers), [\[2\]](http://caniuse.com/#feat=offline-apps)), as a new spec have been defined but is not widely supported. Luckily, a [Webpack plugin](https://github.com/NekR/offline-plugin) got me most of the way to where I need it to be, but to this day I'm still battling with fully comprehending service worker caching.
+
+## Conclusion
+
+Maybe you'll find the app useful, maybe not :) In either case, it was a fun experience to build. In the future, I hope to add support for more routine options, including a "build-your-own" option that could potentially be used outside the context of weightlifting (e.g. running  distance progression).

@@ -1,0 +1,34 @@
+import Layout from '../../../../../layouts/BlogLayout.jsx';
+export const title = 'Running Grunt tasks without grunt-cli';
+export const datePublished = new Date('2014-01-14 00:00:00');
+export const description =
+	"Grunt is a fantastic task runner for JavaScript, but it's commonly required to install the grunt-cli global module to run tasks.";
+export default Layout;
+
+[Grunt](http://gruntjs.com/) is a JavaScript task runner that helps automate common development tasks such as minifying and testing code. Traditionally, using Grunt is a two-step process. First you install Grunt's command-line interface (GLI) globally using npm (`npm install -g grunt-cli`). Next, in any project where Grunt is to be used, you must locally install Grunt and any Grunt plugins you wish to include. The command-line interface is installed separately so as to allow multiple versions of Grunt to be installed on the same machine, and acts as a simple wrapper for executing tasks through the local Grunt module.
+
+Once you've installed Grunt both locally and globally, and after [configuring your Gruntfile](http://gruntjs.com/configuring-tasks), running a task is as simple as passing a task name to Grunt's command-line interface. For example, if my Gruntfile defines a `test` task, I could run it by entering `grunt test` into my command-line. It may sometimes be necessary or handy to be able to trigger a task without the Grunt CLI, in which case you can use the following code snippet, replacing `test` with the task(s) of your choosing:
+
+```bash
+node -e "require('grunt').tasks(['test']);"
+```
+
+There are a few common scenarios in which using the above syntax would be preferable to running tasks through Grunt directly. Specifically, this may be a requirement in cases where another developer or system does not have Grunt installed globally.
+
+As an illustration, consider the [`scripts` feature](https://npmjs.org/doc/misc/npm-scripts.html) of npm. Often overlooked, the `scripts` section of a `package.json` allows a developer to define command-line scripts to be run via predefined keywords. For example, you could trigger a Grunt `test` task with the following configuration, to be called using `npm test`.
+
+```json
+{
+	"name": "my-package",
+	"version": "1.0.0",
+	"scripts": {
+		"test": "node -e \"require('grunt').tasks(['test']);\""
+	}
+}
+```
+
+The advantage of using the command above in place of `grunt test` is that your `test` script can now be executed regardless of whether the global Grunt module is installed.
+
+Removing global dependencies may also help in the case of continuous integration services. Personally, I use [Travis CI](https://travis-ci.org/) to run unit tests against my GitHub project commits. Up until recently, I've used the [`before_script` section](http://about.travis-ci.org/docs/user/build-configuration/#before_script%2C-after_script) of my `.travis.yml` configurations to install the global Grunt module. By running my tasks directly, I can safely omit this configuration section. Other services may not even grant you the option to configure global dependencies, so this may be your only option.
+
+And it's not just Grunt, either. Where possible, make an effort to eliminate the need for global dependencies in your npm scripts. Not every developer is going to be familiar with the tools that you choose to use, and removing such dependencies helps to avoid frustration caused by error messages. It may someday be possible to define global dependencies in a project's `package.json`, but [that's not likely to be coming anytime soon](https://github.com/npm/npm/issues/2949#issuecomment-11408461).

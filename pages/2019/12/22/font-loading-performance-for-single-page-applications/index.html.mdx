@@ -1,0 +1,140 @@
+import Layout from '../../../../../layouts/BlogLayout.jsx';
+export const title = 'Font Loading Performance for Single-Page Applications';
+export const datePublished = new Date('2019-12-22 00:00:00');
+export const tags = ['performance'];
+export default Layout;
+
+If you've ever worked in a project architected as a single-page application, the following pattern may look familiar:
+
+```html
+<!DOCTYPE html>
+<title>My Application</title>
+<div id="app"></div>
+<script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+<script>
+	ReactDOM.render(
+		React.createElement('span', null, 'Hello World'),
+		document.getElementById('app')
+	);
+</script>
+```
+
+Note the empty `div` element. While this example uses React, most any of the common JavaScript frameworks will follow this convention of mounting an application into some root container element. It's not until the application code has loaded and computed the rendered result that anything is shown on the page.
+
+If an application uses custom fonts, there's an interesting side-effect of this loading procedure which we might not anticipate. Presumably in an effort to optimize network requests of unused assets, **Chrome will not load a font file if there is not any text in the page which uses that font**. Even if we declare the fonts used in a [CSS `@font-face` rule](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face), a font file will not be requested until _after_ the initial rendering of the application. This is due to the fact that, until that point, there's effectively no text shown anywhere in the page.
+
+This has the unfortunate effect of introducing what is known as a ["flash of unstyled text"](https://en.wikipedia.org/wiki/Flash_of_unstyled_content), where the text in an application may be shown using a fallback font until the font has finished loading.
+
+Ideally, if we know that our application will render text, we would want the font to be loaded as early in the page lifecycle as possible.
+
+Consider the following example:
+
+```html
+<!DOCTYPE html>
+<title>My Application</title>
+<style>
+	@font-face {
+		font-family: 'Open Sans';
+		src: url('OpenSans.woff') format('woff');
+	}
+	body {
+		font-family: 'Open Sans', sans-serif;
+	}
+</style>
+<div id="app"></div>
+```
+
+If you were to look at [Chrome's DevTools Network tab](https://developers.google.com/web/tools/chrome-devtools/network) when loading this page, you would see the font file declared here is never requested:
+
+<img
+	src="https://andrewmduthie.files.wordpress.com/2019/12/screen-shot-2019-12-22-at-3.14.15-pm.png?w=1024"
+	width="1024"
+	height="656"
+	alt="Chrome network tab"
+/>
+
+If we reintroduce the React code from the original example, you'd see that the font file will be loaded, but only after the initial render of the application when text is added to the page:
+
+```html
+<!DOCTYPE html>
+<title>My Application</title>
+<style>
+	@font-face {
+		font-family: 'Open Sans';
+		src: url('OpenSans.woff') format('woff');
+	}
+	body {
+		font-family: 'Open Sans', sans-serif;
+	}
+</style>
+<div id="app"></div>
+<script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+<script>
+	ReactDOM.render(
+		React.createElement('span', null, 'Hello World'),
+		document.getElementById('app')
+	);
+</script>
+```
+
+<img
+	src="https://andrewmduthie.files.wordpress.com/2019/12/pasted_image_12_22_19__3_18_pm-1.png?w=1024"
+	width="1024"
+	height="669"
+	alt="Network tab waterfall before"
+/>
+
+## Preload Your Fonts
+
+Fortunately, this problem can be resolved using a relatively new browser feature whereby we hint to the browser that a font resource is expected to be used. A browser will then use this hint to download the font early, so that it's ready to be used by the time the application renders.
+
+These hints are provided using a specially-formatted [`link` tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content):
+
+```html
+<!DOCTYPE html>
+<title>My Application</title>
+<link rel="preload" href="OpenSans.woff" as="font" crossorigin="anonymous" />
+<style>
+	@font-face {
+		font-family: 'Open Sans';
+		src: url('OpenSans.woff') format('woff');
+	}
+	body {
+		font-family: 'Open Sans', sans-serif;
+	}
+</style>
+<div id="app"></div>
+<script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+<script>
+	ReactDOM.render(
+		React.createElement('span', null, 'Hello World'),
+		document.getElementById('app')
+	);
+</script>
+```
+
+Note the three attributes:
+
+- `rel="preload"` instructs the browser to treat this as a preloading hint.
+- `as="font"` indicates that the preloaded resource is that of a font.
+- `crossorigin="anonymous"` must always be provided for a font preload, even if the font resource is retrieved from the same domain, due to [specification details concerning font fetching](https://drafts.csswg.org/css-fonts/#font-fetching-requirements). If this attribute is omitted, it can have an opposite effect of causing the font to be loaded twice: once at initial page load, and a second time after the application renders. _Do not forget to include this!_
+
+It's worth pointing out that `rel="preload"` is a relatively new feature and as such, [browser support is limited](https://caniuse.com/#feat=link-rel-preload). However, it's a perfect example of [progressive enhancement](https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement) in that it can serve as a non-critical improvement in browsers which support the feature, and is simply ignored in browsers which do not.
+
+And while it can generally be a good idea to consider preloading necessary page resources, since the original issue primarily concerns that of Chrome's over-aggressive lazy-loading, we can be content in the fact that Chrome is one of the only browsers with full support for content preloading.
+
+## Results
+
+With the above solution in place, you should see a more desirable page load waterfall:
+
+<img
+	src="https://andrewmduthie.files.wordpress.com/2019/12/pasted_image_12_22_19__4_54_pm.png?w=1024"
+	width="1024"
+	height="626"
+	alt="Font preload page load waterfall"
+/>
+
+In the timeline above, the font resource is requested at the same time as the JavaScript files. Thus, the flash of unstyled text is avoided because the font has already been loaded by the time the application is rendered.

@@ -1,0 +1,30 @@
+import Layout from '../../../../../layouts/BlogLayout.jsx';
+import Gist from '../../../../../components/Gist.jsx';
+export const title = 'Publishing Small npm Libraries with Rollup';
+export const datePublished = new Date('2017-06-04 00:00:00');
+export const tags = ['modules', 'node', 'tooling'];
+export default Layout;
+
+Over the past few months, I've published a [number](https://github.com/aduth/rememo) [of](https://github.com/aduth/refx) [Node](https://github.com/aduth/hpq) [modules](https://github.com/aduth/hijinks) aimed at implementing a very minimal and focused set of features. In doing so, I've made a point to take special care in keeping the size of the code as small as possible; ideally a kilobyte or less in size when minified. Not only does this force me to think of the simplest solution, it importantly reduces the burden on applications in using it, especially when it's bundled to be served on the web. There are a number of techniques I've employed toward this goal, and for the purpose of this post I'll focus on the module bundler: [Rollup](https://rollupjs.org/).
+
+Like [Webpack](https://webpack.js.org/), Rollup occupies the role of compiling many source files and dependencies into a single bundle, which can be then be served over the web or published on npm. While I use and evangelize Webpack on a daily basis and in no way would dissuade you from doing the same, I do find that Rollup excels particularly well for the job of bundling library code (as opposed to entire web applications). It's no surprise to find that projects like [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org/) have taken to using it as their bundler of choice. How it succeeds in this task is in eliminating overhead in generated bundles.
+
+To demonstrate, let's consider the most minimal configuration possible for both Webpack and Rollup, for a library "example" that consists of a single empty function as its default export.
+
+_input.js_
+
+<Gist id="aduth/2497d963285ddf09b6f08ae8b9378a0d" file="input.js" />
+
+_webpack.config.js_
+
+<Gist id="aduth/2497d963285ddf09b6f08ae8b9378a0d" file="webpack.config.js" />
+
+_rollup.config.js_
+
+<Gist id="aduth/2497d963285ddf09b6f08ae8b9378a0d" file="rollup.config.js" />
+
+If you then look at the generated output for each ([Webpack](https://gist.github.com/aduth/2497d963285ddf09b6f08ae8b9378a0d#file-output-webpack-js), [Rollup](https://gist.github.com/aduth/2497d963285ddf09b6f08ae8b9378a0d#file-output-rollup-js)), the difference should be clear. Even minified, the Webpack bundle clocks in at nearly a half-kilobyte with only an empty function, before we've even started to implement our library. By constrast, the Rollup bundle is about one-fifth that size.
+
+Why the difference? Every Webpack bundle starts with a generic snippet of code responsible for facilitating module loading. Rollup does not include this runtime dependency resolution and instead includes imported dependencies inline.
+
+Webpack's runtime module loader becomes increasingly negligible as the codebase grows, since it's the same snippet included once per application. But when every byte counts when authoring your new library micro-library, it helps to have the option to eliminate this overhead.

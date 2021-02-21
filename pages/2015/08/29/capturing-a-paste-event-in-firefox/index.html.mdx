@@ -1,0 +1,30 @@
+import Layout from '../../../../../layouts/BlogLayout.jsx';
+export const title = 'Capturing a Paste Event in Firefox';
+export const datePublished = new Date('2015-08-29 00:00:00');
+export const tags = ['browsers'];
+export default Layout;
+
+Imagine yourself building a web app that supports image uploads by simply capturing your computer's paste keyboard shortcut. Sites like [imgur.com](http://imgur.com/) already support this behavior and it adds an extra level of convenience for what would otherwise require several additional button clicks.
+
+The [`paste` event](https://developer.mozilla.org/en-US/docs/Web/Events/paste) has been supported in major browsers for [some time now](http://caniuse.com/#search=paste), but interestingly Firefox doesn't trigger the event unless the user's cursor is currently focussed in an editable region. This seems to be contradictory to the [specification itself](http://www.w3.org/TR/clipboard-apis/#h-the-paste-action), which states:
+
+> The paste event has no default action in a non-[editable context](http://www.w3.org/TR/clipboard-apis/#dfn-editable-context), **but the event fires regardless.**
+
+There is an [open ticket](https://bugzilla.mozilla.org/show_bug.cgi?id=846674) on Bugzilla related to this behavior, while others have resorted to [tricks](http://stackoverflow.com/a/2177059) to move the user's cursor when detecting that a combination of the "control" and "v" keys are pressed.
+
+In my testing, however, I found that the mere presence of a `contenteditable` element at the root of the page was sufficient in allowing the `paste` event to trigger normally in Firefox, even if the element is hidden using `display: none;` styles.
+
+Check it out in the demo below:
+
+<iframe
+	src="https://codepen.io/aduth/embed/avoQgm?height=456&theme-id=light&default-tab=js,result"
+	title="CodePen embed"
+	height="425"
+	width="800"
+	scrolling="no"
+	frameBorder="no"
+/>
+
+In Firefox (v40.0.3 as of today), you'll find that the `paste` event is captured so long as the `contenteditable` attribute is assigned. When toggling the `contenteditable` off, thereby removing the attribute, the paste is no longer captured. Admittedly, it's a nuisance to include this unused element, but it's certainly an improvement over redirecting or otherwise faking the paste interaction using one of the aforementioned tricks.
+
+While there are [many other browser inconsistencies](http://stackoverflow.com/questions/2176861/javascript-get-clipboard-data-on-paste-event-cross-browser/6804718#6804718) to account for when working with the `paste` event, I was surprised to find that despite what I had read, it was easier than I had anticipated to capture page-wide pastes in Firefox.

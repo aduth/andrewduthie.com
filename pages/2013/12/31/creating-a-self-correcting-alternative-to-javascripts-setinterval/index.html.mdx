@@ -1,0 +1,84 @@
+import Layout from '../../../../../layouts/BlogLayout.jsx';
+export const title =
+	"Creating a self-correcting alternative to JavaScript's setInterval";
+export const datePublished = new Date('2013-12-31 00:00:00');
+export const description =
+	"JavaScript's setInterval and setTimeout functions suffer from latency caused by JavaScript's single-threaded nature, so let's create a self-correcting alternative.";
+export default Layout;
+
+Recently, I've been toying with JavaScript's `setInterval` method which, if you're unfamiliar, allows you to execute code repeatedly at a specified time interval. For example, one might create an interval which executes every second by using the following code snippet:
+
+```js
+setInterval(function () {
+	console.log('I execute every second!');
+}, 1000);
+```
+
+Both `setInterval` and its close cousin `setTimeout` suffer from latency caused by JavaScript's single-threaded nature. While you may intend for an interval to execute every 1000 milliseconds, in reality it could take slightly longer for the function to be triggered. This is typically only a few milliseconds and therefore might appear to be a negligible problem. You might also expect that subsequent intervals would make an effort to get the code execution back on a predictable schedule. In other words, if there was 1007 milliseconds between registering the interval and the first code execution (a delay of 7 milliseconds), you could expect the next execution to occur as close to 2000 milliseconds as possible (i.e. 993 milliseconds later).
+
+Depending on your browser, however, this may not be the case. We can demonstrate this by tracking the number of milliseconds which have passed since `setInterval` was registered:
+
+```js
+var startTime = Date.now();
+setInterval(function () {
+	console.log(Date.now() - startTime + 'ms elapsed');
+}, 1000);
+```
+
+If you run this in current versions of Chrome, Safari, Internet Explorer, or Node.js, you'll notice that the interval execution grows increasingly out of sync with the original `setInterval` function call.
+
+![setInterval increasingly grows out of sync](https://andrewmduthie.files.wordpress.com/2015/08/setinterval.png?w=1000)
+
+In my testing, I've found that only Firefox attempts to keep the interval execution in sync.
+
+Regardless of whether this is the intended behavior of `setInterval`, I needed a means by which I could execute code as closely as possible to a predictable interval. Below is my solution to this problem:
+
+```js
+window.setCorrectingInterval = function (func, delay) {
+	var instance = {};
+
+	function tick(func, delay) {
+		if (!instance.started) {
+			instance.func = func;
+			instance.delay = delay;
+			instance.startTime = new Date().valueOf();
+			instance.target = delay;
+			instance.started = true;
+
+			setTimeout(tick, delay);
+		} else {
+			var elapsed = new Date().valueOf() - instance.startTime,
+				adjust = instance.target - elapsed;
+
+			instance.func();
+			instance.target += instance.delay;
+
+			setTimeout(tick, instance.delay + adjust);
+		}
+	}
+
+	return tick(func, delay);
+};
+```
+
+Including the code sample above will add a new `setCorrectingInterval` function to the `window` global that can be called using the same parameters you would normally pass to `setInterval`. Here's a detailed breakdown of what's going on in the new function:
+
+- To track properties related to this particular interval instance, we wrap the inner `tick` function inside a [closure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures) construct.
+- When the function is first called (i.e. when `instance.started` is `false`), a number of properties are stored to our `instance` object.
+- In place of `setInterval`, we repeatedly call `setTimeout`, passing the `tick` function and an adjusted delay.
+- The adjusted delay is calculated by tracking both the start time of the original function call and an incremented target execution time.
+
+To achieve the desired behavior, we can update the broken example to use `setCorrectingInterval` in place of `setInterval`.
+
+```js
+var startTime = Date.now();
+setCorrectingInterval(function () {
+	console.log(Date.now() - startTime + 'ms elapsed');
+}, 1000);
+```
+
+As can be seen in the image below, the number of milliseconds elapsed does not continuously increase, but instead aims to occur as closely as possible to the intended once-per-second schedule.
+
+![setCorrectingInterval adjusts to stay in sync](https://andrewmduthie.files.wordpress.com/2015/08/setcorrectinginterval.png?w=1000)
+
+_If you find this useful, I've created a more full-featured version, which includes a matching `clearCorrectingInterval` and adds the option to pass arguments ([refer to setInterval's method signature for more information](https://developer.mozilla.org/en-US/docs/Web/API/window.setInterval)). You can read more about it, including download instructions, [on the GitHub repository](https://github.com/aduth/correctingInterval)._

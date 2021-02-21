@@ -1,0 +1,35 @@
+import Layout from '../../../../../layouts/BlogLayout.jsx';
+export const title = 'TypeScript Types for Productivity';
+export const datePublished = new Date('2020-02-15 00:00:00');
+export const tags = ['productivity', 'typescript'];
+export default Layout;
+
+There's no shortage of articles on the web weighing the assumed overhead involved in using TypeScript and incorporating types in your development workflows. It's one of the metrics in what's often referred to as the ["TypeScript Tax"](https://medium.com/javascript-scene/the-typescript-tax-132ff4cb175b). The more I've been using TypeScript, however, I've found that there are common cases where incorporating types can _improve_ my productivity.
+
+For example, consider the cumbersome task of working with a Webpack configuration. There are a [vast number of available options](https://webpack.js.org/configuration/#options) for configuring Webpack. For all but the most simple changes, it's almost guaranteed you'll find yourself perusing the documentation to reference which of the [`devtool` option strings](https://webpack.js.org/configuration/devtool/#devtool) you're looking for, or the specific object format you're expected to provide for [the `output` option](https://webpack.js.org/configuration/output/).
+
+A simple addition of a type is enough to add clarity in these situations:
+
+```js
+/** @type {import('webpack').Configuration} */
+const config = {
+	// ...
+};
+
+module.exports = config;
+```
+
+_(Perhaps counter-intuitively, this example demonstrates adding a [type detail in your JavaScript code](https://andrewduthie.com/2019/11/27/typescript-tooling-for-your-javascript-projects/) via JSDoc. TypeScript works just as well too, of course!)_
+
+Using [Visual Studio Code](https://code.visualstudio.com/) (or another IDE which can interpret these type details), I can now benefit from [IntelliSense code completion](https://code.visualstudio.com/docs/editor/intellisense) to make working with this configuration a breeze.
+
+<img
+	src="https://andrewmduthie.files.wordpress.com/2020/03/webpack-types.gif?w=478"
+	width="478"
+	height="461"
+	alt="Webpack types"
+/>
+
+I didn't even need to install anything new to take advantage of this, since Webpack ships with its own type definitions.
+
+Of course, this isn't limited to just Webpack. And there's nothing here which is unique from other applications of TypeScript types. But in case you find yourself in the position to weigh the pros and cons of incorporating TypeScript types in your development workflow, it could be worth reflecting on where you spend your time. By adding just one line of code here now, I will save myself several visits to the Webpack documentation in the future.

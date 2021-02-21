@@ -1,0 +1,212 @@
+import Layout from '../../../../../layouts/BlogLayout.jsx';
+export const title = 'TypeScript Tooling for Your JavaScript Projects';
+export const datePublished = new Date('2020-11-27 00:00:00');
+export const tags = ['tooling', 'typescript'];
+export default Layout;
+
+When evaluating [TypeScript](https://www.typescriptlang.org/), it's usually considered as an investment into the language itself. For this reason, and despite all its merits, some developers might be inclined to dismiss it altogether out of a lack of interest in learning a new syntax, or a worry to impose that requirement onto others as part of your onboarding workflow.
+
+But even if you're determined to use plain-ol' JavaScript in your projects, it's worth considering the tooling that TypeScript offers. I suspect that many developers would be surprised to find they can achieve the benefits of type safety without leaving the comfort of JavaScript.
+
+There are many reasons why one should or shouldn't adopt TypeScript into their workflows. This blog post isn't concerned with convincing you one way or the other. Instead, I'll focus on demonstrating how you can benefit from TypeScript tooling even if you choose not to adopt the language itself.
+
+## JSDoc
+
+JSDoc is a convention for documenting JavaScript via code comments. Using the multi-line code comment, you can document your functions, variables, classes, etc.
+
+```js
+/**
+ * Returns a promise which resolves to the resolved file path for a given module
+ * specifier and parent file. Overrides the default resolver behavior to allow
+ * for root path imports as from the current working directory.
+ *
+ * @see https://nodejs.org/api/esm.html#esm\_resolve\_hook
+ *
+ * @param {string}   specifier       Imported module specifier.
+ * @param {string}   parentModule    Parent file URL.
+ * @param {Function} defaultResolver Default resolver implementation.
+ *
+ * @return {Promise<string>} Resolved file path.
+ */
+export async function resolve(specifier, parentModule, defaultResolver) {
+	// ...
+}
+```
+
+As you can see in this example, we can document the purpose of a function, the parameters it accepts (including their types, assigned names, and descriptions), and an expected return value.
+
+This simple example only scratches the surface of JSDoc. I'd encourage you to [consult the JSDoc website](https://jsdoc.app/index.html) for more information and examples.
+
+While JSDoc was originally devised as a reference upon which to generate API documentation, tools like [Google's Closure Compiler](https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler) and in-fact [TypeScript itself](https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html#supported-jsdoc) can use this metadata as part of its own code analysis.
+
+It's through JSDoc annotations that we can add type checking for our JavaScript using TypeScript.
+
+## Integrating TypeScript JSDoc Checking Into Your Project
+
+TypeScript is distributed as a [node module](https://www.npmjs.com/package/typescript), which you can install locally to your project, or globally using `npm install -g typescript`.
+
+At the core of TypeScript is [its compiler, `tsc`](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html#compiling-your-code). The compiler command has [many options](https://www.typescriptlang.org/docs/handbook/compiler-options.html), including those relevant for checking JavaScript code. You will most likely want to use [a `tsconfig.json` file](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html) in your project's root directory for defining configuration values, since passing these parameters to the command will become unwieldy to manage. Using a configuration file will also allow you to take advantage of editor integration (covered in more detail later). For the most part, the values you specify in this file align one-to-one with equivalent compiler options.
+
+An example `tsconfig.json` for your JavaScript project might look like:
+
+```json
+{
+	"compilerOptions": {
+		"module": "es2015",
+		"moduleResolution": "node",
+		"target": "es2019",
+		"allowJs": true,
+		"checkJs": true,
+		"noEmit": true
+	},
+	"include": ["src"]
+}
+```
+
+The most important of these options are: `allowJs`, `checkJs`, and `noEmit`.
+
+- `allowJs` instructs the compiler to consider JavaScript files
+- `checkJs` will cause errors in JavaScript files to be reported
+- `noEmit` is used to indicate there should be no files output, since we're not intending to transform the JavaScript from its source
+
+Many of the other options pertain to the browser or Node.js environments you intend to target, and the files in your project which should be checked.
+
+With the above in place, let's revisit the original `resolve` function. If I were to try to compile this code with a number of invalid permutations, the `tsc` compilation will flag the errors:
+
+```js
+resolve('path.js');
+// An argument for 'parentModule' was not provided.
+
+resolve(null, '/path/to/source.js', () => {});
+// Argument of type 'null' is not assignable to parameter of type 'string'.
+
+resolve('path.js', '/path/to/source.js', () => {}).toUpperCase();
+// Property 'toUpperCase' does not exist on type 'Promise<string>'.
+
+resolve('path.js', '/path/to/source.js', () => {}).then((resolved) => {
+	if (resolved > 0) {
+		// ...
+	}
+});
+//  Operator '>' cannot be applied to types 'string' and 'number'.
+```
+
+## Editor Integration
+
+The previous section describes the primary workflow for checking types with the `tsc` command. You can use this command in your project's test scripts, optionally in combination with a continuous integration solution like [Travis CI](https://travis-ci.org/) or [GitHub Actions](https://github.com/features/actions).
+
+But if you happen to be using [Visual Studio Code](https://code.visualstudio.com/) as your primary editor already, you can also take advantage of its built-in type-checking and [IntelliSense auto-completion](https://code.visualstudio.com/docs/editor/intellisense).
+
+<img
+	src="https://andrewmduthie.files.wordpress.com/2019/11/image.png?w=1024"
+	width="1024"
+	height="215"
+	alt="VSCode inline error handling"
+/>
+
+VS Code will highlight errors inline, revealing a description of the error upon hovering the highlighted segment.
+
+<img
+	src="https://andrewmduthie.files.wordpress.com/2019/11/image-3.png?w=1024"
+	width="1024"
+	height="422"
+	alt="VSCode Intellisense typeahead"
+/>
+
+As you write code, VS Code is informed by type information to present relevant auto-completion options. In this example, it is known that `resolve` will return a `Promise` object.
+
+Visual Studio Code will automatically detect the presence of your `tsconfig.json` and use its configuration to provide inline errors and auto-completion hints.
+
+## Custom Types
+
+While the above examples demonstrate basic type-checking with primitive value types, you may quickly find that these aren't sufficient for more advanced use cases. Fortunately, JSDoc provides [the `@typedef` tag](https://jsdoc.app/tags-typedef.html) to enable you to define your own custom types.
+
+Consider a contrived example of a "To Do" list, where we represent the list as an array of task objects. Every task object should follow the same shape, and we can enforce this and benefit from the known shape using TypeScript tooling.
+
+```js
+/**
+ * A task object.
+ *
+ * @typedef {Object} Task
+ *
+ * @property {string}  description A description of the task.
+ * @property {boolean} done        Whether the task is complete.
+ */
+
+/**
+ * @type {Task[]}
+ */
+const tasks = [
+	{ description: 'Go to the gym', done: true },
+	{ description: 'Try to spend time in the sunlight', done: false },
+	{ description: 'Laundry must be done' },
+];
+```
+
+If we compile the above code, we see an expected error for the missing `done` property:
+
+```
+Property 'done' is missing in type '{ description: string; }' but required in type 'Task'."
+```
+
+We can resolve the error by adding the missing property.
+
+Better yet, because VS Code is able to interpret these type values, we can benefit from auto-completion in our editor when manipulating these values. Consider a function which derives the number of completed tasks:
+
+```js
+/**
+ * Returns the number of completed tasks.
+ *
+ * @param {Task[]} tasks Task objects.
+ *
+ * @return {number} Number of completed tasks.
+ */
+function getCompletedTasks(tasks) {
+	return tasks.filter((task) => task.done).length;
+}
+```
+
+As we start to write the implementation, VS Code understands that we're working with an array (offers `filter`), where each item is a task (has a predefined set of expected properties), and that the result of the `filter` call is an array with a `length` property.
+
+<img
+	src="https://andrewmduthie.files.wordpress.com/2019/11/get-completed-tasks.gif?w=583"
+	width="583"
+	height="276"
+	alt="VSCode auto-complete"
+/>
+
+Naturally, we might want to reuse these custom types in multiple files of a project. When assigning a type, you can optionally choose to `import` from a file which defines the type:
+
+```js
+/**
+ * Returns the number of completed tasks.
+ *
+ * @param {import('./tasks').Task[]} tasks Task objects.
+ *
+ * @return {number} Number of completed tasks.
+ */
+function getCompletedTasks(tasks) {
+	// ...
+}
+```
+
+This can get verbose quite quickly, especially when referencing the type multiple times in the same file. In those situations, I suggest defining a `typedef` to serve as an alias to the imported type. In this way, it acts like any other `import` statement at the top of your file.
+
+```js
+/** @typedef {import('./tasks').Task} Task */
+```
+
+With this alias in place, you can then proceed to reference the type as `Task` once more.
+
+## Conclusion
+
+I hope I've succeeded in demonstrating that, with only a small amount of configuration in your existing project, you can start to take advantage of some of the same type-safety and developer usability that you'd have when using TypeScript.
+
+Are there more advanced use-cases where TypeScript will reign superior to JSDoc types? I don't doubt it. [Type inheritance](https://github.com/Microsoft/TypeScript/issues/20077) is a missing feature I've personally encountered and would like to see improved. But otherwise, I've otherwise very few issues integrating this tooling into several small-to-medium sized projects.
+
+If you're interested in learning more, I would suggest to continue your reading at the following resources:
+
+- [JSDoc Documentation](https://jsdoc.app/)
+- [TypeScript: Supported JSDoc](https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html#supported-jsdoc) - Occasionally, you'll find that TypeScript's documentation serves as a better reference than the official JSDoc website. Some of the syntax is specific to TypeScript and not part of the JSDoc standard.
+- [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc) - An [ESLint](https://eslint.org/) plugin to help enforce proper JSDoc usage.
+- [DefinitelyTyped](http://definitelytyped.org/) - A valuable resource for community-maintained TypeScript type definitions for your favorite libraries.

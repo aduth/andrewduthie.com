@@ -1,0 +1,13 @@
+{
+	"name": "@aduth/build-mdx-to-html",
+	"version": "1.0.0",
+	"type": "module",
+	"main": "index.js",
+	"dependencies": {
+		"@mdx-js/mdx": "^2.0.0-next.8",
+		"@mdx-js/react": "^2.0.0-next.8",
+		"esbuild": "^0.8.46",
+		"react": "^17.0.1",
+		"react-dom": "^17.0.1"
+	}
+}
