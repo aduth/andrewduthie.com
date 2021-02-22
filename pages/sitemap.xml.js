@@ -4,6 +4,11 @@ import glob from 'fast-glob';
 import { readFile } from 'fs/promises';
 
 /**
+ * @type {Set<string>}
+ */
+const EXCLUDED_PATHS = new Set(['404.html']);
+
+/**
  * @param {string} path
  *
  * @return {string}
@@ -45,7 +50,10 @@ async function render() {
 	const pages = await glob('**/*.html.mdx', { cwd: scriptDir });
 	const pkgFile = new URL('../package.json', import.meta.url);
 	const { homepage: baseURL } = JSON.parse(await readFile(pkgFile, 'utf-8'));
-	const urls = pages.map((path) => new URL(getNormalPath(path), baseURL));
+	const urls = pages
+		.map((path) => getNormalPath(path))
+		.filter((path) => !EXCLUDED_PATHS.has(path))
+		.map((path) => new URL(path, baseURL));
 
 	return getSitemap(urls);
 }
