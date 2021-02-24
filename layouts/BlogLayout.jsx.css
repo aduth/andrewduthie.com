@@ -11,7 +11,7 @@
 }
 
 .blog-layout__content pre {
-	margin: 2rem;
+	margin: 2rem var(--inset-content-h-margin);
 }
 
 .blog-layout__content img,

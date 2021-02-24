@@ -5,7 +5,7 @@
 }
 
 html {
-	font-size: 18px;
+	font-size: var(--base-font-size);
 }
 
 body {
@@ -16,7 +16,7 @@ body {
 	margin: 0 auto;
 	width: 52rem;
 	max-width: 100%;
-	padding: 5vw 2rem 10vw;
+	padding: 5vw var(--body-h-padding) 10vw;
 }
 
 h1,

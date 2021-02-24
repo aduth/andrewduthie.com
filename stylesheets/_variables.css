@@ -1,0 +1,13 @@
+:root {
+	--base-font-size: 16px;
+	--body-h-padding: 1rem;
+	--inset-content-h-margin: 0;
+}
+
+@media (min-width: 480px) {
+	:root {
+		--base-font-size: 18px;
+		--body-h-padding: 2rem;
+		--inset-content-h-margin: 2rem;
+	}
+}
