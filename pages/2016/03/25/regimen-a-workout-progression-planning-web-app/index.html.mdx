@@ -1,4 +1,5 @@
 import Layout from '../../../../../layouts/BlogLayout.jsx';
+import ClickableImage from '../../../../../components/ClickableImage.jsx';
 export const title = 'Regimen: A workout progression planning web app';
 export const datePublished = new Date('2016-03-25 00:00:00');
 export const tags = ['projects', 'fitness'];
@@ -9,9 +10,10 @@ export default Layout;
 [Regimen](https://regimenapp.com) is a side-project I've been building off-and-on for the past few months. It's a web app that I'd originally created for myself out of frustration for the lack of options in helping me plan my workouts. Specifically, most weightlifting routines offer some form of downloadable Excel spreadsheet, but these are cumbersome to work with when at the gym. I found myself either fumbling with the Google Sheets app on my phone, or printing a paper copy of the spreadsheet - neither was a great solution.
 
 <figure>
-	<img
+	<ClickableImage
 		src="https://andrewmduthie.files.wordpress.com/2016/03/sheets.png"
-		width="223"
+		width={223}
+		height={396}
 		alt=""
 	/>
 	<figcaption>The usability nightmare that is Sheets.</figcaption>

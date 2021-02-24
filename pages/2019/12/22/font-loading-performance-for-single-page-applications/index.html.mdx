@@ -1,4 +1,5 @@
 import Layout from '../../../../../layouts/BlogLayout.jsx';
+import ClickableImage from '../../../../../components/ClickableImage.jsx';
 export const title = 'Font Loading Performance for Single-Page Applications';
 export const datePublished = new Date('2019-12-22 00:00:00');
 export const tags = ['performance'];
@@ -47,10 +48,10 @@ Consider the following example:
 
 If you were to look at [Chrome's DevTools Network tab](https://developers.google.com/web/tools/chrome-devtools/network) when loading this page, you would see the font file declared here is never requested:
 
-<img
+<ClickableImage
 	src="https://andrewmduthie.files.wordpress.com/2019/12/screen-shot-2019-12-22-at-3.14.15-pm.png?w=1024"
-	width="1024"
-	height="656"
+	width={1024}
+	height={656}
 	alt="Chrome network tab"
 />
 
@@ -79,10 +80,10 @@ If we reintroduce the React code from the original example, you'd see that the f
 </script>
 ```
 
-<img
+<ClickableImage
 	src="https://andrewmduthie.files.wordpress.com/2019/12/pasted_image_12_22_19__3_18_pm-1.png?w=1024"
-	width="1024"
-	height="669"
+	width={1024}
+	height={669}
 	alt="Network tab waterfall before"
 />
 
@@ -130,10 +131,10 @@ And while it can generally be a good idea to consider preloading necessary page 
 
 With the above solution in place, you should see a more desirable page load waterfall:
 
-<img
+<ClickableImage
 	src="https://andrewmduthie.files.wordpress.com/2019/12/pasted_image_12_22_19__4_54_pm.png?w=1024"
-	width="1024"
-	height="626"
+	width={1024}
+	height={626}
 	alt="Font preload page load waterfall"
 />
 

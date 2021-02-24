@@ -1,4 +1,5 @@
 import Layout from '../../../../../layouts/BlogLayout.jsx';
+import ClickableImage from '../../../../../components/ClickableImage.jsx';
 export const title = 'TypeScript Tooling for Your JavaScript Projects';
 export const datePublished = new Date('2020-11-27 00:00:00');
 export const tags = ['tooling', 'typescript'];
@@ -97,19 +98,19 @@ The previous section describes the primary workflow for checking types with the 
 
 But if you happen to be using [Visual Studio Code](https://code.visualstudio.com/) as your primary editor already, you can also take advantage of its built-in type-checking and [IntelliSense auto-completion](https://code.visualstudio.com/docs/editor/intellisense).
 
-<img
+<ClickableImage
 	src="https://andrewmduthie.files.wordpress.com/2019/11/image.png?w=1024"
-	width="1024"
-	height="215"
+	width={1024}
+	height={215}
 	alt="VSCode inline error handling"
 />
 
 VS Code will highlight errors inline, revealing a description of the error upon hovering the highlighted segment.
 
-<img
+<ClickableImage
 	src="https://andrewmduthie.files.wordpress.com/2019/11/image-3.png?w=1024"
-	width="1024"
-	height="422"
+	width={1024}
+	height={422}
 	alt="VSCode Intellisense typeahead"
 />
 
@@ -168,10 +169,10 @@ function getCompletedTasks(tasks) {
 
 As we start to write the implementation, VS Code understands that we're working with an array (offers `filter`), where each item is a task (has a predefined set of expected properties), and that the result of the `filter` call is an array with a `length` property.
 
-<img
+<ClickableImage
 	src="https://andrewmduthie.files.wordpress.com/2019/11/get-completed-tasks.gif?w=583"
-	width="583"
-	height="276"
+	width={583}
+	height={276}
 	alt="VSCode auto-complete"
 />
 
