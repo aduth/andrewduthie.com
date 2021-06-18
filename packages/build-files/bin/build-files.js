@@ -36,13 +36,15 @@ const fromPairs = (array) =>
  *
  * @return {Promise<Record<string,Builder>>}
  */
-async function getHandlers(rawHandlers) {
+function getHandlers(rawHandlers) {
 	/** @type {Promise<[string,Builder]>[]} */
 	const handlerPairs = [];
 
 	for (const rawHandler of rawHandlers) {
 		const [extension, mod] = rawHandler.split(':');
-		handlerPairs.push(import(mod).then((mod) => [extension, mod.default]));
+		handlerPairs.push(
+			import(mod).then(({ default: handler }) => [extension, handler])
+		);
 	}
 
 	return Promise.all(handlerPairs).then(fromPairs);

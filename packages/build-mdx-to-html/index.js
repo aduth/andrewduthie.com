@@ -23,8 +23,8 @@ async function build(source, options) {
 		plugins: [
 			{
 				name: 'external-node-modules',
-				setup(build) {
-					build.onResolve({ filter: /^[^.]/ }, (args) => ({
+				setup({ onResolve }) {
+					onResolve({ filter: /^[^.]/ }, (args) => ({
 						path: args.path,
 						external: true,
 					}));
