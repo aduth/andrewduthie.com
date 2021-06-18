@@ -6,7 +6,7 @@
 	"type": "module",
 	"homepage": "https://andrewduthie.com",
 	"workspaces": [
-		"packages/**"
+		"./packages/*"
 	],
 	"scripts": {
 		"clean": "rimraf build",
