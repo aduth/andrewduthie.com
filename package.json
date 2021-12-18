@@ -29,27 +29,27 @@
 	},
 	"license": "MIT",
 	"devDependencies": {
-		"@aduth/eslint-config": "^4.2.1",
+		"@aduth/eslint-config": "^4.4.1",
 		"@types/klaw": "^3.0.3",
-		"@types/node": "^14.14.31",
-		"@types/react": "^17.0.2",
-		"@types/react-dom": "^17.0.1",
+		"@types/node": "^17.0.0",
+		"@types/react": "^17.0.37",
+		"@types/react-dom": "^17.0.11",
 		"@types/source-map": "^0.5.2",
-		"chokidar-cli": "^2.1.0",
-		"eslint": "^7.28.0",
+		"chokidar-cli": "^3.0.0",
+		"eslint": "^8.5.0",
 		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-prettier": "^3.4.0",
-		"eslint-plugin-react": "^7.24.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"eslint-plugin-react": "^7.27.1",
 		"live-server": "^1.2.1",
-		"schema-dts": "^0.8.2",
-		"typescript": "^4.2.1-rc"
+		"schema-dts": "^1.0.0",
+		"typescript": "^4.5.4"
 	},
 	"dependencies": {
 		"cpy-cli": "^3.1.1",
-		"fast-glob": "^3.2.5",
+		"fast-glob": "^3.2.7",
 		"npm-run-all": "^4.1.5",
 		"postcss-clean": "^1.2.2",
-		"postcss-import": "^14.0.0",
+		"postcss-import": "^14.0.2",
 		"rimraf": "^3.0.2"
 	}
 }

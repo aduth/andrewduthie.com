@@ -5,6 +5,13 @@ import build from '../index.js';
 
 /** @typedef {import('../index').Builder} Builder */
 
+/**
+ * @typedef BuildOptions
+ *
+ * @prop {string[]} handler Mappings of file extension to handler package.
+ * @prop {string} outDir Output directory.
+ */
+
 program.arguments('<from...>');
 program.option(
 	'--handler <handler...>',
@@ -50,6 +57,7 @@ function getHandlers(rawHandlers) {
 	return Promise.all(handlerPairs).then(fromPairs);
 }
 
+/** @type {BuildOptions} */
 const { handler: rawHandlers = [], outDir } = program.opts();
 const from = program.args;
 

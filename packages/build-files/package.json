@@ -5,11 +5,11 @@
 	"main": "index.js",
 	"bin": "./bin/build-files.js",
 	"dependencies": {
-		"commander": "^7.0.0",
+		"commander": "^8.3.0",
 		"klaw": "^4.0.1",
 		"write": "^2.0.0"
 	},
 	"devDependencies": {
-		"@types/write": "^2.0.0"
+		"@types/write": "^2.0.1"
 	}
 }
