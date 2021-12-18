@@ -30,6 +30,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@aduth/eslint-config": "^4.2.1",
+		"@types/klaw": "^3.0.3",
 		"@types/node": "^14.14.31",
 		"@types/react": "^17.0.2",
 		"@types/react-dom": "^17.0.1",

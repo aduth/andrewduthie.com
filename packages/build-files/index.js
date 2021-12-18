@@ -1,9 +1,7 @@
 import { promises as fs } from 'fs';
 import { join, relative } from 'path';
 import write from 'write';
-import { walkStream } from '@nodelib/fs.walk';
-
-/** @typedef {import('@nodelib/fs.walk').Entry} Entry */
+import walkStream from 'klaw';
 
 /**
  * @typedef BuildOptions
@@ -73,8 +71,8 @@ async function build(from, to, handlers = {}) {
 
 	for (const dir of castArray(from)) {
 		for await (const entry of walkStream(dir)) {
-			const { dirent, path } = /** @type {Entry} */ (entry);
-			if (!dirent.isFile()) {
+			const { path, stats } = entry;
+			if (!stats.isFile()) {
 				continue;
 			}
 
@@ -88,7 +86,7 @@ async function build(from, to, handlers = {}) {
 			files.push(
 				fs
 					.readFile(path, 'utf-8')
-					.then((content) => render(content, { file: './' + path }))
+					.then((content) => render(content, { file: join(dir, relativePath) }))
 					.then((output) => write(outFile, output).then(() => output))
 			);
 		}
