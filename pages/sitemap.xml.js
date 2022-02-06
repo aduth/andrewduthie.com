@@ -47,9 +47,12 @@ const getSitemap = (urls) =>
  */
 async function render() {
 	const scriptDir = dirname(fileURLToPath(import.meta.url));
-	const pages = await glob('**/*.html.mdx', { cwd: scriptDir });
 	const pkgFile = new URL('../package.json', import.meta.url);
-	const { homepage: baseURL } = JSON.parse(await readFile(pkgFile, 'utf-8'));
+	const [pages, pkg] = await Promise.all([
+		glob('**/*.html.mdx', { cwd: scriptDir }),
+		readFile(pkgFile, 'utf-8'),
+	]);
+	const { homepage: baseURL } = JSON.parse(pkg);
 	const urls = pages
 		.map((path) => getNormalPath(path))
 		.filter((path) => !EXCLUDED_PATHS.has(path))
