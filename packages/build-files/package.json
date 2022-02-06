@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"bin": "./bin/build-files.js",
 	"dependencies": {
-		"commander": "^8.3.0",
+		"commander": "^9.0.0",
 		"klaw": "^4.0.1",
 		"write": "^2.0.0"
 	},
