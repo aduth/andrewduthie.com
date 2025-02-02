@@ -11,7 +11,7 @@
 	"scripts": {
 		"clean": "rm -rf build",
 		"prebuild": "npm run clean",
-		"build:files": "build-files pages stylesheets --handler .html.mdx:@aduth/build-mdx-to-html --handler .js:@aduth/build-js --handler .pcss:@aduth/build-postcss",
+		"build:files": "build-files pages stylesheets --handler .html.mdx:@aduth/build-mdx-to-html --handler .js:@aduth/build-js --handler .css:@aduth/build-css",
 		"prebuild:copy-public": "mkdir -p build",
 		"build:copy-public": "cp -R public/* build",
 		"build": "run-p build:*",
@@ -44,8 +44,6 @@
 		"typescript": "^5.7.3"
 	},
 	"dependencies": {
-		"npm-run-all": "^4.1.5",
-		"postcss-clean": "^1.2.2",
-		"postcss-import": "^16.1.0"
+		"npm-run-all": "^4.1.5"
 	}
 }

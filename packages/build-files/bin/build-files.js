@@ -15,12 +15,12 @@ import build from '../index.js';
 program.arguments('<from...>');
 program.option(
 	'--handler <handler...>',
-	'Colon-deliminated pair of file extension to module helper'
+	'Colon-deliminated pair of file extension to module helper',
 );
 program.option(
 	'--out-dir <outDir>',
 	'Output directory for built files',
-	'build'
+	'build',
 );
 program.parse(process.argv);
 
@@ -35,7 +35,7 @@ program.parse(process.argv);
 const fromPairs = (array) =>
 	array.reduce(
 		(result, pair) => ((result[pair[0]] = pair[1]), result),
-		/** @type {Record<TKey,TValue>} */ ({})
+		/** @type {Record<TKey,TValue>} */ ({}),
 	);
 
 /**
@@ -50,7 +50,7 @@ function getHandlers(rawHandlers) {
 	for (const rawHandler of rawHandlers) {
 		const [extension, mod] = rawHandler.split(':');
 		handlerPairs.push(
-			import(mod).then(({ default: handler }) => [extension, handler])
+			import(mod).then(({ default: handler }) => [extension, handler]),
 		);
 	}
 

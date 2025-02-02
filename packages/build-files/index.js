@@ -1,5 +1,5 @@
-import { promises as fs } from 'fs';
-import { join, relative } from 'path';
+import { readFile } from 'node:fs/promises';
+import { join, relative, basename } from 'node:path';
 import write from 'write';
 import walkStream from 'klaw';
 
@@ -76,6 +76,11 @@ async function build(from, to, handlers = {}) {
 				continue;
 			}
 
+			// Don't process hidden or ignored files starting with dot or underscore
+			if (/^[_.]/.test(basename(path))) {
+				continue;
+			}
+
 			const render = getRenderer(path);
 			if (!render) {
 				continue;
@@ -84,10 +89,9 @@ async function build(from, to, handlers = {}) {
 			const relativePath = relative(dir, path);
 			const outFile = dropExtension(join(to, relativePath));
 			files.push(
-				fs
-					.readFile(path, 'utf-8')
+				readFile(path, 'utf-8')
 					.then((content) => render(content, { file: join(dir, relativePath) }))
-					.then((output) => write(outFile, output).then(() => output))
+					.then((output) => write(outFile, output).then(() => output)),
 			);
 		}
 	}
