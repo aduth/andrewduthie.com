@@ -1,7 +1,5 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import glob from 'fast-glob';
-import { readFile } from 'fs/promises';
+import { join, relative } from 'node:path';
+import { glob, readFile } from 'node:fs/promises';
 
 /**
  * @type {Set<string>}
@@ -14,7 +12,10 @@ const EXCLUDED_PATHS = new Set(['404.html']);
  * @return {string}
  */
 const getNormalPath = (path) =>
-	path.replace(/\.mdx$/, '').replace(/(^|\/)index\.html$/, '');
+	relative(
+		import.meta.dirname,
+		path.replace(/\.mdx$/, '').replace(/(^|\/)index\.html$/, '')
+	);
 
 /**
  * @param {string} path
@@ -46,10 +47,9 @@ const getSitemap = (urls) =>
  * @return {Promise<string>}
  */
 async function render() {
-	const scriptDir = dirname(fileURLToPath(import.meta.url));
 	const pkgFile = new URL('../package.json', import.meta.url);
 	const [pages, pkg] = await Promise.all([
-		glob('**/*.html.mdx', { cwd: scriptDir }),
+		Array.fromAsync(glob(join(import.meta.dirname, '**/*.html.mdx'))),
 		readFile(pkgFile, 'utf-8'),
 	]);
 	const { homepage: baseURL } = JSON.parse(pkg);

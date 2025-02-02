@@ -9,16 +9,17 @@
 		"./packages/*"
 	],
 	"scripts": {
-		"clean": "rimraf build",
+		"clean": "rm -rf build",
 		"prebuild": "npm run clean",
 		"build:files": "build-files pages stylesheets --handler .html.mdx:@aduth/build-mdx-to-html --handler .js:@aduth/build-js --handler .pcss:@aduth/build-postcss",
-		"build:copy-public": "cpy '**/*' '../build' --cwd=public --parents",
+		"prebuild:copy-public": "mkdir -p build",
+		"build:copy-public": "cp -R public/* build",
 		"build": "run-p build:*",
 		"rebuild": "run-p build:*",
 		"test:lint": "eslint --ext .jsx,.js packages components layouts",
 		"test:typecheck": "tsc",
 		"test": "run-p test:*",
-		"dev:serve": "live-server build",
+		"dev:serve": "ruby -run -ehttpd build -p8000",
 		"dev:watch": "chokidar stylesheets components layouts pages public -c \"npm run rebuild\" --initial",
 		"dev": "run-p dev:*"
 	},
@@ -30,26 +31,20 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@aduth/eslint-config": "^4.4.1",
-		"@types/klaw": "^3.0.3",
 		"@types/node": "^17.0.15",
 		"@types/react": "^17.0.39",
 		"@types/react-dom": "^17.0.11",
-		"@types/source-map": "^0.5.2",
 		"chokidar-cli": "^3.0.0",
 		"eslint": "^8.8.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-react": "^7.28.0",
-		"live-server": "^1.2.1",
 		"schema-dts": "^1.0.0",
 		"typescript": "^4.5.5"
 	},
 	"dependencies": {
-		"cpy-cli": "^3.1.1",
-		"fast-glob": "^3.2.11",
 		"npm-run-all": "^4.1.5",
 		"postcss-clean": "^1.2.2",
-		"postcss-import": "^14.0.2",
-		"rimraf": "^3.0.2"
+		"postcss-import": "^14.0.2"
 	}
 }
