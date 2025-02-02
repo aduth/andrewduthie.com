@@ -1,6 +1,5 @@
-import { readFile } from 'node:fs/promises';
-import { join, relative, basename } from 'node:path';
-import write from 'write';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { join, relative, basename, dirname } from 'node:path';
 import walkStream from 'klaw';
 
 /**
@@ -91,7 +90,11 @@ async function build(from, to, handlers = {}) {
 			files.push(
 				readFile(path, 'utf-8')
 					.then((content) => render(content, { file: join(dir, relativePath) }))
-					.then((output) => write(outFile, output).then(() => output)),
+					.then(async (output) => {
+						await mkdir(dirname(outFile), { recursive: true });
+						await writeFile(outFile, output);
+						return output;
+					}),
 			);
 		}
 	}
