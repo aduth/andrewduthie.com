@@ -11,6 +11,7 @@
 		"strictNullChecks": true,
 		"noImplicitAny": true,
 		"resolveJsonModule": true,
+		"skipLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
 			"react-dom/server.js": ["node_modules/@types/react-dom/server"]
