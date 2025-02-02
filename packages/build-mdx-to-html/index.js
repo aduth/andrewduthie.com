@@ -21,7 +21,7 @@ const md5 = (string) => createHash('md5').update(string).digest('hex');
 async function build(source, options) {
 	const { file } = options;
 
-	const jsx = String(await compile(source, { jsxRuntime: 'classic' }));
+	const jsx = String(await compile(source));
 	const { outputFiles, metafile } = await esbuild.build({
 		stdin: {
 			contents: jsx,
@@ -55,7 +55,7 @@ async function build(source, options) {
 		tempFile,
 		`${code}
 		import React from 'react';
-		import { renderToStaticMarkup } from 'react-dom/server.js';
+		import { renderToStaticMarkup } from 'react-dom/server';
 		const element = React.createElement(MDXContent, {${namedExports.join(',')}});
 		export const _builtMDXContent = '<!doctype html>' + renderToStaticMarkup(element);`,
 	);
