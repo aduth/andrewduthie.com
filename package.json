@@ -16,7 +16,7 @@
 		"build:copy-public": "cp -R public/* build",
 		"build": "run-p build:*",
 		"rebuild": "run-p build:*",
-		"test:lint": "eslint --ext .jsx,.js packages components layouts",
+		"test:lint": "eslint",
 		"test:typecheck": "tsc",
 		"test": "run-p test:*",
 		"dev:serve": "ruby -run -ehttpd build -p8000",
@@ -40,6 +40,7 @@
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-prettier": "^5.2.3",
 		"eslint-plugin-react": "^7.37.4",
+		"globals": "^15.14.0",
 		"schema-dts": "^1.1.2",
 		"typescript": "^5.7.3"
 	},

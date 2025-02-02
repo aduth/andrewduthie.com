@@ -57,7 +57,7 @@ async function build(source, options) {
 		import React from 'react';
 		import { renderToStaticMarkup } from 'react-dom/server.js';
 		const element = React.createElement(MDXContent, {${namedExports.join(',')}});
-		export const _builtMDXContent = '<!doctype html>' + renderToStaticMarkup(element);`
+		export const _builtMDXContent = '<!doctype html>' + renderToStaticMarkup(element);`,
 	);
 	const { _builtMDXContent: content } = await import(tempFile.toString());
 	await unlink(tempFile);

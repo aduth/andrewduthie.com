@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 async function build(_content, { file }) {
 	const modulePath = relative(
 		dirname(fileURLToPath(import.meta.url)),
-		join(process.cwd(), file)
+		join(process.cwd(), file),
 	);
 
 	return (await import(modulePath)).default();

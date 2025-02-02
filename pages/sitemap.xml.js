@@ -14,7 +14,7 @@ const EXCLUDED_PATHS = new Set(['404.html']);
 const getNormalPath = (path) =>
 	relative(
 		import.meta.dirname,
-		path.replace(/\.mdx$/, '').replace(/(^|\/)index\.html$/, '')
+		path.replace(/\.mdx$/, '').replace(/(^|\/)index\.html$/, ''),
 	);
 
 /**
