@@ -1,3 +1,4 @@
+import { type ReactNode } from 'react';
 import { description as DEFAULT_DESCRIPTION } from '../package.json';
 
 const GTAG_SCRIPT = `window.dataLayer = [];
@@ -5,18 +6,19 @@ function gtag() { dataLayer.push(arguments); }
 gtag('js', new Date());
 gtag('config', 'UA-37326155-1');`;
 
-/**
- * @typedef BaseLayoutProps
- *
- * @prop {import('react').ReactNode} children
- * @prop {string} title
- * @prop {string=} description
- */
+interface BaseLayoutProps {
+	children: ReactNode;
 
-/**
- * @param {BaseLayoutProps} props
- */
-function BaseLayout({ children, title, description = DEFAULT_DESCRIPTION }) {
+	title: string;
+
+	description?: string;
+}
+
+function BaseLayout({
+	children,
+	title,
+	description = DEFAULT_DESCRIPTION,
+}: BaseLayoutProps) {
 	const formattedTitle = [title, 'Andrew Duthie'].filter(Boolean).join(' | ');
 
 	return (

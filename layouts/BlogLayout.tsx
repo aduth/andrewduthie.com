@@ -1,28 +1,24 @@
+import { type ReactNode } from 'react';
 import BaseLayout from './BaseLayout';
 import Avatar from '../components/Avatar';
 import LinkedData from '../components/LinkedData';
 import { author } from '../package.json';
 
-/**
- * @typedef BlogLayoutProps
- *
- * @prop {import('react').ReactNode} children
- * @prop {string} title
- * @prop {string=} description
- * @prop {Date} datePublished
- * @prop {string[]=} tags
- */
+interface BlogLayoutProps {
+	children: ReactNode;
+	title: string;
+	description?: string;
+	datePublished: Date;
+	tags?: string[];
+}
 
-/**
- * @param {BlogLayoutProps} props
- */
 export default function BlogLayout({
 	children,
 	title,
 	datePublished,
 	description,
 	tags = [],
-}) {
+}: BlogLayoutProps) {
 	return (
 		<BaseLayout title={title} description={description}>
 			<LinkedData>

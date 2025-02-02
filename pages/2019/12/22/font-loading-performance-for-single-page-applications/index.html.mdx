@@ -1,5 +1,5 @@
-import Layout from '../../../../../layouts/BlogLayout.jsx';
-import ClickableImage from '../../../../../components/ClickableImage.jsx';
+import Layout from '../../../../../layouts/BlogLayout.tsx';
+import ClickableImage from '../../../../../components/ClickableImage.tsx';
 export const title = 'Font Loading Performance for Single-Page Applications';
 export const datePublished = new Date('2019-12-22 00:00:00');
 export const tags = ['performance'];
@@ -16,7 +16,7 @@ If you've ever worked in a project architected as a single-page application, the
 <script>
 	ReactDOM.render(
 		React.createElement('span', null, 'Hello World'),
-		document.getElementById('app')
+		document.getElementById('app'),
 	);
 </script>
 ```
@@ -75,7 +75,7 @@ If we reintroduce the React code from the original example, you'd see that the f
 <script>
 	ReactDOM.render(
 		React.createElement('span', null, 'Hello World'),
-		document.getElementById('app')
+		document.getElementById('app'),
 	);
 </script>
 ```
@@ -112,7 +112,7 @@ These hints are provided using a specially-formatted [`link` tag](https://develo
 <script>
 	ReactDOM.render(
 		React.createElement('span', null, 'Hello World'),
-		document.getElementById('app')
+		document.getElementById('app'),
 	);
 </script>
 ```

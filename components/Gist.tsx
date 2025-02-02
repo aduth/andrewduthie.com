@@ -1,14 +1,10 @@
-/**
- * @typedef GistProps
- *
- * @prop {string} id
- * @prop {string=} file
- */
+interface GistProps {
+	id: string;
 
-/**
- * @param {GistProps} props
- */
-function Gist({ id, file }) {
+	file?: string;
+}
+
+function Gist({ id, file }: GistProps) {
 	const url = new URL(id + '.js', 'https://gist.github.com/');
 	if (file) {
 		url.searchParams.append('file', file);

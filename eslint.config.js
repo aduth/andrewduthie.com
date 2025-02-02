@@ -6,7 +6,7 @@ export default [
 	...baseConfig,
 	{
 		plugins: { react },
-		files: ['{packages,components,layouts}/**/*.{js,jsx}'],
+		files: ['{packages,components,layouts}/**/*.{js,tsx}'],
 		languageOptions: {
 			parserOptions: {
 				ecmaFeatures: {

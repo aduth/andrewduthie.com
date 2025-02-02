@@ -20,21 +20,15 @@ const ICONS = {
 	),
 };
 
-/**
- * @typedef {keyof ICONS} SupportedIcon
- */
+export type SupportedIcon = keyof typeof ICONS;
 
-/**
- * @typedef IconProps
- *
- * @prop {SupportedIcon} icon
- * @prop {string=} className
- */
+interface IconProps {
+	icon: SupportedIcon;
 
-/**
- * @param {IconProps} props
- */
-function Icon({ icon, className }) {
+	className?: string;
+}
+
+function Icon({ icon, className }: IconProps) {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

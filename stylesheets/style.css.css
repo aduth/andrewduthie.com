@@ -1,6 +1,6 @@
 @import './_variables.css';
 @import './_elements.css';
-@import '../components/Avatar.jsx.css';
-@import '../components/BigText.jsx.css';
-@import '../components/SocialLink.jsx.css';
-@import '../layouts/BlogLayout.jsx.css';
+@import '../components/Avatar.tsx.css';
+@import '../components/BigText.tsx.css';
+@import '../components/SocialLink.tsx.css';
+@import '../layouts/BlogLayout.tsx.css';
