@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { program } from 'commander';
+import { parseArgs } from 'node:util';
 import build from '../index.js';
 
 /** @typedef {import('../index').Builder} Builder */
@@ -12,17 +12,40 @@ import build from '../index.js';
  * @prop {string} outDir Output directory.
  */
 
-program.arguments('<from...>');
-program.option(
-	'--handler <handler...>',
-	'Colon-deliminated pair of file extension to module helper',
-);
-program.option(
-	'--out-dir <outDir>',
-	'Output directory for built files',
-	'build',
-);
-program.parse(process.argv);
+const { positionals: from, values } = parseArgs({
+	allowPositionals: true,
+	options: {
+		handler: {
+			type: 'string',
+			multiple: true,
+		},
+		'out-dir': {
+			type: 'string',
+		},
+		help: {
+			type: 'boolean',
+			short: 'h',
+		},
+	},
+});
+
+if (values.help) {
+	process.stdout.write(
+		`Usage: build-files --handler <handler...> --out-dir <outdir> [from...]
+
+  --handler <handler...>
+  Colon-deliminated pair of file extension to module helper
+
+  --out-dir <outDir>
+  Output directory for built files
+`,
+	);
+
+	process.exit(1);
+}
+
+const outDir = values['out-dir'] ?? 'build';
+const rawHandlers = values.handler ?? [];
 
 /**
  * @template {string} TKey
@@ -56,9 +79,5 @@ function getHandlers(rawHandlers) {
 
 	return Promise.all(handlerPairs).then(fromPairs);
 }
-
-/** @type {BuildOptions} */
-const { handler: rawHandlers = [], outDir } = program.opts();
-const from = program.args;
 
 getHandlers(rawHandlers).then((handlers) => build(from, outDir, handlers));
