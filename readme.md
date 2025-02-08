@@ -10,6 +10,7 @@ I treat it as a playground for experimenting with interesting or novel tools and
 - [Node.js Worker Threads](https://nodejs.org/api/worker_threads.html)
 - [Running TypeScript Natively in Node.js](https://nodejs.org/en/learn/typescript/run-natively)
 - [Node.js Test Runner](https://nodejs.org/api/test.html)
+- [Node.js Subpath Imports](https://nodejs.org/api/packages.html#subpath-imports)
 - [JSON-LD Linked Data](https://json-ld.org/)
 - [ESBuild](https://github.com/evanw/esbuild)
 

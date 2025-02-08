@@ -8,6 +8,10 @@
 	"workspaces": [
 		"./packages/*"
 	],
+	"imports": {
+		"#components/*": "./components/*",
+		"#layouts/*": "./layouts/*"
+	},
 	"scripts": {
 		"clean": "rm -rf build",
 		"prebuild": "npm run clean",

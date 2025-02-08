@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
+import Avatar from '#components/Avatar.tsx';
+import LinkedData from '#components/LinkedData.tsx';
 import BaseLayout from './BaseLayout';
-import Avatar from '../components/Avatar';
-import LinkedData from '../components/LinkedData';
 import { author } from '../package.json';
 
 interface BlogLayoutProps {

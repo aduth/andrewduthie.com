@@ -34,7 +34,7 @@ const build: Builder = async (source, options) => {
 			{
 				name: 'external-node-modules',
 				setup({ onResolve }) {
-					onResolve({ filter: /^[^.]/ }, (args) => ({
+					onResolve({ filter: /^[^.#]/ }, (args) => ({
 						path: args.path,
 						external: true,
 					}));
