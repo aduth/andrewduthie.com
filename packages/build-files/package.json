@@ -2,8 +2,10 @@
 	"name": "@aduth/build-files",
 	"version": "1.0.0",
 	"type": "module",
-	"main": "index.js",
-	"bin": "./bin/build-files.js",
+	"main": "index.ts",
+	"bin": {
+		"build-files": "./bin/build-files.ts"
+	},
 	"dependencies": {
 		"klaw": "^4.1.0"
 	}

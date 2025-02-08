@@ -2,49 +2,29 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join, relative, basename, dirname } from 'node:path';
 import walkStream from 'klaw';
 
-/**
- * @typedef BuildOptions
- *
- * @prop {string} file Absolute path to file.
- */
-
-/**
- * @typedef {(source:string, options:BuildOptions)=>string|Promise<string>} Builder
- */
-
-/**
- * @param {string} file
- *
- * @return {string}
- */
-const dropExtension = (file) => file.slice(0, file.lastIndexOf('.'));
-
-/**
- * @template T
- *
- * @param {T|T[]} obj
- *
- * @return {T[]}
- */
-const castArray = (obj) => (Array.isArray(obj) ? obj : [obj]);
-
-/**
- *
- * @param {Record<string,Builder>} handlers
- */
-function createGetRenderer(handlers) {
-	/** @type {[(path: string) => boolean, Builder][]} */
-	const renderers = Object.entries(handlers).map(([ext, handler]) => [
-		(path) => path.endsWith(ext),
-		handler,
-	]);
-
+interface BuildOptions {
 	/**
-	 * @param {string} path
-	 *
-	 * @return {Builder=}
+	 * Absolute path to file.
 	 */
-	function getRenderer(path) {
+	file: string;
+}
+
+export type Builder = (
+	source: string,
+	options: BuildOptions,
+) => string | Promise<string>;
+
+const dropExtension = (file: string): string =>
+	file.slice(0, file.lastIndexOf('.'));
+
+const castArray = <T>(obj: T | T[]): T[] => (Array.isArray(obj) ? obj : [obj]);
+
+function createGetRenderer(handlers: Record<string, Builder>) {
+	const renderers: [(path: string) => boolean, Builder][] = Object.entries(
+		handlers,
+	).map(([ext, handler]) => [(path) => path.endsWith(ext), handler]);
+
+	function getRenderer(path: string): Builder | undefined {
 		for (const [isMatch, handler] of renderers) {
 			if (isMatch(path)) {
 				return handler;
@@ -55,18 +35,14 @@ function createGetRenderer(handlers) {
 	return getRenderer;
 }
 
-/**
- * @param {string|string[]} from
- * @param {string} to
- * @param {Record<string,Builder>} [handlers]
- *
- * @return {Promise<string[]>}
- */
-async function build(from, to, handlers = {}) {
+async function build(
+	from: string | string[],
+	to: string,
+	handlers: Record<string, Builder> = {},
+): Promise<string[]> {
 	const getRenderer = createGetRenderer(handlers);
 
-	/** @type {Promise<string>[]} */
-	const files = [];
+	const files: Promise<string>[] = [];
 
 	for (const dir of castArray(from)) {
 		for await (const entry of walkStream(dir)) {

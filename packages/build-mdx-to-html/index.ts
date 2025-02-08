@@ -3,22 +3,19 @@ import { createHash } from 'crypto';
 import { writeFile, unlink } from 'fs/promises';
 import { compile } from '@mdx-js/mdx';
 import esbuild from 'esbuild';
-
-/** @typedef {esbuild.Metafile} Metafile */
+import { type Builder } from '@aduth/build-files';
 
 /**
  * Returns an MD5 hash of the given string.
  *
- * @param {string} string String to hash.
+ * @param string String to hash.
  *
- * @return {string} Hashed string.
+ * @return Hashed string.
  */
-const md5 = (string) => createHash('md5').update(string).digest('hex');
+const md5 = (string: string): string =>
+	createHash('md5').update(string).digest('hex');
 
-/**
- * @type {import('@aduth/build-files').Builder}
- */
-async function build(source, options) {
+const build: Builder = async (source, options) => {
 	const { file } = options;
 
 	const jsx = String(await compile(source));
@@ -46,7 +43,7 @@ async function build(source, options) {
 		],
 	});
 	const code = outputFiles.map(({ text }) => text).join('');
-	const namedExports = Object.values(/** @type {Metafile} */ (metafile).outputs)
+	const namedExports = Object.values(metafile.outputs)
 		.flatMap((output) => output.exports)
 		.filter((name) => name !== 'default');
 
@@ -63,6 +60,6 @@ async function build(source, options) {
 	await unlink(tempFile);
 
 	return content;
-}
+};
 
 export default build;

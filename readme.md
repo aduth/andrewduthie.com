@@ -8,6 +8,7 @@ I treat it as a playground for experimenting with interesting or novel tools and
 - [NPM workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) ([á la Yarn](https://classic.yarnpkg.com/en/docs/workspaces/))
 - [Native ES modules in Node.js](https://nodejs.org/api/esm.html)
 - [Node.js Worker Threads](https://nodejs.org/api/worker_threads.html)
+- [Running TypeScript Natively in Node.js](https://nodejs.org/en/learn/typescript/run-natively)
 - [JSON-LD Linked Data](https://json-ld.org/)
 - [ESBuild](https://github.com/evanw/esbuild)
 

@@ -6,6 +6,7 @@
 		"module": "ESNext",
 		"target": "ESNext",
 		"allowSyntheticDefaultImports": true,
+		"allowImportingTsExtensions": true,
 		"moduleResolution": "node",
 		"jsx": "preserve",
 		"strictNullChecks": true,

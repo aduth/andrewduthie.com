@@ -1,16 +1,7 @@
 #!/usr/bin/env node
 
 import { parseArgs } from 'node:util';
-import build from '../index.js';
-
-/** @typedef {import('../index').Builder} Builder */
-
-/**
- * @typedef BuildOptions
- *
- * @prop {string[]} handler Mappings of file extension to handler package.
- * @prop {string} outDir Output directory.
- */
+import build, { type Builder } from '../index.ts';
 
 const { positionals: from, values } = parseArgs({
 	allowPositionals: true,
@@ -47,28 +38,16 @@ if (values.help) {
 const outDir = values['out-dir'] ?? 'build';
 const rawHandlers = values.handler ?? [];
 
-/**
- * @template {string} TKey
- * @template TValue
- *
- * @param {[TKey,TValue][]} array
- *
- * @return {Record<TKey,TValue>}
- */
-const fromPairs = (array) =>
+const fromPairs = <TKey extends string, TValue>(
+	array: [TKey, TValue][],
+): Record<TKey, TValue> =>
 	array.reduce(
 		(result, pair) => ((result[pair[0]] = pair[1]), result),
-		/** @type {Record<TKey,TValue>} */ ({}),
+		{} as Record<TKey, TValue>,
 	);
 
-/**
- * @param {string[]} rawHandlers Colon-delimited pair of file extension to module handler.
- *
- * @return {Promise<Record<string,Builder>>}
- */
-function getHandlers(rawHandlers) {
-	/** @type {Promise<[string,Builder]>[]} */
-	const handlerPairs = [];
+function getHandlers(): Promise<Record<string, Builder>> {
+	const handlerPairs: Promise<[string, Builder]>[] = [];
 
 	for (const rawHandler of rawHandlers) {
 		const [extension, mod] = rawHandler.split(':');
@@ -80,4 +59,4 @@ function getHandlers(rawHandlers) {
 	return Promise.all(handlerPairs).then(fromPairs);
 }
 
-getHandlers(rawHandlers).then((handlers) => build(from, outDir, handlers));
+getHandlers().then((handlers) => build(from, outDir, handlers));
