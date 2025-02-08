@@ -1,6 +1,6 @@
-import { dirname } from 'path';
-import { createHash } from 'crypto';
-import { writeFile, unlink } from 'fs/promises';
+import { dirname } from 'node:path';
+import { createHash } from 'node:crypto';
+import { writeFile, unlink } from 'node:fs/promises';
 import { compile } from '@mdx-js/mdx';
 import esbuild from 'esbuild';
 import { type Builder } from '@aduth/build-files';
