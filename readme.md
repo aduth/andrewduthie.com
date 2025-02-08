@@ -14,7 +14,7 @@ I treat it as a playground for experimenting with interesting or novel tools and
 
 ## License
 
-Copyright 2021 Andrew Duthie.
+Copyright 2025 Andrew Duthie.
 
 Blog post content is licensed under the [Creative Commons Attribution 3.0 Unported License](http://creativecommons.org/licenses/by/3.0/deed.en_US). Blog post content includes all files within the `pages/` directory.
 
