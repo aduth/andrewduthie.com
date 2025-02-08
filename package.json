@@ -18,6 +18,7 @@
 		"rebuild": "run-p build:*",
 		"test:lint": "eslint",
 		"test:typecheck": "tsc",
+		"test:unit": "node --test **/*.test.ts",
 		"test": "run-p test:*",
 		"dev:serve": "ruby -run -ehttpd build -p8000",
 		"dev:watch": "chokidar stylesheets components layouts pages public -c \"npm run rebuild\" --initial",
