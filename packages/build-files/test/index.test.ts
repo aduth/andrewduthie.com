@@ -23,7 +23,7 @@ describe('build', () => {
 			const expectedContent = await readFile(path);
 			const actualContent = await readFile(actualPath);
 
-			assert.equal(Buffer.compare(actualContent, expectedContent), 0);
+			assert.equal(actualContent.toString(), expectedContent.toString());
 		}
 	});
 });
