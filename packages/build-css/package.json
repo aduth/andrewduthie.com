@@ -4,6 +4,6 @@
 	"type": "module",
 	"main": "index.ts",
 	"dependencies": {
-		"lightningcss": "^1.29.1"
+		"lightningcss": "^1.30.1"
 	}
 }
